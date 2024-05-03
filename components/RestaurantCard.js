@@ -3,6 +3,7 @@ import * as Icon from "react-native-feather";
 import { PRIMARY_COLOR } from '../colors';
 import { useNavigation } from '@react-navigation/native';
 
+
 const RestaurantCard = ({item}) => {
   const navigation = useNavigation()
   return (
