@@ -5,8 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Categories from '../components/Categories';
 import RestaurantCard from '../components/RestaurantCard';
 import { PRIMARY_COLOR } from '../colors';
-// import { restaurants } from '../constants';
-
+import { themeColors } from '../theme';
 
 
 export default function HomeScreen() {
@@ -18,7 +17,6 @@ export default function HomeScreen() {
         fetch('http://10.0.2.2:8000/api/restaurants/')
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
             setRestaurants(data);
         })
         .catch((error) => {
@@ -28,14 +26,14 @@ export default function HomeScreen() {
 
 return (
     <SafeAreaView
-        style={{ paddingTop: Platform.OS == 'android' ? 20 : 0 }}
+        style={{ paddingTop: Platform.OS == 'android' ? 25 : 0 }}
         className="p-4 flex-1"
     >
         <StatusBar barStyle="dark-content" />
         {/* location */}
         <View className="flex-row my-4 justify-between items-center">
             <View className="flex-row items-center">
-                <Icon.MapPin width="30" height="30" stroke={PRIMARY_COLOR} />
+                <Icon.MapPin width="30" height="30" stroke={themeColors.bgColor(1)} />
                 <View className="ml-2">
                     <View className="flex-row font-bold items-center">
                         <Text className="font-bold text-lg">Ernakulam North</Text>
@@ -44,7 +42,7 @@ return (
                     <Text>Kathrikadavu, kaloor, Ernakulam</Text>
                 </View>
             </View>
-            <Icon.User width="30" height="30" stroke={PRIMARY_COLOR} fill={PRIMARY_COLOR} />
+            <Icon.User width="30" height="30" stroke={themeColors.bgColor(1)} fill={themeColors.bgColor(1)} />
         </View>
 
         {/* search bar */}
@@ -69,11 +67,11 @@ return (
             {/* restaurants */}
             <Text className="mt-6 text-lg font-medium">Restaurants to explore</Text>
             {
-                restaurants.map((restaurant, index) => {
+                restaurants.map(restaurant => {
                     return (
                         <RestaurantCard
                             item={restaurant}
-                            key={index}
+                            key={restaurant.id}
                         />
                     )
                 })

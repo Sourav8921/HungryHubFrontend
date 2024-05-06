@@ -2,7 +2,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 import * as Icon from "react-native-feather";
-import { PRIMARY_COLOR } from '../colors';
+import { themeColors } from '../theme';
 
 export default function MenuItem({item}) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -28,7 +28,7 @@ export default function MenuItem({item}) {
             </View>
             <View>
               <Image 
-                source={{ uri: item.image_url }}
+                source={{ uri: item.image }}
                 style={{
                   width: 150,
                   height: 130,
@@ -37,11 +37,11 @@ export default function MenuItem({item}) {
                 />
                 <View className="bg-white border rounded-lg flex-row justify-around p-2">
                   <TouchableOpacity className="">
-                    <Icon.Minus width={20} height={20} stroke={PRIMARY_COLOR} strokeWidth={4}/>
+                    <Icon.Minus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
                   </TouchableOpacity>
                   <Text>2</Text>
                   <TouchableOpacity className="">
-                    <Icon.Plus width={20} height={20} stroke={PRIMARY_COLOR} strokeWidth={4}/>
+                    <Icon.Plus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
                   </TouchableOpacity>
                 </View>
             </View>

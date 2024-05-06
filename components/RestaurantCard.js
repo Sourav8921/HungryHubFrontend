@@ -2,6 +2,7 @@ import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import * as Icon from "react-native-feather";
 import { PRIMARY_COLOR } from '../colors';
 import { useNavigation } from '@react-navigation/native';
+import { themeColors } from '../theme';
 
 
 const RestaurantCard = ({item}) => {
@@ -13,7 +14,7 @@ const RestaurantCard = ({item}) => {
       <View className="p-4 flex-row" >
         {/* <View> */}
             <Image
-              source={{ uri: item.image_url }}
+              source={{ uri: item.image }}
               style={{
                 width: 100,
                 height: 120,
@@ -21,7 +22,7 @@ const RestaurantCard = ({item}) => {
                 marginRight: 8 }}
             />
             <View className='absolute top-4 right-3'>
-                <Icon.Heart height={20} width={20} stroke={PRIMARY_COLOR}/>
+                <Icon.Heart height={20} width={20} stroke={themeColors.bgColor(1)}/>
             </View>
         {/* </View> */}
         <View className="ml-3">

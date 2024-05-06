@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import MenuItem from '../components/MenuItem';
 import CartIcon from '../components/CartIcon';
 import axios from 'axios';
+import { StatusBar } from 'expo-status-bar';
+import { themeColors } from '../theme';
 
 export default function RestaurantScreen({ route }) {
 
@@ -31,11 +33,11 @@ export default function RestaurantScreen({ route }) {
     return (
         <View className="flex-1">
             <CartIcon/>
-            
+            <StatusBar style='light'/>
             <ScrollView>
                 <View>
                     <Image
-                        source={{ uri: route.params.image_url }}
+                        source={{ uri: route.params.image }}
                         style={{
                             width: '100%',
                             height: 300,
@@ -45,7 +47,7 @@ export default function RestaurantScreen({ route }) {
                     <TouchableOpacity
                         onPress={()=> navigation.goBack()}
                         className="bg-white absolute top-12 left-3 p-3 rounded-full">
-                        <Icon.ArrowLeft stroke={PRIMARY_COLOR} strokeWidth={3} />
+                        <Icon.ArrowLeft stroke={themeColors.bgColor(1)} strokeWidth={3} />
                     </TouchableOpacity>
 
                     <View
