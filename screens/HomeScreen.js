@@ -1,10 +1,9 @@
-import { View, Text, SafeAreaView, TextInput, ScrollView, FlatList, Platform } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, ScrollView, Platform } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import * as Icon from "react-native-feather";
 import React, { useState, useEffect } from 'react';
 import Categories from '../components/Categories';
 import RestaurantCard from '../components/RestaurantCard';
-import { PRIMARY_COLOR } from '../colors';
 import { themeColors } from '../theme';
 
 
