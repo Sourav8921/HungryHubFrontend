@@ -172,6 +172,7 @@ export default function CartScreen() {
                         <TouchableOpacity 
                             style={{backgroundColor: themeColors.bgColor(1)}}
                             className="items-center p-4 rounded-full"
+                            onPress={() => navigation.navigate("OrderPreparing")}
                         >
                             <Text className="text-white text-lg font-medium">Place order</Text>
                         </TouchableOpacity>
