@@ -1,18 +1,16 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React from 'react'
 import * as Icon from "react-native-feather";
-import { PRIMARY_COLOR } from '../colors';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { themeColors } from '../theme';
-import { restaurants } from '../constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CartScreen() {
     const navigation = useNavigation()
   return (
     <SafeAreaView className="bg-gray-100 flex-1">
-        <StatusBar />
+        <StatusBar/>
         
         {/* Back button */}
         <View>

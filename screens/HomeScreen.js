@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, ScrollView, Platform } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, ScrollView, Platform, TouchableOpacity } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import * as Icon from "react-native-feather";
 import React, { useState, useEffect } from 'react';
@@ -7,7 +7,7 @@ import RestaurantCard from '../components/RestaurantCard';
 import { themeColors } from '../theme';
 
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
 
     const [restaurants, setRestaurants] = useState([]);
 
@@ -41,7 +41,9 @@ return (
                     <Text>Kathrikadavu, kaloor, Ernakulam</Text>
                 </View>
             </View>
-            <Icon.User width="30" height="30" stroke={themeColors.bgColor(1)} fill={themeColors.bgColor(1)} />
+            <TouchableOpacity onPress={() => {navigation.navigate("Profile")}}>
+                <Icon.User width="30" height="30" stroke={themeColors.bgColor(1)} fill={themeColors.bgColor(1)} />
+            </TouchableOpacity>
         </View>
 
         {/* search bar */}
