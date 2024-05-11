@@ -13,7 +13,7 @@ export default function HomeScreen({navigation}) {
 
     useEffect(() => {
         // Fetch data from your backend API
-        fetch('http://10.0.2.2:8000/api/restaurants/')
+        fetch('http://10.0.2.2:8000/api/restaurants/restaurants/')
         .then((response) => response.json())
         .then((data) => {
             setRestaurants(data);

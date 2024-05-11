@@ -1,14 +1,39 @@
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, Pressable } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
+import axios from "axios";
 
-const logoImg = require("../assets/Logo.png");
 
 export default function SignupScreen({navigation}) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [pass2, setPass2] = useState("");
+
+    const registerUser = () => {
+
+        const postData = {
+            username: name,
+            password: pass,
+            email: email
+        };
+
+        const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        };
+
+        axios.post('http://10.0.2.2:8000/api/users/register/', postData, config)
+        .then(response => {
+            console.log('Response:', response.data);
+            navigation.navigate('Login');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#e8ecf4" }}>
             <View style={styles.container}>
@@ -52,7 +77,7 @@ export default function SignupScreen({navigation}) {
                             secureTextEntry
                         />
                     </View>
-                    <View>
+                    {/* <View>
                         <Text style={styles.inputText}>Re-type password</Text>
                         <TextInput
                             style={styles.inputField}
@@ -61,9 +86,9 @@ export default function SignupScreen({navigation}) {
                             placeholder="********"
                             secureTextEntry
                         />
-                    </View>
+                    </View> */}
 
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={()=> registerUser()}>
                         <Text style={styles.btnText}>Sign up</Text>
                     </TouchableOpacity>
                 </View>

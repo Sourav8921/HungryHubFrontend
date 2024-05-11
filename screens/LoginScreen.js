@@ -1,12 +1,36 @@
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, Platform, Pressable, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const logoImg = require("../assets/Logo.png");
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
+
+  const loginUser = async () => {
+      const postData = {
+            username: username,
+            password: pass,
+        };
+    
+      const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+      try {
+        const response = await axios.post('http://10.0.2.2:8000/api/users/login/', postData, config)
+        console.log('Response:', response.data);
+        await AsyncStorage.setItem('auth_token', response.data.token);
+        navigation.navigate('Home');
+      } catch (error) {
+        console.error('Error:', error);
+      }
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#e8ecf4" }}>
@@ -21,12 +45,12 @@ export default function LoginScreen({ navigation }) {
 
         <View style={styles.form}>
           <View>
-            <Text style={styles.inputText}>Email address</Text>
+            <Text style={styles.inputText}>Email or Username</Text>
             <TextInput
               style={styles.inputField}
-              value={email}
-              onChangeText={setEmail}
-              placeholder="email@example.com"
+              value={username}
+              onChangeText={setUsername}
+              placeholder="Email or username"
               autoCapitalize="none"
               autoCorrect={false}
             />
@@ -39,13 +63,14 @@ export default function LoginScreen({ navigation }) {
               value={pass}
               onChangeText={setPass}
               placeholder="********"
+              autoCapitalize="none"
               secureTextEntry
             />
           </View>
 
           <TouchableOpacity 
             style={styles.button}
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => loginUser()}
           >
             <Text style={styles.btnText}>Log in</Text>
           </TouchableOpacity>

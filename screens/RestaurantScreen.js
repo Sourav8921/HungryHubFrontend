@@ -20,7 +20,7 @@ export default function RestaurantScreen({ route }) {
         // Function to fetch menu items when component mounts
         const fetchMenuItems = async () => {
           try {
-            const response = await axios.get(`http://10.0.2.2:8000/api/menu-items/?restaurant_id=${restaurantId}`);
+            const response = await axios.get(`http://10.0.2.2:8000/api/restaurants/menu-items/?restaurant_id=${restaurantId}`);
             setMenuItems(response.data); // Assuming your response data is an array of menu items
           } catch (error) {
             console.error('Error fetching menu items:', error);
