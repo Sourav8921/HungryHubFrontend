@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
         const response = await axios.post('http://10.0.2.2:8000/api/users/login/', postData, config)
         console.log('Response:', response.data);
         await AsyncStorage.setItem('auth_token', response.data.token);
-        navigation.navigate('Home');
+        navigation.navigate('Authenticated');
       } catch (error) {
         console.error('Error:', error);
       }

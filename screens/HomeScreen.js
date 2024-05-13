@@ -6,6 +6,7 @@ import Categories from '../components/Categories';
 import RestaurantCard from '../components/RestaurantCard';
 import { themeColors } from '../theme';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen({navigation}) {
 
@@ -22,6 +23,7 @@ export default function HomeScreen({navigation}) {
             console.error('Error fetching data:', error);
         });
     }, []);
+
 
 return (
     <SafeAreaView

@@ -24,7 +24,9 @@ export default function ProfileScreen() {
             };
             const response = await axios.post('http://10.0.2.2:8000/api/users/logout/', null, config);
             console.log('Response:', response.data);
-            navigation.navigate('Login');
+            await AsyncStorage.removeItem('auth_token');
+            // setAuthenticated(false);
+            navigation.navigate('Logout');
         } catch (error) {
             console.error('Error:', error);
         }
