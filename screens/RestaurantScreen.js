@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import * as Icon from "react-native-feather";
-import { PRIMARY_COLOR } from '../colors';
 import { useNavigation } from '@react-navigation/native';
 import MenuItem from '../components/MenuItem';
 import CartIcon from '../components/CartIcon';

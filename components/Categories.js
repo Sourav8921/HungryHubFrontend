@@ -22,9 +22,9 @@ export default function Categories() {
                                 <TouchableOpacity
                                     className="px-3 py-3 rounded-full shadow bg-gray-200">
                                     <Image style={{width: 45, height: 45}} 
-                                        source={category.image} />
+                                        source={category?.image} />
                                 </TouchableOpacity>
-                                <Text className="text-sm">{category.name}</Text>
+                                <Text className="text-sm">{category?.name}</Text>
                             </View>
                         )
                     })

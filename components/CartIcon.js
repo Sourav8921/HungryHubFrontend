@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { PRIMARY_COLOR } from '../colors'
 import { useNavigation } from '@react-navigation/native'
 import { themeColors } from '../theme'
 
