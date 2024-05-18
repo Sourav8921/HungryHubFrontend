@@ -7,23 +7,45 @@ import RestaurantCard from '../components/RestaurantCard';
 import { themeColors } from '../theme';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRestaurants } from '../redux/restaurants';
+import Loading from '../components/Loading';
 
 export default function HomeScreen({navigation}) {
 
-    const [restaurants, setRestaurants] = useState([]);
+    // const [restaurants, setRestaurants] = useState([]);
 
+    // useEffect(() => {
+    //     // Fetch data from your backend API
+    //     fetch('http://10.0.2.2:8000/api/restaurants/restaurants/')
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         setRestaurants(data);
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error fetching data:', error);
+    //     });
+    // }, []);
+    const dispatch = useDispatch();
+    const {loading, restaurants, error} = useSelector((state) => state.restaurants)
+    
     useEffect(() => {
-        // Fetch data from your backend API
-        fetch('http://10.0.2.2:8000/api/restaurants/restaurants/')
-        .then((response) => response.json())
-        .then((data) => {
-            setRestaurants(data);
-        })
-        .catch((error) => {
-            console.error('Error fetching data:', error);
-        });
-    }, []);
+        dispatch(fetchRestaurants())
+    }, [])
 
+    if(loading) {
+        return (
+            <Loading/>
+        );
+    }
+    console.log(error);
+    if (error) {
+        return (
+          <View className="flex-1 items-center justify-center">
+            <Text className="text-red-600 text-lg">Error: {error.message}</Text>
+          </View>
+        );
+    }
 
 return (
     <SafeAreaView
@@ -84,20 +106,3 @@ return (
 )
 }
 
-
-
-// <View style={{ flex: 1, padding: 20 }}>
-//                 <FlatList
-//                     data={restaurants}
-//                     renderItem={({ item }) => (
-//                     <RestaurantCard
-//                         name={item.name}
-//                         deliveryTime={item.delivery_time}
-//                         cuisine={item.cuisine_type}
-//                         place={item.place}
-//                         image={item.image_url}
-//                     />
-//                     )}
-//                     keyExtractor={(item) => item.id.toString()}
-//                 />
-//             </View>

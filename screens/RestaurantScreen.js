@@ -7,6 +7,7 @@ import CartIcon from '../components/CartIcon';
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { themeColors } from '../theme';
+import { useSelector } from 'react-redux';
 
 export default function RestaurantScreen({ route }) {
 

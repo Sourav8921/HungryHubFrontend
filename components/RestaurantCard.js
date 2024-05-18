@@ -1,6 +1,5 @@
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import * as Icon from "react-native-feather";
-import { PRIMARY_COLOR } from '../colors';
 import { useNavigation } from '@react-navigation/native';
 import { themeColors } from '../theme';
 

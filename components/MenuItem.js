@@ -8,11 +8,10 @@ import AfterCart from './AfterCart';
 export default function MenuItem({ item }) {
   const {cartList} = useSelector((state) => state.cart)
 
-  // const cartCount = useMemo(()=> {
-  //   return cartList?.find((cartItem) => cartItem?.id === item?.id )?.count
-  // }, [cartList]);
-  console.log(cartList, '==cart list');
-  const cartCount = cartList?.find((cartItem) => cartItem?.id === item?.id )?.count
+  const cartCount = useMemo(()=> {
+    return cartList?.find((cartItem) => cartItem?.id === item?.id )?.count
+  }, [cartList]);
+  
   const [isExpanded, setIsExpanded] = useState(false);
   const maxLines = isExpanded ? 100 : 2;
   return (
@@ -43,7 +42,7 @@ export default function MenuItem({ item }) {
               borderRadius: 8,
             }}
           />
-          {cartCount > 0 ? <AfterCart cartCount={cartCount}/> : <BeforeCart item={item}/> }
+          {cartCount > 0 ? <AfterCart productID={item.id} cartCount={cartCount}/> : <BeforeCart item={item}/> }
         </View>
       </View>
       <View className="border-b border-gray-300 w-full my-4" />
