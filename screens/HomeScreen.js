@@ -1,31 +1,16 @@
 import { View, Text, SafeAreaView, TextInput, ScrollView, Platform, TouchableOpacity } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import * as Icon from "react-native-feather";
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Categories from '../components/Categories';
 import RestaurantCard from '../components/RestaurantCard';
 import { themeColors } from '../theme';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../redux/restaurants';
 import Loading from '../components/Loading';
 
 export default function HomeScreen({navigation}) {
 
-    // const [restaurants, setRestaurants] = useState([]);
-
-    // useEffect(() => {
-    //     // Fetch data from your backend API
-    //     fetch('http://10.0.2.2:8000/api/restaurants/restaurants/')
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         setRestaurants(data);
-    //     })
-    //     .catch((error) => {
-    //         console.error('Error fetching data:', error);
-    //     });
-    // }, []);
     const dispatch = useDispatch();
     const {loading, restaurants, error} = useSelector((state) => state.restaurants)
     
@@ -38,11 +23,10 @@ export default function HomeScreen({navigation}) {
             <Loading/>
         );
     }
-    console.log(error);
     if (error) {
         return (
           <View className="flex-1 items-center justify-center">
-            <Text className="text-red-600 text-lg">Error: {error.message}</Text>
+            <Text className="text-red-600 text-lg">Error : {error}</Text>
           </View>
         );
     }
