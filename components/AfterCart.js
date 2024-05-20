@@ -9,7 +9,7 @@ export default function AfterCart({cartCount, productID}) {
     const dispatch = useDispatch()
     return (
         <View>
-            <View className="bg-white border rounded-xl flex-row justify-around p-2 items-center mt-2">
+            <View className="bg-white border rounded-xl flex-row justify-around p-2 items-center mt-2 w-24">
                 <TouchableOpacity onPress={()=> dispatch(decrement(productID))}>
                     <Icon.Minus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4} />
                 </TouchableOpacity>

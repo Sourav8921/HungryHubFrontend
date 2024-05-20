@@ -7,8 +7,11 @@ import CartIcon from '../components/CartIcon';
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { themeColors } from '../theme';
+import { useSelector } from 'react-redux';
 
 export default function RestaurantScreen({ route }) {
+
+    const {cartList} = useSelector((state) => state.cart)
 
     const navigation = useNavigation()
 
@@ -19,7 +22,7 @@ export default function RestaurantScreen({ route }) {
         // Function to fetch menu items when component mounts
         const fetchMenuItems = async () => {
           try {
-            const response = await axios.get(`http://10.0.2.2:8000/api/restaurants/menu-items/?restaurant_id=${restaurantId}`);
+            const response = await axios.get(`http://192.168.1.10:8000/api/restaurants/menu-items/?restaurant_id=${restaurantId}`);
             setMenuItems(response.data); // Assuming your response data is an array of menu items
           } catch (error) {
             console.error('Error fetching menu items:', error);
@@ -32,7 +35,7 @@ export default function RestaurantScreen({ route }) {
     return (
         <View className="flex-1">
             <CartIcon/>
-            <StatusBar style='light'/>
+            <StatusBar hidden/>
             <ScrollView>
                 <View>
                     <Image
@@ -45,7 +48,7 @@ export default function RestaurantScreen({ route }) {
                         />
                     <TouchableOpacity
                         onPress={()=> navigation.goBack()}
-                        className="bg-white absolute top-12 left-3 p-3 rounded-full">
+                        className="bg-white absolute top-4 left-3 p-3 rounded-full">
                         <Icon.ArrowLeft stroke={themeColors.bgColor(1)} strokeWidth={3} />
                     </TouchableOpacity>
 

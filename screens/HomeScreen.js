@@ -33,12 +33,11 @@ export default function HomeScreen({navigation}) {
 
 return (
     <SafeAreaView
-        style={{ paddingTop: Platform.OS == 'android' ? 25 : 0 }}
-        className="p-4 flex-1"
+        className="p-2 flex-1"
     >
-        <StatusBar barStyle="dark-content" />
+        <StatusBar hidden/>
         {/* location */}
-        <View className="flex-row my-4 justify-between items-center">
+        <View className="flex-row mb-3 justify-between items-center">
             <View className="flex-row items-center">
                 <Icon.MapPin width="30" height="30" stroke={themeColors.bgColor(1)} />
                 <View className="ml-2">

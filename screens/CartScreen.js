@@ -2,18 +2,20 @@ import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React from 'react'
 import * as Icon from "react-native-feather";
 import { useNavigation } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
 import { themeColors } from '../theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+import CartItem from '../components/CartItem'
 
 export default function CartScreen() {
+
+    const {cartList} = useSelector((state) => state.cart)
     const navigation = useNavigation()
+
   return (
     <SafeAreaView className="bg-gray-100 flex-1">
-        <StatusBar/>
-        
         {/* Back button */}
-        <View>
+        <View className="mt-2">
             <TouchableOpacity
                 onPress={()=> navigation.goBack()}
                 style={{backgroundColor: themeColors.bgColor(1)}}
@@ -50,106 +52,18 @@ export default function CartScreen() {
         >
             {/* selected menu items */}
             <Text className="text-center text-gray-800 p-2">ITEM(S) ADDED</Text>
-            <View className="flex-row bg-white shadow-md m-2 p-4 rounded-3xl items-center justify-between">
-                <Image 
-                    source={require('../assets/images/pizza-icon.png')} 
-                    style={{
-                        height: 60, 
-                        width: 60,
-                        borderRadius: 50,
-                        backgroundColor: 'white'
-                    }}
-                />
-                <View className=" flex-1 ml-4">
-                    <Text className="font-bold text-base">Pizza</Text>
-                    <Text className="font-medium text-base">$150</Text>
-                </View>
 
-                <View className="bg-white border rounded-full flex-row justify-around p-2 gap-x-3">
-                  <TouchableOpacity>
-                    <Icon.Minus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-                  </TouchableOpacity>
-                  <Text>2</Text>
-                  <TouchableOpacity>
-                    <Icon.Plus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-                  </TouchableOpacity>
-                </View>
-            </View>
-            <View className="flex-row bg-white shadow-md m-2 p-4 rounded-3xl items-center justify-between">
-                <Image 
-                    source={require('../assets/images/pizza-icon.png')} 
-                    style={{
-                        height: 60, 
-                        width: 60,
-                        borderRadius: 50,
-                        backgroundColor: 'white'
-                    }}
-                />
-                <View className=" flex-1 ml-4">
-                    <Text className="font-bold text-base">Pizza</Text>
-                    <Text className="font-medium text-base">$150</Text>
-                </View>
+            {cartList.map((item) => {
+                return (
+                    <CartItem 
+                        item={item}
+                        key={item.id}
+                    />
+                )
 
-                <View className="bg-white border rounded-full flex-row justify-around p-2 gap-x-3">
-                  <TouchableOpacity>
-                    <Icon.Minus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-                  </TouchableOpacity>
-                  <Text>2</Text>
-                  <TouchableOpacity>
-                    <Icon.Plus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-                  </TouchableOpacity>
-                </View>
-            </View>
-            <View className="flex-row bg-white shadow-md m-2 p-4 rounded-3xl items-center justify-between">
-                <Image 
-                    source={require('../assets/images/pizza-icon.png')} 
-                    style={{
-                        height: 60, 
-                        width: 60,
-                        borderRadius: 50,
-                        backgroundColor: 'white'
-                    }}
-                />
-                <View className=" flex-1 ml-4">
-                    <Text className="font-bold text-base">Pizza</Text>
-                    <Text className="font-medium text-base">$150</Text>
-                </View>
+                    
+            })}
 
-                <View className="bg-white border rounded-full flex-row justify-around p-2 gap-x-3">
-                  <TouchableOpacity>
-                    <Icon.Minus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-                  </TouchableOpacity>
-                  <Text>2</Text>
-                  <TouchableOpacity>
-                    <Icon.Plus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-                  </TouchableOpacity>
-                </View>
-            </View>
-            <View className="flex-row bg-white shadow-md m-2 p-4 rounded-3xl items-center justify-between">
-                <Image 
-                    source={require('../assets/images/pizza-icon.png')} 
-                    style={{
-                        height: 60, 
-                        width: 60,
-                        borderRadius: 50,
-                        backgroundColor: 'white'
-                    }}
-                />
-                <View className=" flex-1 ml-4">
-                    <Text className="font-bold text-base">Pizza</Text>
-                    <Text className="font-medium text-base">$150</Text>
-                </View>
-
-                <View className="bg-white border rounded-full flex-row justify-around p-2 gap-x-3">
-                  <TouchableOpacity>
-                    <Icon.Minus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-                  </TouchableOpacity>
-                  <Text>2</Text>
-                  <TouchableOpacity>
-                    <Icon.Plus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-                  </TouchableOpacity>
-                </View>
-            </View>
         </ScrollView>
 
         {/* totals */}

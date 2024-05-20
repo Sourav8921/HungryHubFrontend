@@ -22,10 +22,9 @@ export default function ProfileScreen() {
                     'Authorization': `Token ${AUTH_TOKEN}`
                 }
             };
-            const response = await axios.post('http://10.0.2.2:8000/api/users/logout/', null, config);
+            const response = await axios.post('http://192.168.1.10:8000/api/users/logout/', null, config);
             console.log('Response:', response.data);
-            await AsyncStorage.removeItem('auth_token');
-            // setAuthenticated(false);
+            await AsyncStorage.removeItem('auth_token')
             navigation.navigate('Logout');
         } catch (error) {
             console.error('Error:', error);

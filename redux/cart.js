@@ -10,15 +10,15 @@ const cartSlice = createSlice({
     initialState: INITIAL_STATE,
     reducers: {
         addToCart: (state, action) => {
-            const itemExists = state.cartList.find((item) => item.id === action.payload.id)
-            if (itemExists) {
-                state.cartList.forEach((item) => {
-                    if (item?.id === action.payload.id) {
-                        item.count = 1;
-                    } 
-                });
-                return;
-            }
+            // const itemExists = state.cartList.find((item) => item.id === action.payload.id)
+            // if (itemExists) {
+            //     state.cartList.forEach((item) => {
+            //         if (item?.id === action.payload.id) {
+            //             item.count = 1;
+            //         } 
+            //     });
+            //     return;
+            // }
             state.cartList.push({
                 ...action.payload,
                 count: 1
@@ -34,11 +34,16 @@ const cartSlice = createSlice({
         },
         decrement: (state, action) => {
             const productID = action.payload;
-            state.cartList.forEach((item) => {
-                if (item?.id === productID) {
-                    item.count--;
+            state.cartList = state.cartList.filter((item) => {
+                if (item.id === productID) {
+                    if (item.count > 1) {
+                        item.count--;
+                        return true;
+                    }
+                    return false; // Remove item if count reaches 0
                 }
-            })
+                return true;
+            });
         }
     }
 })

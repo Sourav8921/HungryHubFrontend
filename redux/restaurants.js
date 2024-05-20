@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchRestaurants = createAsyncThunk("restaurants/fetchRestaurants", 
     async (_, { rejectWithValue })=>{
         try {
-            const response = await axios.get("http://10.0.2.2:8000/api/restaurants/restaurants/")
+            const response = await axios.get("http://192.168.1.10:8000/api/restaurants/restaurants/")
             return response.data;
         } catch (error) {
             return rejectWithValue(error.message); 

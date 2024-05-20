@@ -7,7 +7,7 @@ import { addToCart } from '../redux/cart'
 export default function BeforeCart({item}) {
     const dispatch = useDispatch()
   return (
-    <View className="p-2 border rounded-xl items-center mt-2">
+    <View className="p-2 border rounded-xl items-center mt-2 w-24">
         <TouchableOpacity onPress={()=> dispatch(addToCart(item))}>
             <Text style={{color: themeColors.text}} className="font-bold text-base">ADD</Text>
         </TouchableOpacity>

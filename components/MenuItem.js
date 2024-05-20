@@ -19,12 +19,12 @@ export default function MenuItem({ item }) {
       <View className="flex-row justify-between gap-x-2">
         <View className="flex-1 gap-y-1">
           <Text className="text-lg font-medium">{item?.name}</Text>
-          <Text>$ {item?.price}</Text>
+          <Text >₹ {item?.price}</Text>
           <View className="flex-row">
             <Image source={require('../assets/images/star.png')} />
             <Text className="ml-1 font-semibold">4.2 (5k+)</Text>
           </View>
-          <Text numberOfLines={maxLines} ellipsizeMode="tail">
+          <Text className="text-gray-600" numberOfLines={maxLines} ellipsizeMode="tail">
             {item?.description}
           </Text>
           {item.description.length > maxLines && (
@@ -33,7 +33,7 @@ export default function MenuItem({ item }) {
             </TouchableOpacity>
           )}
         </View>
-        <View>
+        <View className="justify-center items-center">
           <Image
             source={{ uri: item?.image }}
             style={{

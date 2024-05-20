@@ -5,6 +5,7 @@ import UnauthenticatedNavigator from "./Navigation/UnauthenticatedNavigator"
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
 
@@ -31,9 +32,11 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-          {authenticated ? <AuthenticatedNavigator /> : <UnauthenticatedNavigator />}
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer>
+            {authenticated ? <AuthenticatedNavigator /> : <UnauthenticatedNavigator />}
+        </NavigationContainer>
+      </SafeAreaProvider>
     </Provider>
   );
 }
