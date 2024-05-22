@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import config from "../config";
 
 
+const restaurantsUrl = `${config.BASE_URL}api/restaurants/restaurants/`;
 export const fetchRestaurants = createAsyncThunk("restaurants/fetchRestaurants", 
     async (_, { rejectWithValue })=>{
         try {
-            const response = await axios.get("http://192.168.1.10:8000/api/restaurants/restaurants/")
+            const response = await axios.get(restaurantsUrl)
             return response.data;
         } catch (error) {
             return rejectWithValue(error.message); 

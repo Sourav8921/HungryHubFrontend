@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { themeColors } from '../theme'
 import * as Icon from "react-native-feather";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { increment, decrement } from '../redux/cart';
 
 export default function AfterCart({cartCount, productID}) {

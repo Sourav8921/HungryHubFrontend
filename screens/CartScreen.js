@@ -11,6 +11,7 @@ export default function CartScreen() {
 
     const {cartList} = useSelector((state) => state.cart)
     const navigation = useNavigation()
+    console.log(cartList);
 
   return (
     <SafeAreaView className="bg-gray-100 flex-1">
@@ -35,7 +36,7 @@ export default function CartScreen() {
             className="flex-row mt-2 p-4 items-center"
         >
             <Image source={require('../assets/images/delivery.png')} className="w-16 h-16 rounded-full"/>
-            <Text className="ml-4 flex-1 font-medium">Delivery in 20-30 minutes</Text>
+            <Text className="ml-4 flex-1">Delivery at <Text className="font-medium">Vidya Nagar Colony, Thrikkakara, Kochi</Text></Text>
             <TouchableOpacity>
                 <Text className="font-bold" style={{color: themeColors.text}}>
                     Change

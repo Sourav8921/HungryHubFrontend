@@ -10,18 +10,16 @@ const cartSlice = createSlice({
     initialState: INITIAL_STATE,
     reducers: {
         addToCart: (state, action) => {
-            // const itemExists = state.cartList.find((item) => item.id === action.payload.id)
-            // if (itemExists) {
-            //     state.cartList.forEach((item) => {
-            //         if (item?.id === action.payload.id) {
-            //             item.count = 1;
-            //         } 
-            //     });
-            //     return;
-            // }
+            const newRestaurantId = action.payload.restaurant;
+
+            // Check if the cart is not empty and if the new item's restaurant is different
+            if (state.cartList.length > 0 && state.cartList[0].restaurant !== newRestaurantId) {
+                // Clear the cart if different restaurant
+                state.cartList = [];
+            }
             state.cartList.push({
                 ...action.payload,
-                count: 1
+                count: 1,
             });
         },
         increment: (state, action) => {
@@ -35,7 +33,7 @@ const cartSlice = createSlice({
         decrement: (state, action) => {
             const productID = action.payload;
             state.cartList = state.cartList.filter((item) => {
-                if (item.id === productID) {
+                if (item?.id === productID) {
                     if (item.count > 1) {
                         item.count--;
                         return true;

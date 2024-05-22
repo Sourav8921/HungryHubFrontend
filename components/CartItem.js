@@ -1,6 +1,5 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
-import * as Icon from "react-native-feather";
 import { themeColors } from '../theme';
 import AfterCart from './AfterCart';
 
@@ -21,16 +20,10 @@ export default function CartItem({item}) {
             <Text className="font-medium text-base">₹ {item.price}</Text>
         </View>
 
-        {/* <View className="bg-white border rounded-full flex-row justify-around p-2 gap-x-3">
-        <TouchableOpacity>
-            <Icon.Minus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-        </TouchableOpacity>
-        <Text>{item.count}</Text>
-        <TouchableOpacity>
-            <Icon.Plus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4}/>
-        </TouchableOpacity>
-        </View> */}
-        <AfterCart productID={item.id} cartCount={item.count}/>
+        <View className="items-center">
+          <AfterCart productID={item.id} cartCount={item.count}/>
+          <Text className="text-base font-medium">₹ {parseInt(item.price) * item.count}</Text>
+        </View>
     </View>
   )
 }

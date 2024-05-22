@@ -8,21 +8,21 @@ import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { themeColors } from '../theme';
 import { useSelector } from 'react-redux';
+import config from '../config';
 
 export default function RestaurantScreen({ route }) {
-
-    const {cartList} = useSelector((state) => state.cart)
 
     const navigation = useNavigation()
 
     const { id: restaurantId } = route.params;
     const [menuItems, setMenuItems] = useState([]);
+    const menuItemsUrl = `${config.BASE_URL}api/restaurants/menu-items/?restaurant_id=${restaurantId}`
 
     useEffect(() => {
         // Function to fetch menu items when component mounts
         const fetchMenuItems = async () => {
           try {
-            const response = await axios.get(`http://192.168.1.10:8000/api/restaurants/menu-items/?restaurant_id=${restaurantId}`);
+            const response = await axios.get(menuItemsUrl);
             setMenuItems(response.data); // Assuming your response data is an array of menu items
           } catch (error) {
             console.error('Error fetching menu items:', error);
