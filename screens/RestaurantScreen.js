@@ -7,16 +7,24 @@ import CartIcon from '../components/CartIcon';
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { themeColors } from '../theme';
-import { useSelector } from 'react-redux';
 import config from '../config';
+import { useDispatch, useSelector } from 'react-redux';
+import { findSubTotal } from '../redux/cart';
 
 export default function RestaurantScreen({ route }) {
 
     const navigation = useNavigation()
+    
+    // dispatching findsubtotal function from cart slice when carlist changes
+    const {cartList} = useSelector((state) => state.cart)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(findSubTotal())
+    }, [cartList])
 
     const { id: restaurantId } = route.params;
-    const [menuItems, setMenuItems] = useState([]);
     const menuItemsUrl = `${config.BASE_URL}api/restaurants/menu-items/?restaurant_id=${restaurantId}`
+    const [menuItems, setMenuItems] = useState([]);
 
     useEffect(() => {
         // Function to fetch menu items when component mounts

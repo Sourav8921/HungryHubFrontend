@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const INITIAL_STATE = {
     cartList: [],
     cartCount: 0,
+    subTotal: 0,
+    deliveryFee: 40,
 }
 
 const cartSlice = createSlice({
@@ -42,9 +44,12 @@ const cartSlice = createSlice({
                 }
                 return true;
             });
-        }
+        },
+        findSubTotal: (state) => {
+            state.subTotal = state.cartList.reduce((total, currValue) => (total += currValue.count * parseInt(currValue.price)), 0);
+        } 
     }
 })
 
-export const { addToCart, decrement, increment } = cartSlice.actions
+export const { addToCart, decrement, increment, findSubTotal } = cartSlice.actions
 export default cartSlice.reducer;

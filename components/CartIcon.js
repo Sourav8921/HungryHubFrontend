@@ -5,7 +5,7 @@ import { themeColors } from '../theme'
 import { useSelector } from 'react-redux';
 
 export default function CartIcon() {
-  const {cartList} = useSelector((state) => state.cart);
+  const {cartList, subTotal, deliveryFee} = useSelector((state) => state.cart);
 
   const totalCartCount = cartList.reduce((total, currValue)=> (total += currValue.count), 0)
 
@@ -21,7 +21,7 @@ export default function CartIcon() {
                 <Text className="text-white text-lg font-semibold">{totalCartCount}</Text>
             </View>
             <Text className="text-white text-lg font-semibold flex-1 text-center">View Cart</Text>
-            <Text className="text-white text-lg font-semibold">$ 99</Text>
+            <Text className="text-white text-lg font-semibold">₹ {subTotal > 0 ? subTotal+deliveryFee : 0}</Text>
         </TouchableOpacity>
     </View>
   )
