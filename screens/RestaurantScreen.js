@@ -16,7 +16,7 @@ export default function RestaurantScreen({ route }) {
     const navigation = useNavigation()
     
     // dispatching findsubtotal function from cart slice when carlist changes
-    const {cartList} = useSelector((state) => state.cart)
+    const {cartList} = useSelector((state) => state.cart);
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(findSubTotal())
@@ -42,7 +42,7 @@ export default function RestaurantScreen({ route }) {
 
     return (
         <View className="flex-1">
-            <CartIcon/>
+            {cartList.length > 0 ? <CartIcon/> : null}
             <StatusBar hidden/>
             <ScrollView>
                 <View>
@@ -64,6 +64,7 @@ export default function RestaurantScreen({ route }) {
                         style={{borderTopLeftRadius: 40, borderTopRightRadius: 40}}
                         className="bg-white -mt-12 p-6"
                         >
+                        
                         <View className="flex-row justify-between">
                             <View>
                                 <Text className="text-2xl font-bold">{route.params.name}</Text>

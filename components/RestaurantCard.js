@@ -10,7 +10,7 @@ const RestaurantCard = ({item}) => {
     <TouchableWithoutFeedback
       onPress={()=> navigation.navigate("Restaurant", {...item})}
     >
-      <View className="p-4 flex-row" >
+      <View className="py-4 flex-row" >
         {/* <View> */}
             <Image
               source={{ uri: item.image }}

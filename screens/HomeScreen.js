@@ -8,11 +8,13 @@ import { themeColors } from '../theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../redux/restaurants';
 import Loading from '../components/Loading';
+import CartIcon from '../components/CartIcon';
 
 export default function HomeScreen({navigation}) {
 
     const dispatch = useDispatch();
     const {loading, restaurants, error} = useSelector((state) => state.restaurants)
+    const {cartList} = useSelector((state) => state.cart)
     
     useEffect(() => {
         dispatch(fetchRestaurants())
@@ -36,6 +38,7 @@ return (
         className="p-2 flex-1"
     >
         <StatusBar hidden/>
+        {cartList.length > 0 ? <CartIcon/> : null}
         {/* location */}
         <View className="flex-row mb-3 justify-between items-center">
             <View className="flex-row items-center">
