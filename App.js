@@ -4,8 +4,9 @@ import AuthenticatedNavigator from "./Navigation/AuthenticatedNavigator"
 import UnauthenticatedNavigator from "./Navigation/UnauthenticatedNavigator"
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { persistor, store } from "./redux/store";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { PersistGate } from "redux-persist/integration/react";
 
 export default function App() {
 
@@ -32,11 +33,13 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-            {authenticated ? <AuthenticatedNavigator /> : <UnauthenticatedNavigator />}
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <SafeAreaProvider>
+          <NavigationContainer>
+              {authenticated ? <AuthenticatedNavigator /> : <UnauthenticatedNavigator />}
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </PersistGate>
     </Provider>
   );
 }
