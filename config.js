@@ -1,7 +1,1 @@
-
-import { BASE_URL } from '@env';
-
-
-export default {
-    BASE_URL,
-};
+export const BASE_URL = 'http://192.168.100.232:8000/api';

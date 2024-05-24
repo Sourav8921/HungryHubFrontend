@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable } from "
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "../config";
 
 
 export default function SignupScreen({navigation}) {
@@ -10,6 +11,7 @@ export default function SignupScreen({navigation}) {
     const [pass, setPass] = useState("");
     const [pass2, setPass2] = useState("");
 
+    const loginUrl = `${BASE_URL}/users/register/`
     const registerUser = () => {
 
         const postData = {
@@ -24,7 +26,7 @@ export default function SignupScreen({navigation}) {
         }
         };
 
-        axios.post('http://10.0.2.2:8000/api/users/register/', postData, config)
+        axios.post(loginUrl, postData, config)
         .then(response => {
             console.log('Response:', response.data);
             navigation.navigate('Login');

@@ -7,7 +7,7 @@ import CartIcon from '../components/CartIcon';
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { themeColors } from '../theme';
-import config from '../config';
+import { BASE_URL } from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { findSubTotal } from '../redux/cart';
 
@@ -23,7 +23,7 @@ export default function RestaurantScreen({ route }) {
     }, [cartList])
 
     const { id: restaurantId } = route.params;
-    const menuItemsUrl = `${config.BASE_URL}api/restaurants/menu-items/?restaurant_id=${restaurantId}`
+    const menuItemsUrl = `${BASE_URL}/restaurants/menu-items/?restaurant_id=${restaurantId}`
     const [menuItems, setMenuItems] = useState([]);
 
     useEffect(() => {

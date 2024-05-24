@@ -1,16 +1,40 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Icon from "react-native-feather";
 import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
-import config from '../config';
+import { BASE_URL } from '../config';
+import Loading from '../components/Loading';
+import { getProfile } from '../services/api/profile';
 
 export default function ProfileScreen() {
     const navigation = useNavigation()
 
-    const logoutUrl = `${config.BASE_URL}api/users/logout/`;
+    // getting profile information about user who is currently logged in
+    const [user, setUser] = useState(null);
+    useEffect(()=>{
+        const fetchProfile = async () => {
+            try {
+                const AUTH_TOKEN = await AsyncStorage.getItem('auth_token');
+                if (AUTH_TOKEN) {
+                    const profileData = await getProfile(AUTH_TOKEN)
+                    setUser(profileData);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchProfile();
+    },[]);
+
+    if (!user) {
+        return <Loading/>;
+    }
+
+    const logoutUrl = `${BASE_URL}/users/logout/`;
 
     const logoutUser = async () => {    
         try {

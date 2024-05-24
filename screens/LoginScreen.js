@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import config from "../config";
+import { BASE_URL } from "../config";
 
 const logoImg = require("../assets/Logo.png");
 
@@ -11,7 +11,7 @@ export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
 
-  const loginUrl = `${config.BASE_URL}api/users/login/`
+  const loginUrl = `${BASE_URL}/users/login/`
   const loginUser = async () => {
       const postData = {
             username: username,

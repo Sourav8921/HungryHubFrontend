@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import config from "../config";
+import { BASE_URL } from "../config";
 
 
-const restaurantsUrl = `${config.BASE_URL}api/restaurants/restaurants/`;
+const restaurantsUrl = `${BASE_URL}/restaurants/restaurants/`;
 export const fetchRestaurants = createAsyncThunk("restaurants/fetchRestaurants", 
     async (_, { rejectWithValue })=>{
         try {
