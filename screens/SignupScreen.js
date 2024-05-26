@@ -11,7 +11,6 @@ export default function SignupScreen({navigation}) {
     const [pass, setPass] = useState("");
     const [pass2, setPass2] = useState("");
 
-    const loginUrl = `${BASE_URL}/users/register/`
     const registerUser = () => {
 
         const postData = {
@@ -21,12 +20,12 @@ export default function SignupScreen({navigation}) {
         };
 
         const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
+            headers: {
+                'Content-Type': 'application/json'
+            }
         };
 
-        axios.post(loginUrl, postData, config)
+        axios.post(`${BASE_URL}/users/register/`, postData, config)
         .then(response => {
             console.log('Response:', response.data);
             navigation.navigate('Login');
@@ -34,7 +33,7 @@ export default function SignupScreen({navigation}) {
         .catch(error => {
             console.error('Error:', error);
         });
-    }
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#e8ecf4" }}>

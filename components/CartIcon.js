@@ -2,18 +2,22 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { themeColors } from '../theme'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetOrderStatus } from '../redux/cart';
 
 export default function CartIcon() {
-  const {cartList, subTotal, deliveryFee} = useSelector((state) => state.cart);
-
+  const {cartList, subTotal} = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const totalCartCount = cartList.reduce((total, currValue)=> (total += currValue.count), 0)
 
   const navigation = useNavigation()
   return (
     <View className="absolute bottom-5 w-full z-50">
         <TouchableOpacity 
-            onPress={() => navigation.navigate('Cart')}
+            onPress={() => {
+              dispatch(resetOrderStatus())
+              navigation.navigate('Cart')
+            }}
             style={{backgroundColor: themeColors.bgColor(1)}}
             className="flex-row items-center justify-center rounded-full mx-3 p-3 pr-4"
         >
@@ -21,7 +25,7 @@ export default function CartIcon() {
                 <Text className="text-white text-lg font-semibold">{totalCartCount}</Text>
             </View>
             <Text className="text-white text-lg font-semibold flex-1 text-center">View Cart</Text>
-            <Text className="text-white text-lg font-semibold">₹ {subTotal+deliveryFee}</Text>
+            <Text className="text-white text-lg font-semibold">₹ {subTotal}</Text>
         </TouchableOpacity>
     </View>
   )

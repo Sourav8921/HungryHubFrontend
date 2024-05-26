@@ -3,11 +3,10 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 
 
-const restaurantsUrl = `${BASE_URL}/restaurants/restaurants/`;
 export const fetchRestaurants = createAsyncThunk("restaurants/fetchRestaurants", 
     async (_, { rejectWithValue })=>{
         try {
-            const response = await axios.get(restaurantsUrl)
+            const response = await axios.get(`${BASE_URL}/restaurants/restaurants/`)
             return response.data;
         } catch (error) {
             return rejectWithValue(error.message); 

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 export default function OrderPreparingScreen({navigation}) {
     useEffect(() => {
        setTimeout(() =>{
-            navigation.navigate("Delivery")
+            navigation.navigate("Success")
        }, 3000)
     }, [])
 

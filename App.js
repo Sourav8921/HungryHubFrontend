@@ -16,6 +16,7 @@ export default function App() {
     const checkAuthentication = async () => {
       try {
         const authToken = await AsyncStorage.getItem('auth_token');
+        // await AsyncStorage.clear();
         if (authToken) {
           // User is authenticated
           setAuthenticated(true);

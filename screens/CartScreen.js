@@ -1,16 +1,55 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as Icon from "react-native-feather";
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { themeColors } from '../theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {useSelector } from 'react-redux';
+import {useDispatch, useSelector } from 'react-redux';
 import CartItem from '../components/CartItem'
+import { resetOrderStatus, submitOrder } from '../redux/cart';
+import Loading from '../components/Loading';
+
 
 export default function CartScreen() {
        
     const navigation = useNavigation()
-    const {cartList, subTotal, deliveryFee} = useSelector((state) => state.cart);
+
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
+    const userId = user.id;
+    const {cartList, subTotal, orderStatus, orderError} = useSelector((state) => state.cart);
+    const restaurantId = cartList.length > 0 ? cartList[0].restaurant : null;
+
+    const handleOrderSubmit = () => {
+        if (restaurantId) {
+            const orderDetails = {
+                user: userId,
+                restaurant: restaurantId,
+                items: cartList.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    price: item.price,
+                    restaurant: item.restaurant,
+                    count: item.count,
+                })),
+                total_price: subTotal,
+                status: "Pending",
+            };
+            dispatch(submitOrder(orderDetails));
+        }
+    };
+
+    useEffect(() => {
+        if (orderStatus === 'succeeded') {
+          navigation.navigate('OrderPreparing');
+        } else if (orderStatus === 'failed') {
+          navigation.navigate('OrderFailure');
+          console.log(orderError);
+        } else if (orderStatus === 'pending') {
+          console.log(orderStatus);
+        }
+    }, [orderStatus, orderError, navigation]);
 
     return (
         <SafeAreaView className="bg-gray-100 flex-1">
@@ -65,7 +104,6 @@ export default function CartScreen() {
                 })}
 
             </ScrollView>
-
             {/* totals */}
             <View style={{backgroundColor: themeColors.bgColor(0.2)}} className="p-6 px-8 rounded-t-3xl space-y-3">
                         <View className="flex-row justify-between">
@@ -74,17 +112,17 @@ export default function CartScreen() {
                     </View>
                     <View className="flex-row justify-between">
                         <Text className="text-base">Delivery Fee</Text>
-                        <Text className="text-base">₹ {subTotal > 0 ? deliveryFee : 0}</Text>
+                        <Text className="text-base">₹ 0</Text>
                     </View>
                     <View className="flex-row justify-between">
                         <Text className="text-lg font-bold">Order Total</Text>
-                        <Text className="text-lg font-bold">₹ {subTotal+(subTotal > 0 ? deliveryFee : 0)}</Text>
+                        <Text className="text-lg font-bold">₹ {subTotal}</Text>
                     </View>
                     <View>
                         <TouchableOpacity 
                             style={{backgroundColor: themeColors.bgColor(1)}}
                             className="items-center p-4 rounded-full"
-                            onPress={() => navigation.navigate("OrderPreparing")}
+                            onPress={() => handleOrderSubmit()}
                         >
                             <Text className="text-white text-lg font-medium">Place order</Text>
                         </TouchableOpacity>

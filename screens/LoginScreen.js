@@ -11,7 +11,6 @@ export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
 
-  const loginUrl = `${BASE_URL}/users/login/`
   const loginUser = async () => {
       const postData = {
             username: username,
@@ -25,13 +24,13 @@ export default function LoginScreen({ navigation }) {
         };
 
       try {
-        const response = await axios.post(loginUrl, postData, config)
+        const response = await axios.post(`${BASE_URL}/users/login/`, postData, config)
         await AsyncStorage.setItem('auth_token', response.data.token);
         navigation.navigate('Authenticated');
       } catch (error) {
         console.error('Error:', error);
-      }
-  }
+      };
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#e8ecf4" }}>

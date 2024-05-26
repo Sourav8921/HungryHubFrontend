@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../redux/restaurants';
 import Loading from '../components/Loading';
 import CartIcon from '../components/CartIcon';
+import { fetchUser } from '../redux/user';
 
 export default function HomeScreen({navigation}) {
 
@@ -18,6 +19,7 @@ export default function HomeScreen({navigation}) {
     
     useEffect(() => {
         dispatch(fetchRestaurants())
+        dispatch(fetchUser())
     }, [])
 
     if(loading) {
@@ -35,7 +37,7 @@ export default function HomeScreen({navigation}) {
 
 return (
     <SafeAreaView
-        className="p-2 flex-1"
+        className="p-4 flex-1"
     >
         <StatusBar hidden/>
         {cartList.length > 0 ? <CartIcon/> : null}

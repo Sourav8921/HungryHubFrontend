@@ -7,37 +7,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import { BASE_URL } from '../config';
 import Loading from '../components/Loading';
-import { getProfile } from '../services/api/profile';
+import { getProfile } from '../services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../redux/user';
+
+
 
 export default function ProfileScreen() {
     const navigation = useNavigation()
-
-    // getting profile information about user who is currently logged in
-    const [user, setUser] = useState(null);
-    useEffect(() => {
-        const fetchProfile = async () => {
-          try {
-            const AUTH_TOKEN = await AsyncStorage.getItem('auth_token');
-            if (AUTH_TOKEN) {
-              const profileData = await getProfile(AUTH_TOKEN);
-              setUser(profileData);
-            } else {
-              console.log('No auth token found');
-            }
-          } catch (error) {
-            console.log('Error fetching profile:', error);
-          }
-        };
     
-        fetchProfile();
-      }, []);
+    const { user } = useSelector((state) => state.user)
     
-
     if (!user) {
         return <Loading/>;
     }
-
-    const logoutUrl = `${BASE_URL}/users/logout/`;
 
     const logoutUser = async () => {    
         try {
@@ -52,7 +35,7 @@ export default function ProfileScreen() {
                     'Authorization': `Token ${AUTH_TOKEN}`
                 }
             };
-            const response = await axios.post(logoutUrl, null, config);
+            const response = await axios.post(`${BASE_URL}/users/logout/`, null, config);
             console.log('Response:', response.data);
             await AsyncStorage.removeItem('auth_token')
             navigation.navigate('Logout');
@@ -65,7 +48,7 @@ export default function ProfileScreen() {
 
         <View className="flex-1 bg-white p-4">
 
-            <View className="pt-8 flex-row items-center">
+            <View className="flex-row items-center">
                 <TouchableOpacity
                     style={{ backgroundColor: themeColors.bgColor(1) }}
                     onPress={() => navigation.goBack()}
@@ -75,7 +58,7 @@ export default function ProfileScreen() {
                 <Text className="text-lg font-medium ml-4">Profile</Text>
             </View>
 
-            <View className="flex-row items-center mt-4">
+            <View className="flex-row items-center mt-8">
                 <Image
                     source={require('../assets/images/profilepic.png')}
                     className="w-28 h-28 rounded-full"
