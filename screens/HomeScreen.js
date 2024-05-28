@@ -1,7 +1,7 @@
-import { View, Text, SafeAreaView, TextInput, ScrollView, Platform, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import * as Icon from "react-native-feather";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Categories from '../components/Categories';
 import RestaurantCard from '../components/RestaurantCard';
 import { themeColors } from '../theme';
@@ -10,9 +10,12 @@ import { fetchRestaurants } from '../redux/restaurants';
 import Loading from '../components/Loading';
 import CartIcon from '../components/CartIcon';
 import { fetchUser } from '../redux/user';
+import axios from 'axios';
+import { BASE_URL } from '../config';
+import SearchBar from '../components/SearchBar';
 
 export default function HomeScreen({navigation}) {
-
+    
     const dispatch = useDispatch();
     const {loading, restaurants, error} = useSelector((state) => state.restaurants)
     const {cartList} = useSelector((state) => state.cart)
@@ -21,7 +24,7 @@ export default function HomeScreen({navigation}) {
         dispatch(fetchRestaurants())
         dispatch(fetchUser())
     }, [])
-
+    
     if(loading) {
         return (
             <Loading/>
@@ -29,11 +32,22 @@ export default function HomeScreen({navigation}) {
     }
     if (error) {
         return (
-          <View className="flex-1 items-center justify-center">
+            <View className="flex-1 items-center justify-center">
             <Text className="text-red-600 text-lg">Error : {error}</Text>
           </View>
         );
     }
+
+
+    const searchMenuItems = async (query) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/restaurants/search/?q=${query}`);
+            navigation.navigate('Search',{ 'results' : response.data.results });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
 return (
     <SafeAreaView
@@ -58,13 +72,7 @@ return (
             </TouchableOpacity>
         </View>
 
-        {/* search bar */}
-        <View className="flex-row ">
-            <View className="flex-row flex-1 p-3 rounded-full border border-gray-300">
-                <Icon.Search width="25" height="25" stroke="gray" />
-                <TextInput placeholder='Restaurants' className="ml-2 flex-1" />
-            </View>
-        </View>
+        <SearchBar onSearch={searchMenuItems}/>
 
         {/* main */}
         <ScrollView

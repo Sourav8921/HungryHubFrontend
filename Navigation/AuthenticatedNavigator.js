@@ -8,6 +8,7 @@ import UnauthenticatedNavigator from "./UnauthenticatedNavigator";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OrderFailureScreen from "../screens/OrderFailureScreen";
 import SuccessScreen from "../screens/SuccessScreen";
+import SearchScreen from "../screens/SearchScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ export default function AuthenticatedNavigator() {
   return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Search" component={SearchScreen}/>
         <Stack.Screen name="Restaurant" component={RestaurantScreen}/>
         <Stack.Screen name="Cart" component={CartScreen} options={{animation:'slide_from_bottom'}}/>
         <Stack.Screen name="OrderPreparing" component={OrderPreparingScreen}/>

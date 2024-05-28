@@ -10,6 +10,7 @@ import Loading from '../components/Loading';
 import { getProfile } from '../services/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../redux/user';
+import BackButton from '../components/BackButton';
 
 
 
@@ -48,15 +49,7 @@ export default function ProfileScreen() {
 
         <View className="flex-1 bg-white p-4">
 
-            <View className="flex-row items-center">
-                <TouchableOpacity
-                    style={{ backgroundColor: themeColors.bgColor(1) }}
-                    onPress={() => navigation.goBack()}
-                    className="p-3 rounded-full">
-                    <Icon.ArrowLeft stroke={'white'} strokeWidth={3} />
-                </TouchableOpacity>
-                <Text className="text-lg font-medium ml-4">Profile</Text>
-            </View>
+            <BackButton value='Profile'/>
 
             <View className="flex-row items-center mt-8">
                 <Image
