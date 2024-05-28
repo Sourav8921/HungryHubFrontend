@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet, Image } from "react-native";
 import React, { useEffect } from "react";
 
-const logoImg = require("../assets/Logo.png");
+const logoImg = require("../assets/images/hungryhub_logo.png");
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={logoImg} />
+      <Image source={logoImg} style={styles.image}/>
     </SafeAreaView>
   );
 }
@@ -26,4 +26,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  image: {
+    width: 150,
+    height: 150,
+  }
 });

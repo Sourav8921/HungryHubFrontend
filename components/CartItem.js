@@ -1,6 +1,5 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
-import { themeColors } from '../theme';
 import AfterCart from './AfterCart';
 
 export default function CartItem({item}) {

@@ -8,6 +8,8 @@ import AfterCart from './AfterCart';
 export default function MenuItem({ item }) {
   const {cartList} = useSelector((state) => state.cart)
 
+  //find() returns the value of the first element in an array that passes a test (provided by a function)
+  //and i am taking the count property of that item
   const cartCount = useMemo(()=> {
     return cartList?.find((cartItem) => cartItem?.id === item?.id )?.count
   }, [cartList]);

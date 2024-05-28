@@ -5,7 +5,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from "../config";
 
-const logoImg = require("../assets/Logo.png");
+const logoImg = require("../assets/images/logo_only.png");
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     alignSelf: "center",
-    borderRadius: 20,
-    marginBottom: 20,
+    backgroundColor: '#294C25',
+    borderRadius: 50
   },
   title: {
     fontSize: 33,
