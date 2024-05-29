@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import * as Icon from "react-native-feather";
 

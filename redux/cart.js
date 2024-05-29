@@ -16,7 +16,7 @@ export const submitOrder = createAsyncThunk(
     async (orderDetails, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${BASE_URL}/restaurants/orders/`, orderDetails);
-            return response.data;
+            return response.data; 
         } catch (error) {
             return rejectWithValue(error.response.data);
         }

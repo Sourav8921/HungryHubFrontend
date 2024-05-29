@@ -46,9 +46,7 @@ export default function CartScreen() {
         } else if (orderStatus === 'failed') {
           navigation.navigate('OrderFailure');
           console.log(orderError);
-        } else if (orderStatus === 'loading') {
-          console.log(orderStatus);
-        }
+        } 
     }, [orderStatus, orderError, navigation]);
 
     return (
@@ -106,30 +104,30 @@ export default function CartScreen() {
             </ScrollView>
             {/* totals */}
             <View style={{backgroundColor: themeColors.bgColor(0.2)}} className="p-6 px-8 rounded-t-3xl space-y-3">
-                        <View className="flex-row justify-between">
-                            <Text className="text-base">Sub total</Text>
-                            <Text className="text-base">₹ {subTotal}</Text>
-                    </View>
-                    <View className="flex-row justify-between">
-                        <Text className="text-base">Delivery Fee</Text>
-                        <Text className="text-base">₹ 0</Text>
-                    </View>
-                    <View className="flex-row justify-between">
-                        <Text className="text-lg font-bold">Order Total</Text>
-                        <Text className="text-lg font-bold">₹ {subTotal}</Text>
-                    </View>
-                    <View>
-                        <TouchableOpacity 
-                            style={{backgroundColor: themeColors.bgColor(1)}}
-                            className="items-center p-4 rounded-full"
-                            onPress={() => handleOrderSubmit()}
-                        >
-                            <Text className="text-white text-lg font-medium">Place order</Text>
-                        </TouchableOpacity>
-                    </View>
-        </View>
+                <View className="flex-row justify-between">
+                        <Text className="text-base">Sub total</Text>
+                        <Text className="text-base">₹ {subTotal}</Text>
+                </View>
+                <View className="flex-row justify-between">
+                    <Text className="text-base">Delivery Fee</Text>
+                    <Text className="text-base">₹ 0</Text>
+                </View>
+                <View className="flex-row justify-between">
+                    <Text className="text-lg font-bold">Order Total</Text>
+                    <Text className="text-lg font-bold">₹ {subTotal}</Text>
+                </View>
+                <View>
+                    <TouchableOpacity 
+                        style={{backgroundColor: themeColors.bgColor(1)}}
+                        className="items-center p-4 rounded-full"
+                        onPress={() => handleOrderSubmit()}
+                    >
+                        <Text className="text-white text-lg font-medium">Place order</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         
        
-    </SafeAreaView>
+        </SafeAreaView>
   )
 }
