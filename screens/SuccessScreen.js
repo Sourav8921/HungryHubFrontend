@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
       backgroundColor: themeColors.text,
       padding: 15,
       borderRadius: 13,
-      width: 370,
+      width: 350,
       position: 'absolute',
       bottom: 20,
     },

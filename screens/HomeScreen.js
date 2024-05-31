@@ -33,11 +33,10 @@ export default function HomeScreen({navigation}) {
     if (error) {
         return (
             <View className="flex-1 items-center justify-center">
-            <Text className="text-red-600 text-lg">Error : {error}</Text>
-          </View>
+                <Text className="text-red-600 text-lg">Error : {error}</Text>
+            </View>
         );
     }
-
 
     const searchMenuItems = async (query) => {
         try {
@@ -47,7 +46,6 @@ export default function HomeScreen({navigation}) {
             console.log(error);
         }
     }
-
 
 return (
     <SafeAreaView

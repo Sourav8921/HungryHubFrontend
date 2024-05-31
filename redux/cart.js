@@ -18,7 +18,7 @@ export const submitOrder = createAsyncThunk(
             const response = await axios.post(`${BASE_URL}/restaurants/orders/`, orderDetails);
             return response.data; 
         } catch (error) {
-            return rejectWithValue(error.response.data);
+            return rejectWithValue(error.message);
         }
     }
 );

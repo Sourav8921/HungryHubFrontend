@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {useDispatch, useSelector } from 'react-redux';
 import CartItem from '../components/CartItem'
 import { submitOrder } from '../redux/cart';
+import Loading from '../components/Loading';
 
 
 
@@ -42,12 +43,20 @@ export default function CartScreen() {
 
     useEffect(() => {
         if (orderStatus === 'succeeded') {
-          navigation.navigate('OrderPreparing');
-        } else if (orderStatus === 'failed') {
-          navigation.navigate('OrderFailure');
-          console.log(orderError);
+          navigation.navigate('Payment');
         } 
-    }, [orderStatus, orderError, navigation]);
+    }, [orderStatus, navigation]);
+
+    if (orderStatus === 'loading') {
+        return (<Loading/>);
+    }
+    if (orderStatus === 'failed') {
+        return (
+            <View className="flex-1 items-center justify-center">
+                <Text className="text-red-600 text-lg">Error : {orderError}</Text>
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView className="bg-gray-100 flex-1">
@@ -122,7 +131,7 @@ export default function CartScreen() {
                         className="items-center p-4 rounded-full"
                         onPress={() => handleOrderSubmit()}
                     >
-                        <Text className="text-white text-lg font-medium">Place order</Text>
+                        <Text className="text-white text-lg font-medium">Proceed to Pay</Text>
                     </TouchableOpacity>
                 </View>
             </View>

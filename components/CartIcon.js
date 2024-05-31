@@ -12,7 +12,7 @@ export default function CartIcon() {
 
   const navigation = useNavigation()
   return (
-    <View className="absolute bottom-5 w-full z-50">
+    <View className="flex-1 absolute bottom-5 w-full z-50">
         <TouchableOpacity 
             onPress={() => {
               dispatch(resetOrderStatus())
