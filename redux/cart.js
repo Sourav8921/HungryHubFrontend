@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from "../config";
 import axios from "axios";
+import { getToken } from "../services/api";
 
 const INITIAL_STATE = {
     cartList: [],
@@ -15,7 +16,12 @@ export const submitOrder = createAsyncThunk(
     'cart/submitOrder',
     async (orderDetails, { rejectWithValue }) => {
         try {
-            const response = await axios.post(`${BASE_URL}/restaurants/orders/`, orderDetails);
+            const AUTH_TOKEN = await getToken();
+            const response = await axios.post(`${BASE_URL}/restaurants/orders/`, orderDetails, {
+                headers: {
+                    Authorization: `Token ${AUTH_TOKEN}`,
+                }
+            });
             return response.data; 
         } catch (error) {
             return rejectWithValue(error.message);

@@ -7,9 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import { BASE_URL } from '../config';
 import Loading from '../components/Loading';
-import { getProfile } from '../services/api';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../redux/user';
+import { useSelector } from 'react-redux';
 import BackButton from '../components/BackButton';
 
 
@@ -62,17 +60,29 @@ export default function ProfileScreen() {
                 </View>
             </View>
 
-            <View className="bg-gray-100 p-4 rounded-xl mt-8">
-                <View className="flex-row items-center justify-between mb-6">
+            <View className="bg-gray-100 p-4 rounded-xl mt-8 space-y-6">
+                <TouchableOpacity className="flex-row items-center justify-between">
                     <Icon.User width={35} height={35} stroke={themeColors.bgColor(1)} />
                     <Text className="text-base">Personal info</Text>
                     <Icon.ChevronRight width={30} height={30} stroke={themeColors.bgColor(1)} />
-                </View>
-                <View className="flex-row items-center justify-between">
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                    className="flex-row items-center justify-between"
+                >   
                     <Icon.Map width={30} height={30} stroke={themeColors.bgColor(1)} />
                     <Text className="text-base">Addresses</Text>
                     <Icon.ChevronRight width={30} height={30} stroke={themeColors.bgColor(1)} />
-                </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                    className="flex-row items-center justify-between"
+                    onPress={() => navigation.navigate('Orders')}
+                >
+                    <Icon.Menu width={30} height={30} stroke={themeColors.bgColor(1)} />
+                    <Text className="text-base">Orders</Text>
+                    <Icon.ChevronRight width={30} height={30} stroke={themeColors.bgColor(1)} />
+                </TouchableOpacity>
             </View>
             <View className="bg-gray-100 p-4 rounded-xl mt-4">
                 <TouchableOpacity
