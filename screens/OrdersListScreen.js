@@ -22,14 +22,14 @@ export default function OrdersListScreen() {
 
   return (
     <View style={styles.container}>
-        <BackButton value='Orders'/>
+        <BackButton value='My Orders'/>
             <FlatList
                 data={orders}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.orderItem}
-                        // onPress={() => navigation.navigate('OrderTracking', { orderId: item.id })}
+                        onPress={() => navigation.navigate('OrderDetails', { orderId: item.id })}
                     >
                         <Text>Order #{item.id}</Text>
                         <Text>Total Price: ₹{item.total_price}</Text>

@@ -16,4 +16,18 @@ const getOrders = async () => {
     }
 }
 
-export {getOrders}
+const getOrderDetails = async (orderId) => {
+    try {
+        const AUTH_TOKEN = await getToken();
+        const response = await axios.get(`${BASE_URL}/restaurants/orders/${orderId}/`, {
+            headers: {
+                Authorization: `Token ${AUTH_TOKEN}`,
+            }
+        });
+        return response.data
+    } catch (error) {
+        console.error('Error getting order details', error);
+    }
+};
+
+export {getOrders, getOrderDetails}
