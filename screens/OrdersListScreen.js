@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { getOrders } from '../services/api';
 import { useNavigation } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
+import OrderCard from '../components/OrderCard';
 
 export default function OrdersListScreen() {
     const navigation = useNavigation();
-    const  [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState([]);
 
-    useEffect(()=> {
+    useEffect(() => {
         const fetchOrders = async () => {
             try {
                 const data = await getOrders();
@@ -19,35 +20,11 @@ export default function OrdersListScreen() {
         };
         fetchOrders();
     }, []);
-
-  return (
-    <View style={styles.container}>
-        <BackButton value='My Orders'/>
-            <FlatList
-                data={orders}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.orderItem}
-                        onPress={() => navigation.navigate('OrderDetails', { orderId: item.id })}
-                    >
-                        <Text>Order #{item.id}</Text>
-                        <Text>Total Price: ₹{item.total_price}</Text>
-                    </TouchableOpacity>
-                )}
-            />
+    
+    return (
+        <View className="flex-1 p-4">
+            <BackButton value='My Orders' />
+            <OrderCard orders={orders}/>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    orderItem: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-});

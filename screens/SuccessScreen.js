@@ -12,10 +12,10 @@ export default function SuccessScreen({navigation}) {
       <Text style={styles.title}>Congratulations!</Text>
       <Text style={styles.subTitle}>You successfully completed the order,{'\n'}enjoy our service</Text>
       <TouchableOpacity 
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Orders')}
         style={styles.button}  
       >
-        <Text style={styles.buttonText}>Go to Home</Text>
+        <Text style={styles.buttonText}>Go to My Orders</Text>
       </TouchableOpacity> 
     </View>
   )
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     buttonText: {
       color: 'white',
       textAlign: 'center',
-      fontSize: 20,
+      fontSize: 16,
       fontWeight: '500',
     }
 
