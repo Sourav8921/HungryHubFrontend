@@ -6,7 +6,6 @@ import BackButton from '../components/BackButton';
 import OrderCard from '../components/OrderCard';
 
 export default function OrdersListScreen() {
-    const navigation = useNavigation();
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {

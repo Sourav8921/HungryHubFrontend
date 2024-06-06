@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 
 export default function AuthenticatedNavigator() {
   return (
-      <Stack.Navigator initialRouteName="Orders" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Search" component={SearchScreen}/>
         <Stack.Screen name="Restaurant" component={RestaurantScreen}/>

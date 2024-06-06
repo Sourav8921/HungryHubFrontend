@@ -9,7 +9,7 @@ import { BASE_URL } from '../config';
 import Loading from '../components/Loading';
 import { useSelector } from 'react-redux';
 import BackButton from '../components/BackButton';
-
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function ProfileScreen() {
@@ -79,9 +79,9 @@ export default function ProfileScreen() {
                     className="flex-row items-center justify-between"
                     onPress={() => navigation.navigate('Orders')}
                 >
-                    <Icon.Menu width={30} height={30} stroke={themeColors.bgColor(1)} />
+                    <Ionicons name="fast-food-outline" size={30} color={themeColors.bgColor(1)}/>
                     <Text className="text-base">Orders</Text>
-                    <Icon.ChevronRight width={30} height={30} stroke={themeColors.bgColor(1)} />
+                    <Icon.ChevronRight width={30} height={30} stroke={themeColors.bgColor(1)}/>
                 </TouchableOpacity>
             </View>
             <View className="bg-gray-100 p-4 rounded-xl mt-4">
@@ -89,9 +89,9 @@ export default function ProfileScreen() {
                     className="flex-row items-center justify-between"
                     onPress={() => logoutUser()}
                 >
-                    <Icon.LogOut width={35} height={35} stroke={themeColors.bgColor(1)} />
+                    <Icon.LogOut width={35} height={35} stroke={themeColors.bgColor(1)}/>
                     <Text className="text-base">Log out</Text>
-                    <Icon.ChevronRight width={30} height={30} stroke={themeColors.bgColor(1)} />
+                    <Icon.ChevronRight width={30} height={30} stroke={themeColors.bgColor(1)}/>
                 </TouchableOpacity>
             </View>
 

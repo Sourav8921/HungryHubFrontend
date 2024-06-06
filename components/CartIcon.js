@@ -19,7 +19,7 @@ export default function CartIcon() {
               navigation.navigate('Cart')
             }}
             style={{backgroundColor: themeColors.bgColor(1)}}
-            className="flex-row items-center justify-center rounded-full mx-3 p-3 pr-4"
+            className="flex-row items-center justify-center rounded-full mx-2 p-3 pr-4"
         >
             <View className="rounded-full p-2 px-5" style={{backgroundColor: 'rgba(255,255,255,0.3)'}}>
                 <Text className="text-white text-lg font-semibold">{totalCartCount}</Text>

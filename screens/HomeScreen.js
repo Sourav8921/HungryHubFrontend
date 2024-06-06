@@ -52,50 +52,53 @@ return (
         className="p-4 flex-1"
     >
         <StatusBar hidden/>
-        {cartList.length > 0 ? <CartIcon/> : null}
-        {/* location */}
-        <View className="flex-row mb-3 justify-between items-center">
-            <View className="flex-row items-center">
-                <Icon.MapPin width="30" height="30" stroke={themeColors.bgColor(1)} />
-                <View className="ml-2">
-                    <View className="flex-row font-bold items-center">
-                        <Text className="font-bold text-lg">Ernakulam North</Text>
-                        <Icon.ChevronDown width="25" height="25" stroke="black" />
+        <View className="flex-1">
+            {cartList.length > 0 ? <CartIcon/> : null}
+
+            {/* location */}
+            <View className="flex-row mb-3 justify-between items-center">
+                <View className="flex-row items-center">
+                    <Icon.MapPin width="30" height="30" stroke={themeColors.bgColor(1)} />
+                    <View className="ml-2">
+                        <View className="flex-row font-bold items-center">
+                            <Text className="font-bold text-lg">Ernakulam North</Text>
+                            <Icon.ChevronDown width="25" height="25" stroke="black" />
+                        </View>
+                        <Text>Kathrikadavu, kaloor, Ernakulam</Text>
                     </View>
-                    <Text>Kathrikadavu, kaloor, Ernakulam</Text>
                 </View>
+                <TouchableOpacity onPress={() => {navigation.navigate("Profile")}}>
+                    <Icon.User width="30" height="30" stroke={themeColors.bgColor(1)} fill={themeColors.bgColor(1)} />
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => {navigation.navigate("Profile")}}>
-                <Icon.User width="30" height="30" stroke={themeColors.bgColor(1)} fill={themeColors.bgColor(1)} />
-            </TouchableOpacity>
+
+            <SearchBar onSearch={searchMenuItems}/>
+
+            {/* main */}
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: 10,
+                }}
+            >
+                {/* categories */}
+                <Text className="mt-6 text-lg font-medium">Sourav,  what's on your mind?</Text>
+                <Categories />
+
+                {/* restaurants */}
+                <Text className="mt-6 text-lg font-medium">Restaurants to explore</Text>
+                {
+                    restaurants.map(restaurant => {
+                        return (
+                            <RestaurantCard
+                                item={restaurant}
+                                key={restaurant.id}
+                            />
+                        )
+                    })
+                }
+            </ScrollView>
         </View>
-
-        <SearchBar onSearch={searchMenuItems}/>
-
-        {/* main */}
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-                paddingBottom: 10,
-            }}
-        >
-            {/* categories */}
-            <Text className="mt-6 text-lg font-medium">Sourav,  what's on your mind?</Text>
-            <Categories />
-
-            {/* restaurants */}
-            <Text className="mt-6 text-lg font-medium">Restaurants to explore</Text>
-            {
-                restaurants.map(restaurant => {
-                    return (
-                        <RestaurantCard
-                            item={restaurant}
-                            key={restaurant.id}
-                        />
-                    )
-                })
-            }
-        </ScrollView>
     </SafeAreaView>
 )
 }
