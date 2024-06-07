@@ -8,6 +8,7 @@ import {useDispatch, useSelector } from 'react-redux';
 import CartItem from '../components/CartItem'
 import { submitOrder } from '../redux/cart';
 import Loading from '../components/Loading';
+import CustomButton from '../components/CustomButton';
 
 
 
@@ -126,13 +127,7 @@ export default function CartScreen() {
                     <Text className="text-lg font-bold">₹ {subTotal}</Text>
                 </View>
                 <View>
-                    <TouchableOpacity 
-                        style={{backgroundColor: themeColors.bgColor(1)}}
-                        className="items-center p-4 rounded-full"
-                        onPress={() => handleOrderSubmit()}
-                    >
-                        <Text className="text-white text-lg font-medium">Proceed to Pay</Text>
-                    </TouchableOpacity>
+                    <CustomButton title='Proceed to Pay' onPress={() => handleOrderSubmit()}/>
                 </View>
             </View>
         

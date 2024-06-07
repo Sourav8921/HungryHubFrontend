@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
-import { themeColors } from '../theme'
+import CustomButton from '../components/CustomButton'
 
 export default function SuccessScreen({navigation}) {
   return (
@@ -11,12 +11,10 @@ export default function SuccessScreen({navigation}) {
       />
       <Text style={styles.title}>Congratulations!</Text>
       <Text style={styles.subTitle}>You successfully completed the order,{'\n'}enjoy our service</Text>
-      <TouchableOpacity 
-        onPress={() => navigation.navigate('Orders')}
-        style={styles.button}  
-      >
-        <Text style={styles.buttonText}>Go to My Orders</Text>
-      </TouchableOpacity> 
+
+      <View style={styles.button}>
+        <CustomButton onPress={() => navigation.navigate('Orders')} title='Go to My Orders'/>  
+      </View>
     </View>
   )
 }
@@ -26,7 +24,8 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#FFFFFF'
+      backgroundColor: '#FFFFFF',
+      padding: 20,
     },
     image: {
       width: 300,
@@ -42,18 +41,8 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     button: {
-      backgroundColor: themeColors.text,
-      padding: 15,
-      borderRadius: 13,
-      width: 350,
+      width: '100%',
       position: 'absolute',
       bottom: 20,
     },
-    buttonText: {
-      color: 'white',
-      textAlign: 'center',
-      fontSize: 16,
-      fontWeight: '500',
-    }
-
 })

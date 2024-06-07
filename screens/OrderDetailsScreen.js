@@ -1,10 +1,10 @@
-import { View, Text, SafeAreaView, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, Image, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getOrderDetails } from '../services/api';
 import BackButton from '../components/BackButton';
 import Loading from '../components/Loading';
-import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
+import CustomButton from '../components/CustomButton';
 
 export default function OrderDetailsScreen({ route }) {
     const navigation = useNavigation();
@@ -87,13 +87,9 @@ export default function OrderDetailsScreen({ route }) {
                         </View>
                     ))}
                 </View>
-                <TouchableOpacity
-                    style={{ backgroundColor: themeColors.bgColor(1) }}
-                    className="items-center p-4 rounded-full absolute bottom-2 w-full"
-                    onPress={() => navigation.navigate('Home')}
-                >
-                    <Text className="text-white text-lg font-medium">Go to Home</Text>
-                </TouchableOpacity>
+                <View className="absolute bottom-2 w-full">
+                    <CustomButton onPress={() => navigation.navigate('Home')} title='Go to Home'/>
+                </View>
             </View>
         </SafeAreaView>
     )

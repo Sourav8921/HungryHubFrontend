@@ -2,6 +2,7 @@ import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { themeColors } from '../theme'
 import { useNavigation } from '@react-navigation/native'
+import { deleteOrder } from '../services/api';
 
 export default function OrderCard({ orders }) {
     const navigation = useNavigation();
@@ -34,6 +35,7 @@ export default function OrderCard({ orders }) {
                             <TouchableOpacity
                                 style={{ borderColor: themeColors.text }}
                                 className="p-2 border px-5 rounded-lg"
+                                onPress={() => deleteOrder(item.id)}
                             >
                                 <Text style={{ color: themeColors.text }}>Cancel</Text>
                             </TouchableOpacity>
