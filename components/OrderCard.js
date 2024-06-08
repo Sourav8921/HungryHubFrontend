@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Image, Alert } from 'react-native'
 import React from 'react'
 import { themeColors } from '../theme'
 import { useNavigation } from '@react-navigation/native'
@@ -35,7 +35,19 @@ export default function OrderCard({ orders }) {
                             <TouchableOpacity
                                 style={{ borderColor: themeColors.text }}
                                 className="p-2 border px-5 rounded-lg"
-                                onPress={() => deleteOrder(item.id)}
+                                // onPress={() => deleteOrder(item.id)}
+                                onPress={() => Alert.alert("Cancel Order",
+                                    "Are you sure you want to cancel the order?", [
+                                    {
+                                        text: 'No',
+                                    },
+                                    {
+                                        text: 'Yes',
+                                        onPress: () => deleteOrder(item.id)
+                                    }
+                                ],
+                                    { cancelable: true }
+                                )}
                             >
                                 <Text style={{ color: themeColors.text }}>Cancel</Text>
                             </TouchableOpacity>

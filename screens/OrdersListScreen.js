@@ -18,7 +18,7 @@ export default function OrdersListScreen() {
             }
         };
         fetchOrders();
-    }, []);
+    }, [orders]);
 
     return (
         <View className="flex-1 p-4">
