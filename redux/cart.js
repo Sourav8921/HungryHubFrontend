@@ -82,7 +82,7 @@ const cartSlice = createSlice({
             })
             .addCase(submitOrder.fulfilled, (state, action) => {
                 state.orderStatus = 'succeeded';
-                state.cartList = []; // Clear the cart after successful order submission
+                // state.cartList = []; // Clear the cart after successful order submission
             })
             .addCase(submitOrder.rejected, (state, action) => {
                 state.orderStatus = 'failed';
