@@ -15,49 +15,7 @@ import CustomButton from '../components/CustomButton';
 export default function CartScreen() {
        
     const navigation = useNavigation()
-
-    const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.user);
-    const userId = user.id;
-    const {cartList, subTotal, orderStatus, orderError} = useSelector((state) => state.cart);
-    const restaurantId = cartList.length > 0 ? cartList[0].restaurant : null;
-
-    const handleOrderSubmit = () => {
-        if (restaurantId) {
-            const orderDetails = {
-                user: userId,
-                restaurant: restaurantId,
-                items: cartList.map(item => ({
-                    id: item.id,
-                    name: item.name,
-                    description: item.description,
-                    price: item.price,
-                    restaurant: item.restaurant,
-                    count: item.count,
-                })),
-                total_price: subTotal,
-                status: "Pending",
-            };
-            dispatch(submitOrder(orderDetails));
-        }
-    };
-
-    useEffect(() => {
-        if (orderStatus === 'succeeded') {
-          navigation.navigate('Payment');
-        } 
-    }, [orderStatus, navigation]);
-
-    if (orderStatus === 'loading') {
-        return (<Loading/>);
-    }
-    if (orderStatus === 'failed') {
-        return (
-            <View className="flex-1 items-center justify-center">
-                <Text className="text-red-600 text-lg">Error : {orderError}</Text>
-            </View>
-        );
-    }
+    const { cartList, subTotal } = useSelector((state) => state.cart);
 
     return (
         <SafeAreaView className="bg-gray-100 flex-1">
@@ -127,7 +85,7 @@ export default function CartScreen() {
                     <Text className="text-lg font-bold">₹ {subTotal}</Text>
                 </View>
                 <View>
-                    <CustomButton title='Proceed to Pay' onPress={() => handleOrderSubmit()}/>
+                    <CustomButton title='Proceed to Pay' onPress={() => navigation.navigate('Payment')}/>
                 </View>
             </View>
         

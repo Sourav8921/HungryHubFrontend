@@ -7,66 +7,43 @@ import { useNavigation } from '@react-navigation/native';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import axios from 'axios';
 import { BASE_URL } from '../config';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getClientSecret, getCsrfToken } from '../services/api';
+import { submitOrder } from '../redux/cart';
+import Loading from '../components/Loading';
 
 
 export default function PaymentScreen() {
     const navigation = useNavigation();
 
-    const { confirmPayment } = useStripe();
+    //Payment
     const [clientSecret, setClientSecret] = useState('');
+    const { confirmPayment } = useStripe();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const { subTotal } = useSelector((state) => state.cart);
-    const [csrfToken, setCsrfToken] = useState('');
 
+    //order submission
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
+    const userId = user.id;
+    const { cartList, subTotal, orderStatus, orderError } = useSelector((state) => state.cart);
+    const restaurantId = cartList.length > 0 ? cartList[0].restaurant : null;
+
+    //payment
     useEffect(() => {
-        const fetchCsrfToken = async () => {
+        const fetchTokens = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/restaurants/get-csrf-token/`, {
-                    withCredentials: true
-                });
-                setCsrfToken(response.data.csrfToken);
+                const csrfData = await getCsrfToken();
+
+                const clientSecretData = await getClientSecret(csrfData, subTotal);
+                setClientSecret(clientSecretData.clientSecret);
             } catch (error) {
-                console.error('Error fetching CSRF token:', error);
-                Alert.alert('Error', 'Failed to fetch CSRF token');
-            }
-        }
-        fetchCsrfToken();
-    }, []);
-
-    useEffect(() => {
-        const fetchClientSecret = async () => {
-            if (!csrfToken) {
-                return;
-            }
-
-            try {
-                const response = await axios.post(`${BASE_URL}/restaurants/create-payment-intent/`, {
-                    amount: subTotal * 100,
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken,
-                    },
-                    withCredentials: true
-                });
-
-                if (response.data.clientSecret) {
-                    setClientSecret(response.data.clientSecret);
-                } else {
-                    Alert.alert('Error', data.error);
-                }
-
-            } catch (error) {
-                console.error('Error fetching client secret:', error);
-                Alert.alert('Error', 'Failed to fetch client secret');
+                console.error('Error fetching tokens:', error);
             }
         };
-
-        fetchClientSecret();
-    }, [csrfToken]);
+        fetchTokens();
+    }, []);
 
     const handlePayPress = async () => {
         // Confirm the payment with the client secret
@@ -81,9 +58,44 @@ export default function PaymentScreen() {
         if (error) {
             console.log('Payment confirmation error', error);
         } else {
-            console.log('Payment successful');
+            handleOrderSubmit()
+        };
+    };
+
+    //order submission
+    const handleOrderSubmit = () => {
+        if (restaurantId) {
+            const orderDetails = {
+                user: userId,
+                restaurant: restaurantId,
+                items: cartList.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    price: item.price,
+                    restaurant: item.restaurant,
+                    count: item.count,
+                })),
+                total_price: subTotal,
+                status: "Pending",
+            };
+            dispatch(submitOrder(orderDetails));
         }
     };
+
+    if (orderStatus === 'succeeded') {
+        navigation.navigate('Success');
+    }
+    if (orderStatus === 'loading') {
+        return (<Loading />);
+    }
+    if (orderStatus === 'failed') {
+        return (
+            <View className="flex-1 items-center justify-center">
+                <Text className="text-red-600 text-lg">Error : {orderError}</Text>
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView className="flex-1 p-4">
@@ -99,7 +111,7 @@ export default function PaymentScreen() {
                         },
                         {
                             text: 'Confirm',
-                            onPress: () => navigation.navigate('Success')
+                            onPress: () => handleOrderSubmit()
                         }
                     ],
                         { cancelable: true }
@@ -112,43 +124,46 @@ export default function PaymentScreen() {
 
             {/* Card payment */}
             <View style={styles.container}>
-                <Text>Billing Details</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Name"
-                    value={name}
-                    onChangeText={setName}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Phone"
-                    value={phone}
-                    onChangeText={setPhone}
-                    keyboardType="phone-pad"
-                />
-                <CardField
-                    postalCodeEnabled={false}
-                    placeholders={{
-                        number: '4242 4242 4242 4242',
-                    }}
-                    cardStyle={{
-                        backgroundColor: '#FFFFFF',
-                        textColor: '#000000',
-                    }}
-                    style={{
-                        width: '100%',
-                        height: 50,
-                        marginVertical: 30,
-                    }}
-                />
-                <Button onPress={handlePayPress} title="Pay" />
+                <Text className="text-base font-medium">Credit & Debit Cards</Text>
+                <View className="space-y-4 bg-white my-2 p-4 rounded-xl shadow-md">
+                    <Text >Billing Details</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Name"
+                        value={name}
+                        onChangeText={setName}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Phone"
+                        value={phone}
+                        onChangeText={setPhone}
+                        keyboardType="phone-pad"
+                    />
+                    <CardField
+                        postalCodeEnabled={false}
+                        placeholders={{
+                            number: '0000 0000 0000 0000',
+                        }}
+                        cardStyle={{
+                            backgroundColor: '#FFFFFF',
+                            textColor: '#000000',
+                        }}
+                        style={{
+                            width: '100%',
+                            height: 50,
+                            marginVertical: 20,
+                        }}
+                    />
+                    <Button onPress={handlePayPress} title="Pay" />
+                </View>
             </View>
         </SafeAreaView>
     )
@@ -157,14 +172,12 @@ export default function PaymentScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        padding: 16,
     },
     input: {
         height: 40,
-        borderColor: 'gray',
+        borderColor: '#CCC',
         borderWidth: 1,
-        marginBottom: 12,
         paddingHorizontal: 8,
+        borderRadius: 5,
     },
 });

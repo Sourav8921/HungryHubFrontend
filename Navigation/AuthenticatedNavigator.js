@@ -9,7 +9,6 @@ import SearchScreen from "../screens/SearchScreen";
 import PaymentScreen from "../screens/PaymentScreen";
 import OrdersListScreen from "../screens/OrdersListScreen";
 import OrderDetailsScreen from "../screens/OrderDetailsScreen";
-import NoOrdersScreen from "../screens/NoOrdersScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +22,6 @@ export default function AuthenticatedNavigator() {
         <Stack.Screen name="Payment" component={PaymentScreen}/>
         <Stack.Screen name="Success" component={SuccessScreen}/>
         <Stack.Screen name="Orders" component={OrdersListScreen}/>
-        <Stack.Screen name="NoOrders" component={NoOrdersScreen}/>
         <Stack.Screen name="OrderDetails" component={OrderDetailsScreen}/>
         <Stack.Screen name="Profile" component={ProfileScreen} options={{animation:'slide_from_right'}}/>
         <Stack.Screen name="Logout" component={UnauthenticatedNavigator}/>
