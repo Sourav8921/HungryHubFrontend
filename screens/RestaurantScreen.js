@@ -23,14 +23,13 @@ export default function RestaurantScreen({ route }) {
     }, [cartList])
 
     const { id: restaurantId } = route.params;
-    const menuItemsUrl = `${BASE_URL}/restaurants/menu-items/?restaurant_id=${restaurantId}`
     const [menuItems, setMenuItems] = useState([]);
 
     useEffect(() => {
         // Function to fetch menu items when component mounts
         const fetchMenuItems = async () => {
           try {
-            const response = await axios.get(menuItemsUrl);
+            const response = await axios.get(`${BASE_URL}/restaurants/menu-items/?restaurant_id=${restaurantId}`);
             setMenuItems(response.data); // Assuming your response data is an array of menu items
           } catch (error) {
             console.error('Error fetching menu items:', error);

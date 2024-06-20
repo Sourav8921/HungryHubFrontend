@@ -1,9 +1,13 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
-import { categories } from '../constants'
+import { useNavigation } from '@react-navigation/native';
 
 
-export default function Categories() {
+export default function Categories( {menuItems} ) {
+    const navigation = useNavigation()
+    const handleItemClick = (id) => {
+        navigation.navigate('Restaurants', { menuItemId: id });
+    };
 
     return (
         <View className="mt-4">
@@ -16,15 +20,16 @@ export default function Categories() {
                 }}
             >
                 {
-                    categories.map((category, index) => {
+                    menuItems.map((item, index) => {
                         return (
                             <View key={index} className="flex justify-center items-center mr-5">
                                 <TouchableOpacity
-                                    className="px-3 py-3 rounded-full shadow bg-gray-200">
-                                    <Image style={{width: 45, height: 45}} 
-                                        source={category?.image} />
+                                    onPress={() => handleItemClick(item.id)}
+                                    className="p-3 rounded-2xl shadow bg-gray-200">
+                                    <Image style={{width: 60, height: 60, borderRadius: 20}} 
+                                        source={{ uri: item?.image }} />
                                 </TouchableOpacity>
-                                <Text className="text-xs">{category?.name}</Text>
+                                <Text className="text-xs font-medium">{item?.name}</Text>
                             </View>
                         )
                     })

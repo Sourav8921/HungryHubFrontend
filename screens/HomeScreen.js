@@ -16,6 +16,7 @@ import SearchBar from '../components/SearchBar';
 
 export default function HomeScreen({navigation}) {
     
+    const [menuItems, setMenuItems] = useState([]);
     const dispatch = useDispatch();
     const {loading, restaurants, error} = useSelector((state) => state.restaurants)
     const {cartList} = useSelector((state) => state.cart)
@@ -23,6 +24,7 @@ export default function HomeScreen({navigation}) {
     useEffect(() => {
         dispatch(fetchRestaurants())
         dispatch(fetchUser())
+        fetchMenuItems()
     }, [])
     
     if(loading) {
@@ -47,6 +49,14 @@ export default function HomeScreen({navigation}) {
         }
     }
 
+    const fetchMenuItems = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/restaurants/menu-items/list/`);
+            setMenuItems(response.data);
+        } catch (error) {
+            console.log('Error fetching menu items', error);
+        }
+    }
 return (
     <SafeAreaView
         className="p-4 flex-1"
@@ -83,7 +93,7 @@ return (
             >
                 {/* categories */}
                 <Text className="mt-6 text-lg font-medium">Sourav,  what's on your mind?</Text>
-                <Categories />
+                <Categories menuItems={menuItems} />
 
                 {/* restaurants */}
                 <Text className="mt-6 text-lg font-medium">Restaurants to explore</Text>

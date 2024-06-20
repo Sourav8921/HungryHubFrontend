@@ -5,8 +5,6 @@ import BackButton from '../components/BackButton'
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
-import axios from 'axios';
-import { BASE_URL } from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClientSecret, getCsrfToken } from '../services/api';
 import { submitOrder } from '../redux/cart';
@@ -176,7 +174,7 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         borderColor: '#CCC',
-        borderWidth: 1,
+        borderWidth: 1, 
         paddingHorizontal: 8,
         borderRadius: 5,
     },
