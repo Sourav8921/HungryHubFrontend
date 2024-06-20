@@ -93,10 +93,10 @@ return (
             >
                 {/* categories */}
                 <Text className="mt-6 text-lg font-medium">Sourav,  what's on your mind?</Text>
-                <Categories menuItems={menuItems} />
+                <Categories menuItems={menuItems} onSearch={searchMenuItems}/>
 
                 {/* restaurants */}
-                <Text className="mt-6 text-lg font-medium">Restaurants to explore</Text>
+                <Text className="mt-3 text-lg font-medium">Restaurants to explore</Text>
                 {
                     restaurants.map(restaurant => {
                         return (

@@ -15,7 +15,6 @@ export default function OrdersListScreen() {
         const fetchOrders = async () => {
             try {
                 const data = await getOrders();
-                console.log('useeffect rendered');
                 setOrders(data);
             } catch (error) {
                 console.error('Error fetching orders', error);
