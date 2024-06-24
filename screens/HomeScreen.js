@@ -21,6 +21,15 @@ export default function HomeScreen({navigation}) {
     const {loading, restaurants, error} = useSelector((state) => state.restaurants)
     const {cartList} = useSelector((state) => state.cart)
     
+    const fetchMenuItems = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/restaurants/menu-items/list/`);
+            setMenuItems(response.data);
+        } catch (error) {
+            console.log('Error fetching menu items', error);
+        }
+    };
+    
     useEffect(() => {
         dispatch(fetchRestaurants())
         dispatch(fetchUser())
@@ -49,14 +58,6 @@ export default function HomeScreen({navigation}) {
         }
     }
 
-    const fetchMenuItems = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/restaurants/menu-items/list/`);
-            setMenuItems(response.data);
-        } catch (error) {
-            console.log('Error fetching menu items', error);
-        }
-    }
 return (
     <SafeAreaView
         className="p-4 flex-1"

@@ -40,7 +40,7 @@ export default function RestaurantScreen({ route }) {
       }, [restaurantId]); // Execute this effect whenever restaurantId changes
 
     return (
-        <View className="flex-1">
+        <View className="flex-1 bg-white">
             {cartList.length > 0 ? <CartIcon/> : null}
             <StatusBar hidden/>
             <ScrollView>

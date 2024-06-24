@@ -148,7 +148,7 @@ export default function PaymentScreen() {
                     <CardField
                         postalCodeEnabled={false}
                         placeholders={{
-                            number: '0000 0000 0000 0000',
+                            number: '4242 4242 4242 4242',
                         }}
                         cardStyle={{
                             backgroundColor: '#FFFFFF',

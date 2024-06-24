@@ -1,15 +1,12 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import React, { useEffect } from 'react'
+import React from 'react'
 import * as Icon from "react-native-feather";
 import { useNavigation } from '@react-navigation/native';
 import { themeColors } from '../theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CartItem from '../components/CartItem'
-import { submitOrder } from '../redux/cart';
-import Loading from '../components/Loading';
 import CustomButton from '../components/CustomButton';
-
 
 
 export default function CartScreen() {
