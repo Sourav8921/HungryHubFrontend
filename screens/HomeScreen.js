@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import * as Icon from "react-native-feather";
 import React, { useEffect, useState } from 'react';

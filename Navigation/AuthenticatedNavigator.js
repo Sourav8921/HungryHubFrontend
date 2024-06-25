@@ -9,6 +9,8 @@ import SearchScreen from "../screens/SearchScreen";
 import PaymentScreen from "../screens/PaymentScreen";
 import OrdersListScreen from "../screens/OrdersListScreen";
 import OrderDetailsScreen from "../screens/OrderDetailsScreen";
+import AddressScreen from "../screens/AddressScreen";
+import AddAddressScreen from "../screens/AddAddressScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +21,8 @@ export default function AuthenticatedNavigator() {
         <Stack.Screen name="Search" component={SearchScreen}/>
         <Stack.Screen name="Restaurant" component={RestaurantScreen}/>
         <Stack.Screen name="Cart" component={CartScreen} options={{animation:'slide_from_bottom'}}/>
+        <Stack.Screen name="Address" component={AddressScreen}/>
+        <Stack.Screen name="AddAddress" component={AddAddressScreen}/>
         <Stack.Screen name="Payment" component={PaymentScreen}/>
         <Stack.Screen name="Success" component={SuccessScreen}/>
         <Stack.Screen name="Orders" component={OrdersListScreen}/>

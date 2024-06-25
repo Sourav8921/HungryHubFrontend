@@ -82,7 +82,7 @@ export default function CartScreen() {
                     <Text className="text-lg font-bold">₹ {subTotal}</Text>
                 </View>
                 <View>
-                    <CustomButton title='Proceed to Pay' onPress={() => navigation.navigate('Payment')}/>
+                    <CustomButton title='Select Address' onPress={() => navigation.navigate('Address')}/>
                 </View>
             </View>
         
