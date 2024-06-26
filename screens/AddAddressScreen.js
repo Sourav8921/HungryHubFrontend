@@ -4,8 +4,10 @@ import axios from 'axios';
 import { getToken } from '../services/api';
 import { BASE_URL } from '../config';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AddAddressScreen() {
+    const navigation = useNavigation();
     const [streetAddress, setStreetAddress] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
@@ -27,6 +29,9 @@ export default function AddAddressScreen() {
                     Authorization: `Token ${AUTH_TOKEN}`,
                 }
             });
+            if (response.data) {
+                navigation.navigate('Address')
+            }
         } catch (error) {
             console.error(error);
         }
