@@ -16,4 +16,19 @@ const getAddresses = async () => {
     }
 }
 
-export { getAddresses }
+const deleteAddress = async (addressId) => {
+    try {
+        const AUTH_TOKEN = await getToken();
+        const response = await axios.delete(`${BASE_URL}/users/delivery-addresses/${addressId}/`, {
+            headers: {
+                Authorization: `Token ${AUTH_TOKEN}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting address', error);
+        throw error;
+    }
+};
+
+export { getAddresses, deleteAddress }

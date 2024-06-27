@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { themeColors } from '../theme';
+import { deleteAddress } from '../services/api';
 
 export default function AddressCard({ address }) {
     return (
@@ -14,7 +15,7 @@ export default function AddressCard({ address }) {
             <View className="ml-4 flex-1">
                 <View className="flex-row justify-between">
                     <Text>HOME</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => deleteAddress(address.id)}>
                         <AntDesign name="delete" size={20} color={themeColors.bgColor(1)} />
                     </TouchableOpacity>
                 </View>
