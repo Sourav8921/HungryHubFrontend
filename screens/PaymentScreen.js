@@ -81,9 +81,12 @@ export default function PaymentScreen() {
         }
     };
 
-    if (orderStatus === 'succeeded') {
-        navigation.navigate('Success');
-    }
+    useEffect(() => {
+        if (orderStatus === 'succeeded') {
+            navigation.navigate('Success');
+        }
+    }, [orderStatus, navigation]);
+    
     if (orderStatus === 'loading') {
         return (<Loading />);
     }

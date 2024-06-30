@@ -22,7 +22,7 @@ export default function AddressScreen() {
     };
     fetchAddresses();
   }, []);
-  // console.log(addresses);
+  
   return (
     <SafeAreaView className="p-4 flex-1 bg-white">
       <View className="flex-1">
@@ -35,7 +35,7 @@ export default function AddressScreen() {
         })}
 
         <View className="absolute bottom-1 w-full">
-          <CustomButton onPress={() => navigation.navigate('AddAddress')} title='Add Address' />
+          <CustomButton onPress={() => navigation.navigate('CreateAddress')} title='Add Address' />
         </View>
       </View>
     </SafeAreaView>
