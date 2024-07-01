@@ -5,12 +5,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import cartReducer from './cart';
 import restaurantsReducer from './restaurants'
 import userReducer from './user';
+import addressReducer from "./address";
 
 // Combine all the reducers
 const rootReducer = combineReducers({
     cart: cartReducer,
     restaurants: restaurantsReducer,
     user: userReducer,
+    address: addressReducer,
 });
 
 // Configuration for redux-persist

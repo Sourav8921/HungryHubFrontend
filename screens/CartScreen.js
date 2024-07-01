@@ -13,6 +13,7 @@ export default function CartScreen() {
        
     const navigation = useNavigation()
     const { cartList, subTotal } = useSelector((state) => state.cart);
+    const { deliveryAddress } = useSelector((state) => state.address);
 
     return (
         <SafeAreaView className="bg-gray-100 flex-1">
@@ -37,8 +38,10 @@ export default function CartScreen() {
                 className="flex-row mt-2 p-4 items-center"
             >
                 <Image source={require('../assets/images/delivery.png')} className="w-16 h-16 rounded-full"/>
-                <Text className="ml-4 flex-1">Delivery at <Text className="font-medium">Vidya Nagar Colony, Thrikkakara, Kochi</Text></Text>
-                <TouchableOpacity>
+                <Text className="ml-4 flex-1">Delivery at <Text className="font-medium">{deliveryAddress.street_address}, {deliveryAddress.city}, {deliveryAddress.postal_code}</Text></Text>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Address')}
+                >
                     <Text className="font-bold" style={{color: themeColors.text}}>
                         Change
                     </Text>
@@ -82,7 +85,11 @@ export default function CartScreen() {
                     <Text className="text-lg font-bold">₹ {subTotal}</Text>
                 </View>
                 <View>
-                    <CustomButton title='Select Address' onPress={() => navigation.navigate('Address')}/>
+                    {deliveryAddress ? (
+                        <CustomButton title='Proceed to Pay' onPress={() => navigation.navigate('Payment')}/>
+                    ):(
+                        <CustomButton title='Select Address' onPress={() => navigation.navigate('Address')}/>
+                    )}
                 </View>
             </View>
         

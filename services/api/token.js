@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
+import { Alert } from 'react-native';
 
 // Function to retrieve the authentication token from AsyncStorage
 const getToken = async () => {

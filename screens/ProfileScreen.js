@@ -69,6 +69,7 @@ export default function ProfileScreen() {
 
                 <TouchableOpacity 
                     className="flex-row items-center justify-between"
+                    onPress={() => navigation.navigate('Address')}
                 >   
                     <Icon.Map width={30} height={30} stroke={themeColors.bgColor(1)} />
                     <Text className="text-base">Addresses</Text>
