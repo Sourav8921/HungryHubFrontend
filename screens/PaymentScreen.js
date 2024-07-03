@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert, Button, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, Button, TextInput, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import BackButton from '../components/BackButton'
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getClientSecret, getCsrfToken } from '../services/api';
 import { submitOrder } from '../redux/cart';
 import Loading from '../components/Loading';
+import CustomButton from '../components/CustomButton';
 
 
 export default function PaymentScreen() {
@@ -86,7 +87,7 @@ export default function PaymentScreen() {
             navigation.navigate('Success');
         }
     }, [orderStatus, navigation]);
-    
+
     if (orderStatus === 'loading') {
         return (<Loading />);
     }
@@ -99,74 +100,79 @@ export default function PaymentScreen() {
     }
 
     return (
-        <SafeAreaView className="flex-1 p-4">
-            <BackButton value='Payments' />
-            <View className="my-4">
-                <Text className="text-base font-medium">Pay on Delivery</Text>
-                <TouchableOpacity
-                    className="flex-row  bg-white my-2 p-4 rounded-xl shadow-md"
-                    onPress={() => Alert.alert("Confirm Order",
-                        "Are you sure you want to confirm the order?", [
-                        {
-                            text: 'Cancel',
-                        },
-                        {
-                            text: 'Confirm',
-                            onPress: () => handleOrderSubmit()
-                        }
-                    ],
-                        { cancelable: true }
-                    )}
-                >
-                    <FontAwesome name="rupee" size={24} color="black" />
-                    <Text className="ml-4 font-medium">Pay on delivery (Cash/UPI)</Text>
-                </TouchableOpacity>
-            </View>
-
-            {/* Card payment */}
-            <View style={styles.container}>
-                <Text className="text-base font-medium">Credit & Debit Cards</Text>
-                <View className="space-y-4 bg-white my-2 p-4 rounded-xl shadow-md">
-                    <Text >Billing Details</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Name"
-                        value={name}
-                        onChangeText={setName}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                        keyboardType="email-address"
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Phone"
-                        value={phone}
-                        onChangeText={setPhone}
-                        keyboardType="phone-pad"
-                    />
-                    <CardField
-                        postalCodeEnabled={false}
-                        placeholders={{
-                            number: '4242 4242 4242 4242',
-                        }}
-                        cardStyle={{
-                            backgroundColor: '#FFFFFF',
-                            textColor: '#000000',
-                        }}
-                        style={{
-                            width: '100%',
-                            height: 50,
-                            marginVertical: 20,
-                        }}
-                    />
-                    <Button onPress={handlePayPress} title="Pay" />
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            className="flex-1 p-4"
+        >
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <BackButton value='Payments' />
+                <View className="my-4">
+                    <Text className="text-base font-medium">Pay on Delivery</Text>
+                    <TouchableOpacity
+                        className="flex-row  bg-white my-2 p-4 rounded-xl shadow-md"
+                        onPress={() => Alert.alert("Confirm Order",
+                            "Are you sure you want to confirm the order?", [
+                            {
+                                text: 'Cancel',
+                            },
+                            {
+                                text: 'Confirm',
+                                onPress: () => handleOrderSubmit()
+                            }
+                        ],
+                            { cancelable: true }
+                        )}
+                    >
+                        <FontAwesome name="rupee" size={24} color="black" />
+                        <Text className="ml-4 font-medium">Pay on delivery (Cash/UPI)</Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
-        </SafeAreaView>
+
+                {/* Card payment */}
+                <View style={styles.container}>
+                    <Text className="text-base font-medium">Credit & Debit Cards</Text>
+                    <View className="space-y-4 bg-white my-2 p-4 rounded-xl shadow-md">
+                        <Text >Billing Details</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Name"
+                            value={name}
+                            onChangeText={setName}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="email-address"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Phone"
+                            value={phone}
+                            onChangeText={setPhone}
+                            keyboardType="phone-pad"
+                        />
+                        <CardField
+                            postalCodeEnabled={false}
+                            placeholders={{
+                                number: '4242 4242 4242 4242',
+                            }}
+                            cardStyle={{
+                                backgroundColor: '#FFFFFF',
+                                textColor: '#000000',
+                            }}
+                            style={{
+                                width: '100%',
+                                height: 50,
+                                marginVertical: 20,
+                            }}
+                        />
+                        <CustomButton onPress={handlePayPress} title='Pay' />
+                    </View>
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -177,8 +183,8 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         borderColor: '#CCC',
-        borderWidth: 1, 
+        borderWidth: 1,
         paddingHorizontal: 8,
-        borderRadius: 5,
+        borderRadius: 15,
     },
 });

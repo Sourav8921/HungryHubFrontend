@@ -36,7 +36,7 @@ export default function CreateAddress() {
 
     return (
         <SafeAreaView className="flex-1 bg-white p-4">
-            <View>
+            <View className="flex-1">
                 <BackButton value={'Add address'}/>
                 <AddressForm onPress={createAddress}/>
             </View>

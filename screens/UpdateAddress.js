@@ -35,7 +35,7 @@ export default function UpdateAddress() {
     };
     return (
         <SafeAreaView className="flex-1 bg-white p-4">
-            <View>
+            <View className="flex-1">
                 <BackButton value={'Edit Address'}/>
                 <AddressForm onPress={updateAddress}/>
             </View>
