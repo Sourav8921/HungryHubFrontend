@@ -4,6 +4,16 @@ import { useSelector } from 'react-redux';
 import { themeColors } from '../theme';
 
 export default function AddressForm({ onPress }) {
+    const [label, setLabel] = useState('');
+    const [showTextField, setShowTextField] = useState(false);
+    const [selectedButton, setSelectedButton] = useState(null);
+
+    const handlePress = (buttonLabel) => {
+        setLabel(buttonLabel);
+        setShowTextField(buttonLabel === '');
+        setSelectedButton(buttonLabel);
+    };
+
     const [streetAddress, setStreetAddress] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
@@ -51,11 +61,51 @@ export default function AddressForm({ onPress }) {
                         onChangeText={setPostalCode}
                     />
                 </View>
+                <View className="space-y-2">
+                    <Text className="text-base">Save address as:</Text>
+                    <View className="flex-row space-x-2">
+                        <TouchableOpacity
+                            onPress={() => handlePress('Home')}
+                            style={{
+                                borderColor: selectedButton === 'Home' ? themeColors.text : 'gray',
+                            }}
+                            className="bg-gray-100 border p-1 px-4 rounded-lg"
+                        >
+                            <Text style={{color: selectedButton === 'Home' ? themeColors.text : 'black'}}>Home</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => handlePress('Work')}
+                            style={{
+                                borderColor: selectedButton === 'Work' ? themeColors.text : 'gray',
+                            }}
+                            className="bg-gray-100 border p-1 px-4 rounded-lg"
+                        >
+                            <Text style={{color: selectedButton === 'Work' ? themeColors.text : 'black'}}>Work</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => handlePress('')}
+                            style={{
+                                borderColor: selectedButton === '' ? themeColors.text : 'gray',
+                            }}
+                            className="bg-gray-100 border p-1 px-4 rounded-lg"
+                        >
+                            <Text style={{color: selectedButton === '' ? themeColors.text : 'black'}}>Other</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {showTextField && (
+                        <TextInput
+                            className="bg-gray-100 p-2 rounded-lg h-12"
+                            placeholder="Name"
+                            value={label}
+                            onChangeText={setLabel}
+                        />
+                    )}
+                </View>
             </View>
             <TouchableOpacity
                 style={{ backgroundColor: themeColors.bgColor(1) }}
                 className="items-center p-4 rounded-full w-full"
-                onPress={() => onPress(userId, streetAddress, city, state, postalCode)}
+                onPress={() => onPress(userId, streetAddress, city, state, postalCode, label)}
             >
                 <Text className="text-white text-lg font-medium">SAVE</Text>
             </TouchableOpacity>

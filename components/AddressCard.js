@@ -48,9 +48,9 @@ export default function AddressCard({ address }) {
                         <AntDesign name="home" size={24} color={themeColors.bgColor(1)} />
                     </View>
                 </View>
-                <View className="ml-4 flex-1 space-y-2">
+                <View className="ml-4 flex-1 space-y-1">
                     <View className="flex-row justify-between">
-                        <Text>HOME</Text>
+                        <Text className="font-medium text-base">{address.address_label}</Text>
                         <View className="flex-row gap-4">
                             <TouchableOpacity onPress={() => navigation.navigate("UpdateAddress", { 'addressId': address.id })}>
                                 <AntDesign name="edit" size={20} color={themeColors.bgColor(1)} />

@@ -6,11 +6,12 @@ import { BASE_URL } from '../config';
 import { useNavigation } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import AddressForm from '../components/AddressForm';
+import address from '../redux/address';
 
 export default function CreateAddress() {
     const navigation = useNavigation();
 
-    const createAddress = async (userId, streetAddress, city, state, postalCode) => {
+    const createAddress = async (userId, streetAddress, city, state, postalCode, label) => {
         try {
             const AUTH_TOKEN = await getToken();
             const response = await axios.post(`${BASE_URL}/users/delivery-addresses/`, {
@@ -19,6 +20,7 @@ export default function CreateAddress() {
                 city,
                 state,
                 postal_code: postalCode,
+                address_label: label,
             }, {
                 headers: {
                     Authorization: `Token ${AUTH_TOKEN}`,

@@ -20,6 +20,8 @@ export default function HomeScreen({navigation}) {
     const dispatch = useDispatch();
     const {loading, restaurants, error} = useSelector((state) => state.restaurants)
     const {cartList} = useSelector((state) => state.cart)
+    const {deliveryAddress} = useSelector((state) => state.address)
+
     
     const fetchMenuItems = async () => {
         try {
@@ -72,10 +74,10 @@ return (
                     <Icon.MapPin width="30" height="30" stroke={themeColors.bgColor(1)} />
                     <View className="ml-2">
                         <View className="flex-row font-bold items-center">
-                            <Text className="font-bold text-lg">Ernakulam North</Text>
+                            <Text className="font-bold text-lg">{deliveryAddress.address_label}</Text>
                             <Icon.ChevronDown width="25" height="25" stroke="black" />
                         </View>
-                        <Text>Kathrikadavu, kaloor, Ernakulam</Text>
+                        <Text>{deliveryAddress.street_address}, {deliveryAddress.city}, {deliveryAddress.postal_code}</Text>
                     </View>
                 </View>
                 <TouchableOpacity onPress={() => {navigation.navigate("Profile")}}>

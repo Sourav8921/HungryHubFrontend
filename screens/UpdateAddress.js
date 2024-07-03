@@ -11,7 +11,7 @@ export default function UpdateAddress() {
     const navigation = useNavigation();
     const route = useRoute();
     const { addressId } = route.params;
-    const updateAddress = async (userId, streetAddress, city, state, postalCode) => {
+    const updateAddress = async (userId, streetAddress, city, state, postalCode, label) => {
         try {
             const AUTH_TOKEN = await getToken();
             const response = await axios.put(`${BASE_URL}/users/delivery-addresses/${addressId}/`, {
@@ -20,6 +20,7 @@ export default function UpdateAddress() {
                 city,
                 state,
                 postal_code: postalCode,
+                address_label: label,
             }, {
                 headers: {
                     Authorization: `Token ${AUTH_TOKEN}`,
