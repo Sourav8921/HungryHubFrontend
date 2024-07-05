@@ -1,8 +1,17 @@
-import { StyleSheet, View, Text, Image, TextInput, TouchableOpacity, Pressable } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
 import { useState } from "react";
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../config";
 
 const logoImg = require("../assets/images/logo_only.png");
@@ -12,29 +21,33 @@ export default function LoginScreen({ navigation }) {
   const [pass, setPass] = useState("");
 
   const loginUser = async () => {
-      const postData = {
-            username: username,
-            password: pass,
-        };
-    
-      const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
+    const postData = {
+      username: username,
+      password: pass,
+    };
 
-      try {
-        const response = await axios.post(`${BASE_URL}/users/login/`, postData, config)
-        await AsyncStorage.setItem('auth_token', response.data.token);
-        navigation.navigate('Authenticated');
-      } catch (error) {
-        console.error('Error:', error);
-      };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/users/login/`,
+        postData,
+        config
+      );
+      await AsyncStorage.setItem("auth_token", response.data.token);
+      navigation.navigate("Authenticated");
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#e8ecf4" }}>
-      <View style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Image source={logoImg} style={styles.headerImg} alt="logo" />
           <Text style={styles.title}>Hungry Hub</Text>
@@ -68,18 +81,17 @@ export default function LoginScreen({ navigation }) {
             />
           </View>
 
-          <TouchableOpacity 
-            style={styles.button}
-            onPress={() => loginUser()}
-          >
+          <TouchableOpacity style={styles.button} onPress={() => loginUser()}>
             <Text style={styles.btnText}>Log in</Text>
           </TouchableOpacity>
         </View>
 
-        <Pressable onPress={() => navigation.navigate('Signup')}>
-          <Text>Don't have an account? <Text style={styles.signupTxt}>Sign up</Text></Text>
+        <Pressable onPress={() => navigation.navigate("Signup")}>
+          <Text>
+            Don't have an account? <Text style={styles.signupTxt}>Sign up</Text>
+          </Text>
         </Pressable>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -97,8 +109,8 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     alignSelf: "center",
-    backgroundColor: '#294C25',
-    borderRadius: 50
+    backgroundColor: "#294C25",
+    borderRadius: 50,
   },
   title: {
     fontSize: 33,
@@ -122,22 +134,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   button: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 20,
-    backgroundColor: '#58AD53',
+    backgroundColor: "#58AD53",
     height: 50,
     borderRadius: 10,
     padding: 10,
   },
   btnText: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   signupTxt: {
-    textDecorationLine: 'underline',
-    color: '#58AD53',
+    textDecorationLine: "underline",
+    color: "#58AD53",
   },
-
 });
