@@ -13,14 +13,33 @@ import { useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../config";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const logoImg = require("../assets/images/logo_only.png");
 
 export default function LoginScreen({ navigation }) {
+  const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passError, setPassError] = useState("");
+
+  const validateEmail = (username) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(username);
+  };
 
   const loginUser = async () => {
+    //validation
+    if (!validateEmail(username)) {
+      setEmailError("Invalid email format");
+      return;
+    }
+    if (pass.length < 8) {
+      setPassError("Password must be at least 8 characters");
+      return;
+    }
+    //
     const postData = {
       username: username,
       password: pass,
@@ -58,7 +77,7 @@ export default function LoginScreen({ navigation }) {
 
         <View style={styles.form}>
           <View>
-            <Text style={styles.inputText}>Email or Username</Text>
+            <Text style={styles.inputText}>Email</Text>
             <TextInput
               style={styles.inputField}
               value={username}
@@ -66,7 +85,9 @@ export default function LoginScreen({ navigation }) {
               placeholder="Email or username"
               autoCapitalize="none"
               autoCorrect={false}
+              maxLength={30}
             />
+            {emailError ? <Text>{emailError}</Text> : null}
           </View>
 
           <View>
@@ -77,10 +98,21 @@ export default function LoginScreen({ navigation }) {
               onChangeText={setPass}
               placeholder="********"
               autoCapitalize="none"
-              secureTextEntry
+              secureTextEntry={!showPassword}
+              maxLength={25}
             />
+            <TouchableOpacity
+              className="absolute right-4 bottom-6"
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Icon
+                name={showPassword ? "eye-off" : "eye"}
+                size={24}
+                color="#CCC"
+              />
+            </TouchableOpacity>
+            {passError ? <Text>{passError}</Text> : null}
           </View>
-
           <TouchableOpacity style={styles.button} onPress={() => loginUser()}>
             <Text style={styles.btnText}>Log in</Text>
           </TouchableOpacity>

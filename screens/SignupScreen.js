@@ -64,6 +64,7 @@ export default function SignupScreen({ navigation }) {
               placeholder="John Doe"
               autoCapitalize="none"
               autoCorrect={false}
+              maxLength={20}
             />
           </View>
           <View>
@@ -76,6 +77,7 @@ export default function SignupScreen({ navigation }) {
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="email-address"
+              maxLength={30}
             />
           </View>
           <View>
@@ -85,7 +87,9 @@ export default function SignupScreen({ navigation }) {
               value={pass}
               onChangeText={setPass}
               placeholder="********"
+              autoCapitalize="none"
               secureTextEntry={!showPassword}
+              maxLength={25}
             />
             <TouchableOpacity
               className="absolute right-4 bottom-6"
@@ -94,7 +98,7 @@ export default function SignupScreen({ navigation }) {
               <Icon
                 name={showPassword ? "eye-off" : "eye"}
                 size={24}
-                color="gray"
+                color="#CCC"
               />
             </TouchableOpacity>
           </View>
