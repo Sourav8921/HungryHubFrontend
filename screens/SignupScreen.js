@@ -8,45 +8,116 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../config";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function SignupScreen({ navigation }) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [pass2, setPass2] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  const registerUser = () => {
-    const postData = {
-      username: name,
-      password: pass,
-      email: email,
-    };
+  useEffect(() => {
+    // Trigger form validation when name,
+    // email, or password changes
+    validateForm();
+  }, [username, firstname, lastname, email, password, password2]);
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+  const validateForm = () => {
+    let errors = {};
 
-    axios
-      .post(`${BASE_URL}/users/register/`, postData, config)
-      .then((response) => {
+    // Validate name field
+    if (!username) {
+      errors.usernameError = "Username is required.";
+    } else if (/\s+/g.test(username)) {
+      errors.usernameError = "No whitespace characters";
+    }
+
+    if (!firstname) {
+      errors.fnameError = "First name is required.";
+    }
+    if (!lastname) {
+      errors.lnameError = "Last name is required.";
+    }
+
+    // Validate email field
+    if (!email) {
+      errors.emailError = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.emailError = "Email is invalid.";
+    }
+
+    // Validate password field
+    if (!password) {
+      errors.passwordError = "Password is required.";
+    } else if (password.length < 6) {
+      errors.passwordError = "Password must be at least 6 characters.";
+    }
+
+    if (password !== password2) {
+      errors.password2Error = "Password should be the same";
+    }
+
+    // Set the errors and update form validity
+    setErrors(errors);
+    setIsFormValid(Object.keys(errors).length === 0);
+  };
+
+  const {
+    usernameError,
+    fnameError,
+    lnameError,
+    emailError,
+    passwordError,
+    password2Error,
+  } = errors;
+
+  const registerUser = async () => {
+    if (isFormValid) {
+      try {
+        const postData = {
+          username,
+          first_name: firstname,
+          last_name: lastname,
+          email,
+          password,
+        };
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await axios.post(
+          `${BASE_URL}/users/register/`,
+          postData,
+          config
+        );
         console.log("Response:", response.data);
         navigation.navigate("Login");
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error:", error);
-      });
+      }
+    } else {
+      // Form is invalid, display error messages
+      alert("Form has errors. Please correct them.");
+    }
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{
+          paddingBottom: 50,
+        }}
+      >
         <View style={styles.header}>
           <Text style={styles.title}>Hungry Hub</Text>
           <Text style={styles.subTitle}>
@@ -55,19 +126,46 @@ export default function SignupScreen({ navigation }) {
         </View>
 
         <View style={styles.form}>
-          <View>
-            <Text style={styles.inputText}>Full name</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Username</Text>
             <TextInput
               style={styles.inputField}
-              value={name}
-              onChangeText={setName}
-              placeholder="John Doe"
+              value={username}
+              onChangeText={setUsername}
+              placeholder="username"
               autoCapitalize="none"
               autoCorrect={false}
-              maxLength={20}
+              maxLength={15}
             />
+            <Text style={styles.errorTxt}>{usernameError}</Text>
           </View>
-          <View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>First name</Text>
+            <TextInput
+              style={styles.inputField}
+              value={firstname}
+              onChangeText={setFirstname}
+              placeholder="First name"
+              autoCapitalize="none"
+              autoCorrect={false}
+              maxLength={15}
+            />
+            <Text style={styles.errorTxt}>{fnameError}</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Last name</Text>
+            <TextInput
+              style={styles.inputField}
+              value={lastname}
+              onChangeText={setLastname}
+              placeholder="Last name"
+              autoCapitalize="none"
+              autoCorrect={false}
+              maxLength={15}
+            />
+            <Text style={styles.errorTxt}>{lnameError}</Text>
+          </View>
+          <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Email address</Text>
             <TextInput
               style={styles.inputField}
@@ -79,39 +177,54 @@ export default function SignupScreen({ navigation }) {
               keyboardType="email-address"
               maxLength={30}
             />
+            <Text style={styles.errorTxt}>{emailError}</Text>
           </View>
-          <View>
+          <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Password</Text>
             <TextInput
               style={styles.inputField}
-              value={pass}
-              onChangeText={setPass}
+              value={password}
+              onChangeText={setPassword}
               placeholder="********"
               autoCapitalize="none"
               secureTextEntry={!showPassword}
               maxLength={25}
             />
+            <Text style={styles.errorTxt}>{passwordError}</Text>
             <TouchableOpacity
-              className="absolute right-4 bottom-6"
+              className="absolute right-4 bottom-9"
               onPress={() => setShowPassword(!showPassword)}
             >
               <Icon
                 name={showPassword ? "eye-off" : "eye"}
-                size={24}
+                size={25}
                 color="#CCC"
               />
             </TouchableOpacity>
           </View>
-          {/* <View>
-                        <Text style={styles.inputText}>Re-type password</Text>
-                        <TextInput
-                            style={styles.inputField}
-                            value={pass2}
-                            onChangeText={setPass2}
-                            placeholder="********"
-                            secureTextEntry
-                        />
-                    </View> */}
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputText}>Re-type password</Text>
+            <TextInput
+              style={styles.inputField}
+              value={password2}
+              onChangeText={setPassword2}
+              placeholder="********"
+              autoCapitalize="none"
+              secureTextEntry={!showPassword}
+              maxLength={25}
+            />
+            <Text style={styles.errorTxt}>{password2Error}</Text>
+            <TouchableOpacity
+              className="absolute right-4 bottom-9"
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Icon
+                name={showPassword ? "eye-off" : "eye"}
+                size={25}
+                color="#CCC"
+              />
+            </TouchableOpacity>
+          </View>
 
           <TouchableOpacity
             style={styles.button}
@@ -121,12 +234,12 @@ export default function SignupScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <Pressable onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text>
             Already have an account?{" "}
             <Text style={styles.signupTxt}>Login up</Text>
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -137,10 +250,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: "#f2f3f4",
-    // justifyContent: 'center'
   },
   header: {
-    marginVertical: 30,
+    marginBottom: 10,
   },
   headerImg: {
     height: 100,
@@ -159,16 +271,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "grey",
   },
+  inputContainer: {
+    marginVertical: 5,
+  },
   inputField: {
     height: 50,
     borderRadius: 10,
     backgroundColor: "white",
     padding: 10,
-    marginVertical: 10,
+    marginVertical: 5,
   },
   inputText: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "500",
+  },
+  errorTxt: {
+    color: "red",
   },
   button: {
     alignItems: "center",

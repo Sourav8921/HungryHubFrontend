@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../config";
@@ -20,47 +20,64 @@ const logoImg = require("../assets/images/logo_only.png");
 export default function LoginScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
-  const [pass, setPass] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passError, setPassError] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  const validateEmail = (username) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(username);
+  useEffect(() => {
+    // Trigger form validation when name,
+    // or password changes
+    validateForm();
+  }, [username, password]);
+
+  const validateForm = () => {
+    let errors = {};
+
+    if (!username) {
+      errors.usernameError = "Username is required.";
+    } else if (/\s+/g.test(username)) {
+      errors.usernameError = "No whitespace characters";
+    }
+
+    if (!password) {
+      errors.passwordError = "Password is required.";
+    } else if (password.length < 6) {
+      errors.passwordError = "Password must be at least 6 characters.";
+    }
+
+    setErrors(errors);
+    setIsFormValid(Object.keys(errors).length === 0);
   };
 
+  //destructuring the errors object
+  const { usernameError, passwordError } = errors;
+
   const loginUser = async () => {
-    //validation
-    if (!validateEmail(username)) {
-      setEmailError("Invalid email format");
-      return;
-    }
-    if (pass.length < 8) {
-      setPassError("Password must be at least 8 characters");
-      return;
-    }
-    //
-    const postData = {
-      username: username,
-      password: pass,
-    };
+    if (isFormValid) {
+      const postData = {
+        username: username,
+        password: password,
+      };
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/users/login/`,
-        postData,
-        config
-      );
-      await AsyncStorage.setItem("auth_token", response.data.token);
-      navigation.navigate("Authenticated");
-    } catch (error) {
-      console.error("Error:", error);
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/users/login/`,
+          postData,
+          config
+        );
+        await AsyncStorage.setItem("auth_token", response.data.token);
+        navigation.navigate("Authenticated");
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      alert("Form has errors. Please correct them.");
     }
   };
 
@@ -75,43 +92,43 @@ export default function LoginScreen({ navigation }) {
           </Text>
         </View>
 
-        <View style={styles.form}>
+        <View className="space-y-2">
           <View>
-            <Text style={styles.inputText}>Email</Text>
+            <Text style={styles.inputText}>Username</Text>
             <TextInput
               style={styles.inputField}
               value={username}
               onChangeText={setUsername}
-              placeholder="Email or username"
+              placeholder="username"
               autoCapitalize="none"
               autoCorrect={false}
               maxLength={30}
             />
-            {emailError ? <Text>{emailError}</Text> : null}
+            <Text style={styles.errorTxt}>{usernameError}</Text>
           </View>
 
           <View>
             <Text style={styles.inputText}>Password</Text>
             <TextInput
               style={styles.inputField}
-              value={pass}
-              onChangeText={setPass}
+              value={password}
+              onChangeText={setPassword}
               placeholder="********"
               autoCapitalize="none"
               secureTextEntry={!showPassword}
               maxLength={25}
             />
+            <Text style={styles.errorTxt}>{passwordError}</Text>
             <TouchableOpacity
-              className="absolute right-4 bottom-6"
+              className="absolute right-4 bottom-9"
               onPress={() => setShowPassword(!showPassword)}
             >
               <Icon
                 name={showPassword ? "eye-off" : "eye"}
-                size={24}
+                size={25}
                 color="#CCC"
               />
             </TouchableOpacity>
-            {passError ? <Text>{passError}</Text> : null}
           </View>
           <TouchableOpacity style={styles.button} onPress={() => loginUser()}>
             <Text style={styles.btnText}>Log in</Text>
@@ -159,11 +176,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "white",
     padding: 10,
-    marginVertical: 10,
+    marginVertical: 5,
   },
   inputText: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  errorTxt: {
+    color: "red",
   },
   button: {
     alignItems: "center",

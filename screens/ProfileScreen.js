@@ -55,7 +55,7 @@ export default function ProfileScreen() {
                     className="w-28 h-28 rounded-full"
                 />
                 <View className="ml-6">
-                    <Text className="text-2xl font-semi-bold mb-2">{user.username}</Text>
+                    <Text className="text-2xl font-semi-bold mb-2">{user.first_name} {user.last_name}</Text>
                     <Text className="text-base text-gray-800">{user.email}</Text>
                 </View>
             </View>
