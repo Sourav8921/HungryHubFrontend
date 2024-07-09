@@ -67,7 +67,7 @@ export default function HomeScreen({ navigation }) {
       console.log(error);
     }
   };
-  console.log(deliveryAddress);
+  
   return (
     <SafeAreaView className="p-4 flex-1">
       <StatusBar />

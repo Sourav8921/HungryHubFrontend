@@ -39,7 +39,7 @@ export default function CartScreen() {
           source={require("../assets/images/delivery.png")}
           className="w-16 h-16 rounded-full"
         />
-        {deliveryAddress.length !== 0 ? (
+        {Object.keys(deliveryAddress).length !== 0 ? (
           <Text className="ml-4 flex-1">
             Delivery at{" "}
             <Text className="font-medium">
@@ -91,7 +91,7 @@ export default function CartScreen() {
           <Text className="text-lg font-bold">₹ {subTotal}</Text>
         </View>
         <View>
-          {deliveryAddress.length !== 0 ? (
+          {Object.keys(deliveryAddress).length !== 0 ? (
             <CustomButton
               title="Proceed to Pay"
               onPress={() => navigation.navigate("Payment")}

@@ -4,12 +4,13 @@ import { AntDesign } from '@expo/vector-icons';
 import { themeColors } from '../theme';
 import { deleteAddress } from '../services/api';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { selectAddress } from '../redux/address';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetAddress, selectAddress } from '../redux/address';
 
 export default function AddressCard({ address }) {
     const navigation = useNavigation();
     const dispatch = useDispatch()
+    const { deliveryAddress } = useSelector((state) => state.address);
 
     const handleSelectAddress = () => {
         dispatch(selectAddress(address));
@@ -28,13 +29,14 @@ export default function AddressCard({ address }) {
 
     const handleDeleteAddress = () => {
         deleteAddress(address.id)
+        if(deliveryAddress.id === address.id) dispatch(resetAddress())
         Alert.alert(
             "Address Deleted",
             "The address has been deleted.",
             [
                 {
                     text: "OK",
-                    // onPress: () => navigation.goBack()
+                    onPress: () => navigation.goBack()
                 }
             ],
             { cancelable: false }

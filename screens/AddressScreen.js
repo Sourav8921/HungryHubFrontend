@@ -5,20 +5,11 @@ import CustomButton from '../components/CustomButton'
 import { useNavigation } from '@react-navigation/native'
 import { getAddresses } from '../services/api'
 import AddressCard from '../components/AddressCard'
-import { useDispatch, useSelector } from "react-redux";
-import { resetAddress } from '../redux/address';
 
 
 export default function AddressScreen() {
   const navigation = useNavigation()
   const [addresses, setAddresses] = useState([]);
-  const { deliveryAddress } = useSelector((state) => state.address);
-  const dispatch = useDispatch();
-
-  const found = addresses.find(address => address.id === deleteAddress.id)
-  if(!found) {
-    dispatch(resetAddress())
-  }
 
   useEffect(() => {
     const fetchAddresses = async () => {
