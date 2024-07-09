@@ -152,6 +152,6 @@ export default function AddressForm({ onPress }) {
   );
 }
 
-AddressForm.PropTypes = {
+AddressForm.propTypes = {
   onPress: PropTypes.func.isRequired,
 };

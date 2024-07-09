@@ -34,7 +34,7 @@ export default function AddressCard({ address }) {
             [
                 {
                     text: "OK",
-                    onPress: () => navigation.goBack()
+                    // onPress: () => navigation.goBack()
                 }
             ],
             { cancelable: false }

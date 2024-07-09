@@ -8,6 +8,7 @@ import {
   Pressable,
   SafeAreaView,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -83,6 +84,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar/>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Image source={logoImg} style={styles.headerImg} alt="logo" />

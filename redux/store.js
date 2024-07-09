@@ -27,7 +27,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Configure the middleware to ignore non-serializable values for certain actions
 const middleware = (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
-      ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+      ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', 'persist/PURGE'],
     },
   });
 

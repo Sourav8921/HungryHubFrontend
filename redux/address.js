@@ -10,9 +10,12 @@ const addressSlice = createSlice({
     reducers: {
         selectAddress: (state, action) => {
             state.deliveryAddress = action.payload
-        }
+        },
+        resetAddress: (state) => {
+            state.deliveryAddress = {}
+        } 
     }
 }); 
 
-export const { selectAddress } = addressSlice.actions
+export const { selectAddress, resetAddress } = addressSlice.actions
 export default addressSlice.reducer
