@@ -67,7 +67,10 @@ export default function ProfileScreen() {
       </View>
 
       <View className="bg-gray-100 p-4 rounded-xl mt-8 space-y-6">
-        <TouchableOpacity className="flex-row items-center justify-between">
+        <TouchableOpacity
+          onPress={() => navigation.navigate("UserInfo")}
+          className="flex-row items-center justify-between"
+        >
           <Icon.User width={35} height={35} stroke={themeColors.bgColor(1)} />
           <Text className="text-base">Personal info</Text>
           <Icon.ChevronRight

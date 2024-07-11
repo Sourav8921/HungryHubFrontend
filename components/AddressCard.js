@@ -29,6 +29,7 @@ export default function AddressCard({ address }) {
 
     const handleDeleteAddress = () => {
         deleteAddress(address.id)
+        //reseting delivery address state if the inside that state is deleted
         if(deliveryAddress.id === address.id) dispatch(resetAddress())
         Alert.alert(
             "Address Deleted",
