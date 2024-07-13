@@ -5,18 +5,13 @@ import BackButton from '../components/BackButton'
 import { themeColors } from '../theme'
 import * as Icon from "react-native-feather";
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchUser } from '../redux/user'
+import { useSelector } from 'react-redux'
 
 export default function UserInfoScreen() {
 
     const { user } = useSelector((state) => state.user);
     const navigation = useNavigation();
-    const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(fetchUser);
-    // }, [])
-    console.log(user);
+
   return (
     <SafeAreaView className="p-4 bg-white flex-1">
         <View className="flex-row items-center justify-between">

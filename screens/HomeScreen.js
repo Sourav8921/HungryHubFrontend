@@ -42,6 +42,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     dispatch(fetchRestaurants());
+    dispatch(fetchUser());
     fetchMenuItems();
   }, []);
 

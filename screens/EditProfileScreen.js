@@ -2,22 +2,61 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackButton from "../components/BackButton";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import CustomButton from "../components/CustomButton";
 import { BASE_URL } from "../config";
 import { getToken } from "../services/api";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "../redux/user";
 
 export default function EditProfileScreen() {
   const route = useRoute();
   const { user } = route.params;
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [fname, setFname] = useState(user?.first_name);
   const [lname, setLname] = useState(user?.last_name);
   const [email, setEmail] = useState(user?.email);
   const [phone, setPhone] = useState(user?.phone_number);
+  const [formErrors, setFormErrors] = useState({});
+
+  const validateName = (name) => {
+    return name.trim().length >= 2 && name.trim().length <= 50;
+  };
+
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validatePhone = (phone) => {
+    const re = /^[6-9]\d{9}$/;
+    return re.test(phone);
+  };
 
   const handleSubmit = async () => {
+    const errors = {};
+
+    if (!validateName(fname)) {
+      errors.firstName = "First name should be 2-50 characters long";
+    }
+    if (!validateName(lname)) {
+      errors.lastName = "Last name should be 2-50 characters long";
+    }
+    if (!validateEmail(email)) {
+      errors.email = "Please enter a valid email address";
+    }
+    if (!validatePhone(phone)) {
+      errors.phone = "Please enter a valid phone number";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
     try {
       const AUTH_TOKEN = await getToken();
       const response = await axios.patch(
@@ -34,15 +73,20 @@ export default function EditProfileScreen() {
           },
         }
       );
-      console.log(response);
+      if (response.status === 200) {
+        dispatch(fetchUser());
+        setFormErrors({});
+        alert("Profile Updated Successfully");
+        navigation.goBack();
+      }
     } catch (error) {
-      console.log(error);
+      setFormErrors({ server: error.message});
     }
   };
   return (
     <SafeAreaView className="p-4 flex-1 bg-gray-100">
       <BackButton value={"Edit Profile"} />
-      <View className="mt-4">
+      <View className="my-4">
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>First name</Text>
           <TextInput
@@ -54,7 +98,7 @@ export default function EditProfileScreen() {
             autoCorrect={false}
             maxLength={15}
           />
-          {/* <Text style={styles.errorTxt}>{fnameError}</Text> */}
+          {formErrors.firstName && <Text style={styles.errorTxt}>{formErrors.firstName}</Text>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>Last name</Text>
@@ -67,7 +111,7 @@ export default function EditProfileScreen() {
             autoCorrect={false}
             maxLength={15}
           />
-          {/* <Text style={styles.errorTxt}>{lnameError}</Text> */}
+          {formErrors.lastName && <Text style={styles.errorTxt}>{formErrors.lastName}</Text>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>Email address</Text>
@@ -81,7 +125,7 @@ export default function EditProfileScreen() {
             keyboardType="email-address"
             maxLength={30}
           />
-          {/* <Text style={styles.errorTxt}>{emailError}</Text> */}
+          {formErrors.email && <Text style={styles.errorTxt}>{formErrors.email}</Text>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>Phone Number</Text>
@@ -92,30 +136,16 @@ export default function EditProfileScreen() {
             placeholder="8921548685"
             keyboardType="number-pad"
           />
-          {/* <Text style={styles.errorTxt}>{emailError}</Text> */}
+          {formErrors.phone && <Text style={styles.errorTxt}>{formErrors.phone}</Text>}
         </View>
       </View>
       <CustomButton onPress={() => handleSubmit()} title="SAVE" />
+      {formErrors.server && <Text style={styles.errorTxt}>{formErrors.server}{'\n'}Please try again.</Text>}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: "#f3f4f6",
-  },
-  title: {
-    fontSize: 33,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  subTitle: {
-    fontSize: 17,
-    textAlign: "center",
-    color: "grey",
-  },
   inputContainer: {
     marginVertical: 5,
   },
@@ -132,23 +162,5 @@ const styles = StyleSheet.create({
   },
   errorTxt: {
     color: "red",
-  },
-  button: {
-    alignItems: "center",
-    marginVertical: 20,
-    backgroundColor: "#58AD53",
-    height: 50,
-    borderRadius: 10,
-    padding: 10,
-  },
-  btnText: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  signupTxt: {
-    textDecorationLine: "underline",
-    color: "#58AD53",
   },
 });
