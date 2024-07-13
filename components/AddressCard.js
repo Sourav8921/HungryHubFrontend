@@ -45,7 +45,7 @@ export default function AddressCard({ address }) {
     }
     return (
         <TouchableOpacity onPress={handleSelectAddress}>
-            <View className="flex-row mt-4 p-4 bg-gray-50 rounded-lg">
+            <View className="flex-row mt-4 p-4 bg-green-50 rounded-lg">
                 <View>
                     <View className="bg-white rounded-full p-3">
                         <AntDesign name="home" size={24} color={themeColors.bgColor(1)} />
@@ -55,7 +55,7 @@ export default function AddressCard({ address }) {
                     <View className="flex-row justify-between">
                         <Text className="font-medium text-base">{address.address_label}</Text>
                         <View className="flex-row gap-4">
-                            <TouchableOpacity onPress={() => navigation.navigate("UpdateAddress", { 'addressId': address.id })}>
+                            <TouchableOpacity onPress={() => navigation.navigate("UpdateAddress", { address })}>
                                 <AntDesign name="edit" size={20} color={themeColors.bgColor(1)} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleDeleteAddress}>

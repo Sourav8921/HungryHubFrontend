@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { themeColors } from "../theme";
 import PropTypes from "prop-types";
 
-export default function AddressForm({ onPress }) {
+export default function AddressForm({ onPress, address }) {
   const [label, setLabel] = useState("");
   const [showTextField, setShowTextField] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
@@ -23,10 +23,10 @@ export default function AddressForm({ onPress }) {
     setSelectedButton(buttonLabel);
   };
 
-  const [streetAddress, setStreetAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [postalCode, setPostalCode] = useState("");
+  const [streetAddress, setStreetAddress] = useState(address?.street_address);
+  const [city, setCity] = useState(address?.city);
+  const [state, setState] = useState(address?.state);
+  const [postalCode, setPostalCode] = useState(address?.postal_code);
   const { user } = useSelector((state) => state.user);
   const userId = user.id;
   return (
@@ -141,9 +141,20 @@ export default function AddressForm({ onPress }) {
         <TouchableOpacity
           style={{ backgroundColor: themeColors.bgColor(1) }}
           className="items-center p-4 rounded-full w-full"
-          onPress={() =>
-            onPress(userId, streetAddress, city, state, postalCode, label)
-          }
+          onPress={() => {
+            if (
+              userId &&
+              streetAddress &&
+              city &&
+              state &&
+              postalCode &&
+              label
+            ) {
+              onPress(userId, streetAddress, city, state, postalCode, label);
+            } else {
+              alert('Please fill in all fields');
+            }
+          }}
         >
           <Text className="text-white text-lg font-medium">SAVE</Text>
         </TouchableOpacity>

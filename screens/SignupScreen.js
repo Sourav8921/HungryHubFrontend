@@ -28,7 +28,7 @@ export default function SignupScreen({ navigation }) {
     // Trigger form validation when name,
     // email, or password changes
     validateForm();
-  }, [username, firstname, lastname, email, password, password2]);
+  }, [username, email, password, password2]);
 
   const validateForm = () => {
     let errors = {};
@@ -40,12 +40,12 @@ export default function SignupScreen({ navigation }) {
       errors.usernameError = "No whitespace characters";
     }
 
-    if (!firstname) {
-      errors.fnameError = "First name is required.";
-    }
-    if (!lastname) {
-      errors.lnameError = "Last name is required.";
-    }
+    // if (!firstname) {
+    //   errors.fnameError = "First name is required.";
+    // }
+    // if (!lastname) {
+    //   errors.lnameError = "Last name is required.";
+    // }
 
     // Validate email field
     if (!email) {
@@ -72,8 +72,6 @@ export default function SignupScreen({ navigation }) {
 
   const {
     usernameError,
-    fnameError,
-    lnameError,
     emailError,
     passwordError,
     password2Error,
@@ -84,8 +82,6 @@ export default function SignupScreen({ navigation }) {
       try {
         const postData = {
           username,
-          first_name: firstname,
-          last_name: lastname,
           email,
           password,
         };
@@ -139,7 +135,7 @@ export default function SignupScreen({ navigation }) {
             />
             <Text style={styles.errorTxt}>{usernameError}</Text>
           </View>
-          <View style={styles.inputContainer}>
+          {/* <View style={styles.inputContainer}>
             <Text style={styles.inputText}>First name</Text>
             <TextInput
               style={styles.inputField}
@@ -164,7 +160,7 @@ export default function SignupScreen({ navigation }) {
               maxLength={15}
             />
             <Text style={styles.errorTxt}>{lnameError}</Text>
-          </View>
+          </View> */}
           <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Email address</Text>
             <TextInput
