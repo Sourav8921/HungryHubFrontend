@@ -12,50 +12,70 @@ import Categories from "../components/Categories";
 import RestaurantCard from "../components/RestaurantCard";
 import { themeColors } from "../theme";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRestaurants } from "../redux/restaurants";
-import Loading from "../components/Loading";
 import CartIcon from "../components/CartIcon";
 import { fetchUser } from "../redux/user";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import SearchBar from "../components/SearchBar";
+import * as Location from "expo-location";
+import { getNearbyRestaurants } from "../services/api";
 
 export default function HomeScreen({ navigation }) {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [restaurants, setRestaurants] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const dispatch = useDispatch();
-  const { loading, restaurants, error } = useSelector(
-    (state) => state.restaurants
-  );
-  const { cartList } = useSelector((state) => state.cart);
   const { deliveryAddress } = useSelector((state) => state.address);
-
-  const fetchMenuItems = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}/restaurants/menu-items/list/`
-      );
-      setMenuItems(response.data);
-    } catch (error) {
-      console.log("Error fetching menu items", error);
-    }
-  };
+  const { cartList } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    dispatch(fetchRestaurants());
-    dispatch(fetchUser());
-    fetchMenuItems();
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      
+      let location = await Location.getCurrentPositionAsync();
+      setLocation(location);
+    })();
   }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
-  if (error) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-red-600 text-lg">Error : {error}</Text>
-      </View>
-    );
-  }
+  useEffect(() => {
+    if (location) {
+      (async () => {
+        try {
+          const data = await getNearbyRestaurants(location);
+          setRestaurants(data);
+        } catch (error) {
+          console.log("Error fetching restaurants data", error);
+        }
+      })();
+    }
+  }, [location]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/restaurants/menu-items/list/`
+        );
+        setMenuItems(response.data);
+      } catch (error) {
+        console.log("Error fetching menu items", error);
+      }
+    })();
+    dispatch(fetchUser());
+  }, []);
+
+  // if (error) {
+  //   return (
+  //     <View className="flex-1 items-center justify-center">
+  //       <Text className="text-red-600 text-lg">Error : {error}</Text>
+  //     </View>
+  //   );
+  // }
 
   const searchMenuItems = async (query) => {
     try {
@@ -67,7 +87,7 @@ export default function HomeScreen({ navigation }) {
       console.log(error);
     }
   };
-  
+
   return (
     <SafeAreaView className="p-4 flex-1">
       <StatusBar />
@@ -99,7 +119,9 @@ export default function HomeScreen({ navigation }) {
                 </Text>
               </View>
             ) : (
-              <Text className="ml-2 font-medium text-base">Select delivery address</Text>
+              <Text className="ml-2 font-medium text-base">
+                Select delivery address
+              </Text>
             )}
           </TouchableOpacity>
           <TouchableOpacity
