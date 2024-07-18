@@ -8,12 +8,23 @@ import userReducer from './user';
 import addressReducer from "./address";
 
 // Combine all the reducers
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
     cart: cartReducer,
     restaurants: restaurantsReducer,
     user: userReducer,
     address: addressReducer,
 });
+
+const rootReducer = (state, action) => {
+  //if user logs out all reducers will be initialized a new
+  if (action.type === 'USER_LOGOUT') {
+    AsyncStorage.removeItem('persist:root') //also cleaning state in storage engine
+
+    return appReducer(undefined, action)
+  }
+
+  return appReducer(state, action)
+}
 
 // Configuration for redux-persist
 const persistConfig = {
@@ -32,11 +43,12 @@ const middleware = (getDefaultMiddleware) => getDefaultMiddleware({
   });
 
 // Create the Redux store with the persisted reducer and customized middleware
-export const store = configureStore({
+const store = configureStore({
     reducer: persistedReducer,
     middleware,
 });
 
 // Create the persistor to manage persistence
-export const persistor = persistStore(store);
+const persistor = persistStore(store);
 
+export { store, persistor };

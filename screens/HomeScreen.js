@@ -30,16 +30,16 @@ export default function HomeScreen({ navigation }) {
   const { cartList } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-      
-      let location = await Location.getCurrentPositionAsync();
-      setLocation(location);
-    })();
+      (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          setErrorMsg("Permission to access location was denied");
+          return;
+        }
+        
+        let location = await Location.getCurrentPositionAsync();
+        setLocation(location);
+      })();
   }, []);
 
   useEffect(() => {
@@ -68,14 +68,6 @@ export default function HomeScreen({ navigation }) {
     })();
     dispatch(fetchUser());
   }, []);
-
-  // if (error) {
-  //   return (
-  //     <View className="flex-1 items-center justify-center">
-  //       <Text className="text-red-600 text-lg">Error : {error}</Text>
-  //     </View>
-  //   );
-  // }
 
   const searchMenuItems = async (query) => {
     try {

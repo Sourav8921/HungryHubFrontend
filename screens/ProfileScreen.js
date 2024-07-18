@@ -10,19 +10,16 @@ import Loading from "../components/Loading";
 import { useSelector } from "react-redux";
 import BackButton from "../components/BackButton";
 import { Ionicons } from "@expo/vector-icons";
-import { persistor } from "../redux/store";
+import { persistor, store } from "../redux/store";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
 
   const { user } = useSelector((state) => state.user);
 
-  // if (!user) {
-  //   return <Loading />;
-  // }
-
   const logoutUser = async () => {
     try {
+      store.dispatch({ type: 'USER_LOGOUT'}) //dispatching action for clearing redux state
       const AUTH_TOKEN = await AsyncStorage.getItem("auth_token");
       if (!AUTH_TOKEN) {
         console.log(
@@ -137,7 +134,6 @@ export default function ProfileScreen() {
             className="flex-row items-center justify-between"
             onPress={() => {
               logoutUser();
-              persistor.purge();
             }}
           >
             <View className="bg-gray-100 rounded-full p-3">
