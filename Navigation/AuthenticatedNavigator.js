@@ -1,9 +1,9 @@
+import React from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import RestaurantScreen from "../screens/RestaurantScreen";
 import CartScreen from "../screens/CartScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import UnauthenticatedNavigator from "./UnauthenticatedNavigator";
 import SuccessScreen from "../screens/SuccessScreen";
 import SearchScreen from "../screens/SearchScreen";
 import PaymentScreen from "../screens/PaymentScreen";
@@ -34,7 +34,6 @@ export default function AuthenticatedNavigator() {
         <Stack.Screen name="Profile" component={ProfileScreen} options={{animation:'slide_from_right'}}/>
         <Stack.Screen name="UserInfo" component={UserInfoScreen}/>
         <Stack.Screen name="EditProfile" component={EditProfileScreen}/>
-        <Stack.Screen name="Logout" component={UnauthenticatedNavigator}/>
       </Stack.Navigator>
   );
 }

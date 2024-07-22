@@ -32,7 +32,7 @@ const RestaurantCard = ({item}) => {
               <Text className="font-semibold">{item.delivery_time} mins</Text>
             </View>
             <Text>{item.cuisine_type}</Text>
-            <Text>{item.place} - {(item.distance).toFixed(1)} km</Text>
+            <Text>{item.place}</Text>
             <View className="flex-row mt-1">
               <Image source={require('../assets/images/freedelivery.png')}/>
               <Text className="font-extrabold ml-2">FREE DELIVERY</Text>

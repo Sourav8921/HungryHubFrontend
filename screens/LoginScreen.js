@@ -15,10 +15,13 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../config";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useDispatch } from "react-redux";
+import { setIsAuthenticated } from "../redux/auth";
 
 const logoImg = require("../assets/images/logo_only.png");
 
 export default function LoginScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -73,7 +76,7 @@ export default function LoginScreen({ navigation }) {
           config
         );
         await AsyncStorage.setItem("auth_token", response.data.token);
-        navigation.navigate("Authenticated");
+        dispatch(setIsAuthenticated(true))
       } catch (error) {
         console.error("Error:", error);
       }

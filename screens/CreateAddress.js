@@ -6,7 +6,6 @@ import { BASE_URL } from '../config';
 import { useNavigation } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import AddressForm from '../components/AddressForm';
-import address from '../redux/address';
 
 export default function CreateAddress() {
     const navigation = useNavigation();

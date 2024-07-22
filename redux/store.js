@@ -6,6 +6,7 @@ import cartReducer from './cart';
 import restaurantsReducer from './restaurants'
 import userReducer from './user';
 import addressReducer from "./address";
+import authReducer from "./auth";
 
 // Combine all the reducers
 const appReducer = combineReducers({
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
     restaurants: restaurantsReducer,
     user: userReducer,
     address: addressReducer,
+    auth: authReducer,
 });
 
 const rootReducer = (state, action) => {

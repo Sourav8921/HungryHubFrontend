@@ -24,7 +24,7 @@ export default function HomeScreen({ navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const dispatch = useDispatch();
   const { deliveryAddress } = useSelector((state) => state.address);
   const { cartList } = useSelector((state) => state.cart);
@@ -59,9 +59,9 @@ export default function HomeScreen({ navigation }) {
     (async () => {
       try {
         const response = await axios.get(
-          `${BASE_URL}/restaurants/menu-items/list/`
+          `${BASE_URL}/restaurants/categories/`
         );
-        setMenuItems(response.data);
+        setCategories(response.data);
       } catch (error) {
         console.log("Error fetching menu items", error);
       }
@@ -143,7 +143,7 @@ export default function HomeScreen({ navigation }) {
           <Text className="mt-6 text-lg font-medium">
             Sourav, what's on your mind?
           </Text>
-          <Categories menuItems={menuItems} onSearch={searchMenuItems} />
+          <Categories categories={categories} />
 
           {/* restaurants */}
           <Text className="mt-3 text-lg font-medium">

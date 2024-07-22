@@ -1,25 +1,23 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import React from "react";
 import * as Icon from "react-native-feather";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_URL } from "../config";
-import Loading from "../components/Loading";
-import { useSelector } from "react-redux";
 import BackButton from "../components/BackButton";
 import { Ionicons } from "@expo/vector-icons";
-import { persistor, store } from "../redux/store";
+import { store } from "../redux/store";
+import { useDispatch } from "react-redux";
+import { setIsAuthenticated } from "../redux/auth";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
-
-  const { user } = useSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
-      store.dispatch({ type: 'USER_LOGOUT'}) //dispatching action for clearing redux state
+      store.dispatch({ type: "USER_LOGOUT" }); //dispatching action for clearing redux state
       const AUTH_TOKEN = await AsyncStorage.getItem("auth_token");
       if (!AUTH_TOKEN) {
         console.log(
@@ -40,7 +38,7 @@ export default function ProfileScreen() {
       );
       console.log("Response:", response.data);
       await AsyncStorage.removeItem("auth_token");
-      navigation.navigate("Logout");
+      dispatch(setIsAuthenticated(false));
     } catch (error) {
       console.error("Error:", error);
     }
@@ -49,28 +47,7 @@ export default function ProfileScreen() {
   return (
     <View className="flex-1 bg-gray-100 p-4">
       <BackButton value="Profile" />
-
-      {/* <View className="flex-row items-center mt-8">
-        <Image
-          source={require("../assets/images/profilepic.png")}
-          className="w-28 h-28 rounded-full"
-        />
-        <View className="ml-6">
-          <Text className="text-2xl font-semi-bold mb-2">
-            {user.first_name} {user.last_name}
-          </Text>
-          <Text className="text-base text-gray-800">{user.email}</Text>
-        </View>
-      </View> */}
       <View className="mt-4 space-y-3">
-        {/* <View className="bg-white p-4 rounded-xl mt-4 space-y-1">
-          <Text className="font-semibold text-lg">SOURAV RAMESH</Text>
-          <Text className="text-gray-500">8921548685 ~ souravramesh39@gmail.com</Text>
-          <TouchableOpacity>
-            <Text style={{ color: themeColors.bgColor(1) }}>Edit Profile</Text>
-          </TouchableOpacity>
-        </View> */}
-
         <View className="bg-white p-4 rounded-xl space-y-6">
           <TouchableOpacity
             onPress={() => navigation.navigate("UserInfo")}
