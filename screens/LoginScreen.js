@@ -16,7 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../config";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDispatch } from "react-redux";
-import { setIsAuthenticated } from "../redux/auth";
+import { setAuthToken } from "../redux/auth";
 
 const logoImg = require("../assets/images/logo_only.png");
 
@@ -76,7 +76,7 @@ export default function LoginScreen({ navigation }) {
           config
         );
         await AsyncStorage.setItem("auth_token", response.data.token);
-        dispatch(setIsAuthenticated(true))
+        dispatch(setAuthToken(response.data.token));
       } catch (error) {
         console.error("Error:", error);
       }

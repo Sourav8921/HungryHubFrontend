@@ -9,26 +9,18 @@ import { BASE_URL } from "../config";
 import BackButton from "../components/BackButton";
 import { Ionicons } from "@expo/vector-icons";
 import { store } from "../redux/store";
-import { useDispatch } from "react-redux";
-import { setIsAuthenticated } from "../redux/auth";
+import { useSelector } from "react-redux";
 
 export default function ProfileScreen() {
+  const { authToken } = useSelector((state) => state.auth);
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const logoutUser = async () => {
     try {
       store.dispatch({ type: "USER_LOGOUT" }); //dispatching action for clearing redux state
-      const AUTH_TOKEN = await AsyncStorage.getItem("auth_token");
-      if (!AUTH_TOKEN) {
-        console.log(
-          "No authentication token found. User might already be logged out."
-        );
-        return; // Exit function if no token is found
-      }
 
       const config = {
         headers: {
-          Authorization: `Token ${AUTH_TOKEN}`,
+          Authorization: `Token ${authToken}`,
         },
       };
       const response = await axios.post(
@@ -36,9 +28,7 @@ export default function ProfileScreen() {
         null,
         config
       );
-      console.log("Response:", response.data);
       await AsyncStorage.removeItem("auth_token");
-      dispatch(setIsAuthenticated(false));
     } catch (error) {
       console.error("Error:", error);
     }

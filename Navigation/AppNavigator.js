@@ -5,11 +5,11 @@ import AuthenticatedNavigator from "./AuthenticatedNavigator";
 import { useSelector } from "react-redux";
 
 export default function AppNavigator() {
-    const { isAuthenticated } = useSelector((state) => state.auth);
+    const { authToken } = useSelector((state) => state.auth);
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? (
+      {authToken ? (
         <AuthenticatedNavigator />
       ) : (
         <UnauthenticatedNavigator />

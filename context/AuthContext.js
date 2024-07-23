@@ -4,23 +4,23 @@
 // const AuthContext = useContext({});
 
 // const AuthProvider = ({ children }) => {
-//   const [auth, setAuthState] = useState(false);
+//   const [auth, setAuthState] = useState(null);
 
 //   const getAuthState = async () => {
 //     try {
-//       const authData = JSON.parse(authDataString || {});
-//       setAuthState(authData);
+//       const token = await AsyncStorage.getItem("auth_token");
+//       setAuthState(token);
 //     } catch (error) {
-//       setAuthState({});
+//       setAuthState(null);
 //     }
 //   };
 
 //   const setAuth = async (auth) => {
 //     try {
-//       await AsyncStorage.setItem("auth_token", JSON.stringify(auth));
+//       await AsyncStorage.setItem("auth_token", auth);
 //       setAuthState(auth);
 //     } catch (error) {
-//       Promise.reject(error);
+//         return Promise.reject(error);
 //     }
 //   };
 
@@ -30,9 +30,9 @@
 
 //   return (
 //     <AuthContext.Provider value={{ auth, setAuth }}>
-//         {children}
+//       {children}
 //     </AuthContext.Provider>
-//   )
+//   );
 // };
 
 // export { AuthContext, AuthProvider };
