@@ -5,8 +5,6 @@ import {
   Alert,
   TextInput,
   StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -19,6 +17,8 @@ import { getClientSecret, getCsrfToken } from "../services/api";
 import { submitOrder } from "../redux/cart";
 import Loading from "../components/Loading";
 import CustomButton from "../components/CustomButton";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function PaymentScreen() {
   const navigation = useNavigation();
@@ -111,11 +111,9 @@ export default function PaymentScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 p-4"
-    >
+    <SafeAreaView className="flex-1 p-4">
       <ScrollView showsVerticalScrollIndicator={false}>
+        <StatusBar />
         <BackButton value="Payments" />
         <View className="my-4">
           <Text className="text-base font-medium">Pay on Delivery</Text>
@@ -187,7 +185,7 @@ export default function PaymentScreen() {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import * as Icon from "react-native-feather";
 import React, { useEffect, useState } from "react";
@@ -19,55 +13,74 @@ import { BASE_URL } from "../config";
 import SearchBar from "../components/SearchBar";
 import * as Location from "expo-location";
 import { getNearbyRestaurants } from "../services/api";
+import { fetchRestaurants } from "../redux/restaurants";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Loading from "../components/Loading";
 
 export default function HomeScreen({ navigation }) {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [restaurants, setRestaurants] = useState([]);
-  const [categories, setCategories] = useState([]);
+  // const [location, setLocation] = useState(null);
+  // const [errorMsg, setErrorMsg] = useState(null);
+  // const [restaurants, setRestaurants] = useState([]);
   const dispatch = useDispatch();
+  const [categories, setCategories] = useState([]);
   const { deliveryAddress } = useSelector((state) => state.address);
   const { cartList } = useSelector((state) => state.cart);
+  const { restaurants, loading, error } = useSelector((state) => state.restaurants);
 
-  useEffect(() => {
-      (async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          setErrorMsg("Permission to access location was denied");
-          return;
-        }
-        
-        let location = await Location.getCurrentPositionAsync();
-        setLocation(location);
-      })();
-  }, []);
+  // useEffect(() => {
+  //     (async () => {
+  //       try {
+  //         let { status } = await Location.requestForegroundPermissionsAsync();
+  //         if (status !== 'granted') {
+  //           setErrorMsg('Permission to access location was denied');
+  //           return;
+  //         }
 
-  useEffect(() => {
-    if (location) {
-      (async () => {
-        try {
-          const data = await getNearbyRestaurants(location);
-          setRestaurants(data);
-        } catch (error) {
-          console.log("Error fetching restaurants data", error);
-        }
-      })();
-    }
-  }, [location]);
+  //         let location = await Location.getCurrentPositionAsync();
+  //         setLocation(location);
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     })();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (location) {
+  //     (async () => {
+  //       try {
+  //         const data = await getNearbyRestaurants(location);
+  //         setRestaurants(data);
+  //       } catch (error) {
+  //         console.log("Error fetching restaurants data", error);
+  //       }
+  //     })();
+  //   }
+  // }, [location]);
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/restaurants/categories/`
-        );
+        const response = await axios.get(`${BASE_URL}/restaurants/categories/`);
         setCategories(response.data);
       } catch (error) {
         console.log("Error fetching menu items", error);
       }
     })();
     dispatch(fetchUser());
+    dispatch(fetchRestaurants());
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-red-600 text-lg">Error : {error}</Text>
+      </View>
+    );
+  }
 
   const searchMenuItems = async (query) => {
     try {

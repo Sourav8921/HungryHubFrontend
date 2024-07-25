@@ -3,6 +3,7 @@ import React from 'react'
 import { useRoute } from '@react-navigation/native'
 import RestaurantCard from '../components/RestaurantCard';
 import BackButton from '../components/BackButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function SearchScreen() {
@@ -10,7 +11,7 @@ export default function SearchScreen() {
     const { results } = route.params;
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <BackButton value='Search' />
             <View style={styles.restaurantsCont}>
                 <Text style={styles.text}>Search results</Text>
@@ -25,7 +26,7 @@ export default function SearchScreen() {
                     <Text style={styles.noResultsText}>No restaurants found matching your search.</Text>
                 )}
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFFFFF',
-        padding: 20
+        padding: 15
     },
     restaurantsCont: {
         marginTop: 20,

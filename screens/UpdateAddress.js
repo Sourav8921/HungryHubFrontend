@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import axios from 'axios';
 import { BASE_URL } from '../config';
@@ -6,6 +6,7 @@ import { getToken } from '../services/api';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 import AddressForm from '../components/AddressForm';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function UpdateAddress() {
     const navigation = useNavigation();

@@ -6,6 +6,7 @@ import OrderCard from '../components/OrderCard';
 import CustomButton from '../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import * as Icon from "react-native-feather";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function OrdersListScreen() {
     const navigation = useNavigation();
@@ -24,7 +25,7 @@ export default function OrdersListScreen() {
     }, []);
 
     return (
-        <View className="flex-1 p-4">
+        <SafeAreaView className="flex-1 p-4">
             <BackButton value='My Orders' />
             {orders.length === 0 ? (
                 <View className="justify-center items-center flex-1 space-y-3">
@@ -36,6 +37,6 @@ export default function OrdersListScreen() {
                 <OrderCard orders={orders} />
             )}
             <CustomButton onPress={() => navigation.navigate('Home')} title='Go to Home' />
-        </View>
+        </SafeAreaView>
     );
 };

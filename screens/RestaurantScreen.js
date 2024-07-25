@@ -10,6 +10,7 @@ import { themeColors } from '../theme';
 import { BASE_URL } from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { findSubTotal } from '../redux/cart';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RestaurantScreen({ route }) {
 
@@ -40,7 +41,7 @@ export default function RestaurantScreen({ route }) {
       }, [restaurantId]); // Execute this effect whenever restaurantId changes
 
     return (
-        <View className="flex-1 bg-white">
+        <SafeAreaView className="flex-1 bg-white">
             {cartList.length > 0 ? <CartIcon/> : null}
             <StatusBar hidden/>
             <ScrollView>
@@ -96,6 +97,6 @@ export default function RestaurantScreen({ route }) {
 
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     )
 }

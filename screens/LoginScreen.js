@@ -6,10 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StatusBar,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";

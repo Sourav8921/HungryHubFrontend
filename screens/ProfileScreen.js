@@ -10,6 +10,7 @@ import BackButton from "../components/BackButton";
 import { Ionicons } from "@expo/vector-icons";
 import { store } from "../redux/store";
 import { useSelector } from "react-redux";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
   const { authToken } = useSelector((state) => state.auth);
@@ -35,7 +36,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View className="flex-1 bg-gray-100 p-4">
+    <SafeAreaView className="flex-1 bg-gray-100 p-4">
       <BackButton value="Profile" />
       <View className="mt-4 space-y-3">
         <View className="bg-white p-4 rounded-xl space-y-6">
@@ -119,6 +120,6 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

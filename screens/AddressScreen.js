@@ -1,10 +1,11 @@
-import { SafeAreaView, View } from 'react-native'
+import { View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import BackButton from '../components/BackButton'
 import CustomButton from '../components/CustomButton'
 import { useNavigation } from '@react-navigation/native'
 import { getAddresses } from '../services/api'
 import AddressCard from '../components/AddressCard'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 export default function AddressScreen() {

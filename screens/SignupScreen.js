@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Pressable,
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,8 +14,6 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function SignupScreen({ navigation }) {
   const [username, setUsername] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
@@ -39,13 +36,6 @@ export default function SignupScreen({ navigation }) {
     } else if (/\s+/g.test(username)) {
       errors.usernameError = "No whitespace characters";
     }
-
-    // if (!firstname) {
-    //   errors.fnameError = "First name is required.";
-    // }
-    // if (!lastname) {
-    //   errors.lnameError = "Last name is required.";
-    // }
 
     // Validate email field
     if (!email) {
@@ -135,32 +125,6 @@ export default function SignupScreen({ navigation }) {
             />
             <Text style={styles.errorTxt}>{usernameError}</Text>
           </View>
-          {/* <View style={styles.inputContainer}>
-            <Text style={styles.inputText}>First name</Text>
-            <TextInput
-              style={styles.inputField}
-              value={firstname}
-              onChangeText={setFirstname}
-              placeholder="First name"
-              autoCapitalize="none"
-              autoCorrect={false}
-              maxLength={15}
-            />
-            <Text style={styles.errorTxt}>{fnameError}</Text>
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputText}>Last name</Text>
-            <TextInput
-              style={styles.inputField}
-              value={lastname}
-              onChangeText={setLastname}
-              placeholder="Last name"
-              autoCapitalize="none"
-              autoCorrect={false}
-              maxLength={15}
-            />
-            <Text style={styles.errorTxt}>{lnameError}</Text>
-          </View> */}
           <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Email address</Text>
             <TextInput
