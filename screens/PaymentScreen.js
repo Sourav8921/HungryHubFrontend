@@ -116,7 +116,7 @@ export default function PaymentScreen() {
         <StatusBar />
         <BackButton value="Payments" />
         <View className="my-4">
-          <Text className="text-base font-medium">Pay on Delivery</Text>
+          <Text className="text-lg font-medium">Pay on Delivery</Text>
           <TouchableOpacity
             className="flex-row  bg-white my-2 p-4 rounded-xl shadow-md"
             onPress={() =>
@@ -136,14 +136,14 @@ export default function PaymentScreen() {
               )
             }
           >
-            <FontAwesome name="rupee" size={24} color="black" />
-            <Text className="ml-4 font-medium">Pay on delivery (Cash/UPI)</Text>
+            <FontAwesome name="rupee" size={24} color="green" />
+            <Text className="ml-4">Pay on delivery (Cash/UPI)</Text>
           </TouchableOpacity>
         </View>
 
         {/* Card payment */}
         <View style={styles.container}>
-          <Text className="text-base font-medium">Credit & Debit Cards</Text>
+          <Text className="text-lg font-medium">Credit & Debit Cards</Text>
           <View className="space-y-4 bg-white my-2 p-4 rounded-xl shadow-md">
             <Text>Billing Details</Text>
             <TextInput

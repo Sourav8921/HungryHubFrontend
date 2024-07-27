@@ -9,12 +9,12 @@ export default function AfterCart({cartCount, productID}) {
     const dispatch = useDispatch()
     return (
         <View>
-            <View className="bg-white border rounded-xl flex-row justify-around p-2 items-center mt-2 w-24">
+            <View className="border border-gray-400 rounded-lg p-1 items-center mt-2 w-28 flex-row justify-around">
                 <TouchableOpacity onPress={()=> dispatch(decrement(productID))}>
                     <Icon.Minus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4} />
                 </TouchableOpacity>
 
-                <Text className="font-medium text-base">{cartCount}</Text>
+                <Text className="font-medium text-lg">{cartCount}</Text>
 
                 <TouchableOpacity onPress={()=> dispatch(increment(productID))}>
                     <Icon.Plus width={20} height={20} stroke={themeColors.bgColor(1)} strokeWidth={4} />

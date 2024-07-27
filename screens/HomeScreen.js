@@ -16,6 +16,7 @@ import { getNearbyRestaurants } from "../services/api";
 import { fetchRestaurants } from "../redux/restaurants";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Loading from "../components/Loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen({ navigation }) {
   // const [location, setLocation] = useState(null);
