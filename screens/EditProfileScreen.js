@@ -4,11 +4,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import BackButton from "../components/BackButton";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CustomButton from "../components/CustomButton";
-import { BASE_URL } from "../config";
-import { getToken } from "../services/api";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "../redux/user";
+import api from "../axiosConfig";
 
 export default function EditProfileScreen() {
   const route = useRoute();
@@ -58,21 +56,12 @@ export default function EditProfileScreen() {
     }
 
     try {
-      const AUTH_TOKEN = await getToken();
-      const response = await axios.patch(
-        `${BASE_URL}/users/profile/`,
-        {
-          first_name: fname,
-          last_name: lname,
-          email,
-          phone_number: phone,
-        },
-        {
-          headers: {
-            Authorization: `Token ${AUTH_TOKEN}`,
-          },
-        }
-      );
+      const response = await api.patch(`/api/users/profile/`, {
+        first_name: fname,
+        last_name: lname,
+        email,
+        phone_number: phone,
+      });
       if (response.status === 200) {
         dispatch(fetchUser());
         setFormErrors({});
@@ -80,7 +69,7 @@ export default function EditProfileScreen() {
         navigation.goBack();
       }
     } catch (error) {
-      setFormErrors({ server: error.message});
+      setFormErrors({ server: error.message });
     }
   };
   return (
@@ -98,7 +87,9 @@ export default function EditProfileScreen() {
             autoCorrect={false}
             maxLength={15}
           />
-          {formErrors.firstName && <Text style={styles.errorTxt}>{formErrors.firstName}</Text>}
+          {formErrors.firstName && (
+            <Text style={styles.errorTxt}>{formErrors.firstName}</Text>
+          )}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>Last name</Text>
@@ -111,7 +102,9 @@ export default function EditProfileScreen() {
             autoCorrect={false}
             maxLength={15}
           />
-          {formErrors.lastName && <Text style={styles.errorTxt}>{formErrors.lastName}</Text>}
+          {formErrors.lastName && (
+            <Text style={styles.errorTxt}>{formErrors.lastName}</Text>
+          )}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>Email address</Text>
@@ -125,7 +118,9 @@ export default function EditProfileScreen() {
             keyboardType="email-address"
             maxLength={30}
           />
-          {formErrors.email && <Text style={styles.errorTxt}>{formErrors.email}</Text>}
+          {formErrors.email && (
+            <Text style={styles.errorTxt}>{formErrors.email}</Text>
+          )}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>Phone Number</Text>
@@ -136,11 +131,18 @@ export default function EditProfileScreen() {
             placeholder="8921548685"
             keyboardType="number-pad"
           />
-          {formErrors.phone && <Text style={styles.errorTxt}>{formErrors.phone}</Text>}
+          {formErrors.phone && (
+            <Text style={styles.errorTxt}>{formErrors.phone}</Text>
+          )}
         </View>
       </View>
       <CustomButton onPress={() => handleSubmit()} title="SAVE" />
-      {formErrors.server && <Text style={styles.errorTxt}>{formErrors.server}{'\n'}Please try again.</Text>}
+      {formErrors.server && (
+        <Text style={styles.errorTxt}>
+          {formErrors.server}
+          {"\n"}Please try again.
+        </Text>
+      )}
     </SafeAreaView>
   );
 }

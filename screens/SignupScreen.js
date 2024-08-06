@@ -81,7 +81,7 @@ export default function SignupScreen({ navigation }) {
           },
         };
         const response = await axios.post(
-          `${BASE_URL}/users/register/`,
+          `${BASE_URL}/api/users/register/`,
           postData,
           config
         );

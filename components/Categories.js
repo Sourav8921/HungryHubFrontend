@@ -9,7 +9,7 @@ export default function Categories({ categories, onSearch }) {
   const fetchRestaurants = async (id) => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/restaurants/restaurants-category/?category=${id}`
+        `${BASE_URL}/api/restaurants/restaurants-category/?category=${id}`
       );
       navigation.navigate("Search", { results: response.data.results });
     } catch (error) {

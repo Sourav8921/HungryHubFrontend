@@ -13,12 +13,12 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { CardField, useStripe } from "@stripe/stripe-react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getClientSecret, getCsrfToken } from "../services/api";
-import { submitOrder } from "../redux/cart";
+import { getClientSecret, getCsrfToken, submitOrder } from "../services/api";
 import Loading from "../components/Loading";
 import CustomButton from "../components/CustomButton";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { resetCartList } from "../redux/cart";
 
 export default function PaymentScreen() {
   const navigation = useNavigation();
@@ -31,13 +31,14 @@ export default function PaymentScreen() {
   const [phone, setPhone] = useState("");
 
   //order submission
-  const dispatch = useDispatch();
+  const dipatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const userId = user.id;
-  const { cartList, subTotal, orderStatus, orderError } = useSelector(
+  const { cartList, subTotal } = useSelector(
     (state) => state.cart
   );
   const restaurantId = cartList.length > 0 ? cartList[0].restaurant : null;
+  const [loading, setLoading] = useState(false);
 
   //payment
   useEffect(() => {
@@ -72,42 +73,40 @@ export default function PaymentScreen() {
   };
 
   //order submission
-  const handleOrderSubmit = () => {
+  const handleOrderSubmit = async () => {
     if (restaurantId) {
-      const orderDetails = {
-        user: userId,
-        restaurant: restaurantId,
-        items: cartList.map((item) => ({
-          id: item.id,
-          name: item.name,
-          description: item.description,
-          price: item.price,
-          restaurant: item.restaurant,
-          category: item.category,
-          count: item.count,
-        })),
-        total_price: subTotal,
-        status: "Pending",
-      };
-      dispatch(submitOrder(orderDetails));
+      setLoading(true)
+      try {
+        const orderDetails = {
+          user: userId,
+          restaurant: restaurantId,
+          items: cartList.map((item) => ({
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            restaurant: item.restaurant,
+            category: item.category,
+            count: item.count,
+          })),
+          total_price: subTotal,
+          status: "Pending",
+        };
+        const response = await submitOrder(orderDetails);
+        if (response.status === 200) {
+          navigation.navigate("Success");
+          dipatch(resetCartList());
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false)
+      }
     }
   };
 
-  useEffect(() => {
-    if (orderStatus === "succeeded") {
-      navigation.navigate("Success");
-    }
-  }, [orderStatus, navigation]);
-
-  if (orderStatus === "loading") {
+  if (loading) {
     return <Loading />;
-  }
-  if (orderStatus === "failed") {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-red-600 text-lg">Error : {orderError}</Text>
-      </View>
-    );
   }
 
   return (

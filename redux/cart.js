@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from "../config";
 import axios from "axios";
-import { getToken } from "../services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const INITIAL_STATE = {
     cartList: [],
@@ -12,22 +12,22 @@ const INITIAL_STATE = {
 }
 
 // Async thunk for submitting order
-export const submitOrder = createAsyncThunk(
-    'cart/submitOrder',
-    async (orderDetails, { rejectWithValue }) => {
-        try {
-            const AUTH_TOKEN = await getToken();
-            const response = await axios.post(`${BASE_URL}/restaurants/orders/`, orderDetails, {
-                headers: {
-                    Authorization: `Token ${AUTH_TOKEN}`,
-                }
-            });
-            return response.data; 
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
+// export const submitOrder = createAsyncThunk(
+//     'cart/submitOrder',
+//     async (orderDetails, { rejectWithValue }) => {
+//         try {
+//             const accessToken = await AsyncStorage.getItem('accessToken');
+//             const response = await axios.post(`${BASE_URL}/api/restaurants/orders/`, orderDetails, {
+//                 headers: {
+//                     Authorization: `Bearer ${accessToken}`,
+//                 }
+//             });
+//             return response.data; 
+//         } catch (error) {
+//             return rejectWithValue(error.message);
+//         }
+//     }
+// );
 
 const cartSlice = createSlice({
     name: 'cart',
@@ -72,24 +72,27 @@ const cartSlice = createSlice({
         resetOrderStatus: (state) => {
             state.orderStatus = null;
             state.orderError = null;
-        }, 
+        },
+        resetCartList: (state) => {
+            state.cartList = [];
+        }
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(submitOrder.pending, (state) => {
-                state.orderStatus = 'loading';
-                state.orderError = null;
-            })
-            .addCase(submitOrder.fulfilled, (state, action) => {
-                state.orderStatus = 'succeeded';
-                state.cartList = []; // Clear the cart after successful order submission
-            })
-            .addCase(submitOrder.rejected, (state, action) => {
-                state.orderStatus = 'failed';
-                state.orderError = action.payload;
-            });
-    }
+    // extraReducers: (builder) => {
+    //     builder
+    //         .addCase(submitOrder.pending, (state) => {
+    //             state.orderStatus = 'loading';
+    //             state.orderError = null;
+    //         })
+    //         .addCase(submitOrder.fulfilled, (state, action) => {
+    //             state.orderStatus = 'succeeded';
+    //             state.cartList = []; // Clear the cart after successful order submission
+    //         })
+    //         .addCase(submitOrder.rejected, (state, action) => {
+    //             state.orderStatus = 'failed';
+    //             state.orderError = action.payload;
+    //         });
+    // }
 });
 
-export const { addToCart, decrement, increment, findSubTotal, resetOrderStatus } = cartSlice.actions
+export const { addToCart, decrement, increment, findSubTotal, resetOrderStatus, resetCartList } = cartSlice.actions
 export default cartSlice.reducer;

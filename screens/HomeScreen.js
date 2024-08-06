@@ -11,82 +11,54 @@ import { fetchUser } from "../redux/user";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import SearchBar from "../components/SearchBar";
-import * as Location from "expo-location";
-import { getNearbyRestaurants } from "../services/api";
-import { fetchRestaurants } from "../redux/restaurants";
+import { getRestaurants } from "../services/api/RestaurantService";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Loading from "../components/Loading";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../axiosConfig";
 
 export default function HomeScreen({ navigation }) {
-  // const [location, setLocation] = useState(null);
-  // const [errorMsg, setErrorMsg] = useState(null);
-  // const [restaurants, setRestaurants] = useState([]);
   const dispatch = useDispatch();
+  const [restaurants, setRestaurants] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const { deliveryAddress } = useSelector((state) => state.address);
   const { cartList } = useSelector((state) => state.cart);
-  const { restaurants, loading, error } = useSelector((state) => state.restaurants);
 
-  // useEffect(() => {
-  //     (async () => {
-  //       try {
-  //         let { status } = await Location.requestForegroundPermissionsAsync();
-  //         if (status !== 'granted') {
-  //           setErrorMsg('Permission to access location was denied');
-  //           return;
-  //         }
-
-  //         let location = await Location.getCurrentPositionAsync();
-  //         setLocation(location);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     })();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (location) {
-  //     (async () => {
-  //       try {
-  //         const data = await getNearbyRestaurants(location);
-  //         setRestaurants(data);
-  //       } catch (error) {
-  //         console.log("Error fetching restaurants data", error);
-  //       }
-  //     })();
-  //   }
-  // }, [location]);
+  useEffect(() => {
+      const fetchRestaurants = async () => {
+        setLoading(true);
+        try {
+          const data = await getRestaurants();
+          setRestaurants(data);
+        } catch (error) {
+          console.log("Error fetching restaurants data", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+      fetchRestaurants();
+  }, []);
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/restaurants/categories/`);
+        const response = await api.get(`/api/restaurants/categories/`);
         setCategories(response.data);
       } catch (error) {
         console.log("Error fetching menu items", error);
       }
     })();
     dispatch(fetchUser());
-    dispatch(fetchRestaurants());
   }, []);
 
   if (loading) {
     return <Loading />;
   }
 
-  if (error) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-red-600 text-lg">Error : {error}</Text>
-      </View>
-    );
-  }
-
   const searchMenuItems = async (query) => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/restaurants/search/?q=${query}`
+        `${BASE_URL}/api/restaurants/search/?q=${query}`
       );
       navigation.navigate("Search", { results: response.data.results });
     } catch (error) {

@@ -3,35 +3,24 @@ import React from "react";
 import * as Icon from "react-native-feather";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { BASE_URL } from "../config";
 import BackButton from "../components/BackButton";
 import { Ionicons } from "@expo/vector-icons";
 import { store } from "../redux/store";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { setIsAuth } from "../redux/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen() {
-  const { authToken } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const logoutUser = async () => {
+  const handleLogout = async () => {
     try {
+      await AsyncStorage.clear();
+      dispatch(setIsAuth(false))
       store.dispatch({ type: "USER_LOGOUT" }); //dispatching action for clearing redux state
-
-      const config = {
-        headers: {
-          Authorization: `Token ${authToken}`,
-        },
-      };
-      const response = await axios.post(
-        `${BASE_URL}/users/logout/`,
-        null,
-        config
-      );
-      await AsyncStorage.removeItem("auth_token");
     } catch (error) {
-      console.error("Error:", error);
+      console.error(error);
     }
   };
 
@@ -101,7 +90,7 @@ export default function ProfileScreen() {
           <TouchableOpacity
             className="flex-row items-center justify-between"
             onPress={() => {
-              logoutUser();
+              handleLogout();
             }}
           >
             <View className="bg-gray-100 rounded-full p-3">

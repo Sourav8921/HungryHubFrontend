@@ -4,13 +4,12 @@ import * as Icon from "react-native-feather";
 import { useNavigation } from '@react-navigation/native';
 import MenuItem from '../components/MenuItem';
 import CartIcon from '../components/CartIcon';
-import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { themeColors } from '../theme';
-import { BASE_URL } from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { findSubTotal } from '../redux/cart';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import api from '../axiosConfig';
 
 export default function RestaurantScreen({ route }) {
 
@@ -30,7 +29,7 @@ export default function RestaurantScreen({ route }) {
         // Function to fetch menu items when component mounts
         const fetchMenuItems = async () => {
           try {
-            const response = await axios.get(`${BASE_URL}/restaurants/menu-items/?restaurant_id=${restaurantId}`);
+            const response = await api.get(`/api/restaurants/menu-items/?restaurant_id=${restaurantId}`);
             setMenuItems(response.data); // Assuming your response data is an array of menu items
           } catch (error) {
             console.error('Error fetching menu items:', error);

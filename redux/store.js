@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import { persistReducer, persistStore } from "redux-persist";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import cartReducer from './cart';
-import restaurantsReducer from './restaurants'
 import userReducer from './user';
 import addressReducer from "./address";
 import authReducer from "./auth";
@@ -11,7 +10,6 @@ import authReducer from "./auth";
 // Combine all the reducers
 const appReducer = combineReducers({
     cart: cartReducer,
-    restaurants: restaurantsReducer,
     user: userReducer,
     address: addressReducer,
     auth: authReducer,

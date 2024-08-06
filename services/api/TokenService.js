@@ -2,20 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_URL } from "../../config";
 
-const getToken = async () => {
-  try {
-    const token = await AsyncStorage.getItem("auth_token");
-    return token;
-  } catch (error) {
-    console.error("Error retrieving authentication token:", error);
-    return null;
-  }
-};
-
 const getCsrfToken = async () => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/restaurants/get-csrf-token/`,
+      `${BASE_URL}/api/restaurants/get-csrf-token/`,
       {
         withCredentials: true,
       }
@@ -29,7 +19,7 @@ const getCsrfToken = async () => {
 const getClientSecret = async (csrfToken, subTotal) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}/restaurants/create-payment-intent/`,
+      `${BASE_URL}/api/restaurants/create-payment-intent/`,
       {
         amount: subTotal * 100,
       },
@@ -47,4 +37,16 @@ const getClientSecret = async (csrfToken, subTotal) => {
   }
 };
 
-export { getToken, getCsrfToken, getClientSecret };
+const refreshToken = async () => {
+  try {
+    const refreshToken = await AsyncStorage.getItem("refreshToken");
+    const response = await axios.post(`${BASE_URL}/api/token/refresh/`, {
+      refresh: refreshToken,
+    });
+    return response.data.access;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { getCsrfToken, getClientSecret, refreshToken };

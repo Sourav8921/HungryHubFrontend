@@ -9,14 +9,13 @@ import {
   ScrollView,
   StatusBar,
 } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BASE_URL } from "../config";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDispatch } from "react-redux";
-import { setAuthToken } from "../redux/auth";
+import { setIsAuth } from "../redux/auth";
+import { loginUser } from "../services/api/AuthService";
+
 
 const logoImg = require("../assets/images/logo_only.png");
 
@@ -56,29 +55,16 @@ export default function LoginScreen({ navigation }) {
   //destructuring the errors object
   const { usernameError, passwordError } = errors;
 
-  const loginUser = async () => {
+  const handleLogin = async () => {
     if (isFormValid) {
-      const postData = {
-        username: username,
-        password: password,
-      };
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
       try {
-        const response = await axios.post(
-          `${BASE_URL}/users/login/`,
-          postData,
-          config
-        );
-        await AsyncStorage.setItem("auth_token", response.data.token);
-        dispatch(setAuthToken(response.data.token));
+        const response = await loginUser(username, password);
+        if (response.status === 200) {
+          dispatch(setIsAuth(true))
+        }
       } catch (error) {
-        console.error("Error:", error);
+        console.error(error);
+        alert("Failed to login");
       }
     } else {
       alert("Form has errors. Please correct them.");
@@ -87,7 +73,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar/>
+      <StatusBar />
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Image source={logoImg} style={styles.headerImg} alt="logo" />
@@ -107,7 +93,7 @@ export default function LoginScreen({ navigation }) {
               placeholder="username"
               autoCapitalize="none"
               autoCorrect={false}
-              maxLength={30}
+              maxLength={10}
             />
             <Text style={styles.errorTxt}>{usernameError}</Text>
           </View>
@@ -121,7 +107,7 @@ export default function LoginScreen({ navigation }) {
               placeholder="********"
               autoCapitalize="none"
               secureTextEntry={!showPassword}
-              maxLength={25}
+              maxLength={20}
             />
             <Text style={styles.errorTxt}>{passwordError}</Text>
             <TouchableOpacity
@@ -135,7 +121,7 @@ export default function LoginScreen({ navigation }) {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => loginUser()}>
+          <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
             <Text style={styles.btnText}>Log in</Text>
           </TouchableOpacity>
         </View>
