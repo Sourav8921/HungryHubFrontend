@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../../config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../axiosConfig";
+import * as SecureStore from 'expo-secure-store';
 
 const loginUser = async (username, password) => {
   try {
@@ -11,12 +11,24 @@ const loginUser = async (username, password) => {
     });
     const { access, refresh } = response.data;
     api.defaults.headers.common["Authorization"] = "Bearer " + access;
-    await AsyncStorage.setItem("accessToken", access);
-    await AsyncStorage.setItem("refreshToken", refresh);
+    await SecureStore.setItemAsync("accessToken", access);
+    await SecureStore.setItemAsync("refreshToken", refresh);
     return response;
   } catch (error) {
     throw error;
   }
 };
 
-export { loginUser };
+const registerUser = async (username, email, password) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/users/register/`, {
+      username,
+      email,
+      password
+    })
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+export { loginUser, registerUser };

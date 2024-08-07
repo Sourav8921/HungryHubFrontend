@@ -32,23 +32,6 @@ const deleteOrder = async (orderId) => {
   }
 };
 
-// export const submitOrder = createAsyncThunk(
-//     'cart/submitOrder',
-//     async (orderDetails, { rejectWithValue }) => {
-//         try {
-//             const accessToken = await AsyncStorage.getItem('accessToken');
-//             const response = await axios.post(`${BASE_URL}/api/restaurants/orders/`, orderDetails, {
-//                 headers: {
-//                     Authorization: `Bearer ${accessToken}`,
-//                 }
-//             });
-//             return response.data; 
-//         } catch (error) {
-//             return rejectWithValue(error.message);
-//         }
-//     }
-// );
-
 const submitOrder = async (orderDetails) => {
     try {
         const response = await api.post("/api/restaurants/orders/", orderDetails);

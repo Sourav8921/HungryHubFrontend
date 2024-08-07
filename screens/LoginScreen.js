@@ -40,6 +40,8 @@ export default function LoginScreen({ navigation }) {
       errors.usernameError = "Username is required.";
     } else if (/\s+/g.test(username)) {
       errors.usernameError = "No whitespace characters";
+    }  else if (username.length < 3) {
+      errors.usernameError = "Atleast 3 characters"
     }
 
     if (!password) {

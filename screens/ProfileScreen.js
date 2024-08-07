@@ -9,14 +9,15 @@ import { store } from "../redux/store";
 import { useDispatch } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { setIsAuth } from "../redux/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from 'expo-secure-store';
 
 export default function ProfileScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleLogout = async () => {
     try {
-      await AsyncStorage.clear();
+      await SecureStore.deleteItemAsync("accessToken");
+      await SecureStore.deleteItemAsync("refreshToken");
       dispatch(setIsAuth(false))
       store.dispatch({ type: "USER_LOGOUT" }); //dispatching action for clearing redux state
     } catch (error) {

@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from 'expo-secure-store';
 
 export const fetchUser = createAsyncThunk('user/fetchUser',
     async ( _, { rejectWithValue }) => {
         try {
-            const accessToken = await AsyncStorage.getItem('accessToken');
+            const accessToken = await SecureStore.getItemAsync("accessToken");
             const response = await axios.get(`${BASE_URL}/api/users/profile/`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,

@@ -1,10 +1,8 @@
 import axios from "axios";
-
 import { setIsAuth } from "./redux/auth";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { refreshToken } from "./services/api/TokenService";
 import { store } from "./redux/store";
+import * as SecureStore from "expo-secure-store";
 
 const api = axios.create({
   baseURL: "http://192.168.155.232:8000", // Set your base URL here
@@ -25,15 +23,16 @@ api.interceptors.response.use(
         //refresh the token
         const newAccessToken = await refreshToken();
         // Update the authorization header with the new token
-        await AsyncStorage.setItem("accessToken", newAccessToken);
-        api.defaults.headers.common["Authorization"] = "Bearer " + newAccessToken;
+        await SecureStore.setItemAsync("accessToken", newAccessToken);
+        api.defaults.headers.common["Authorization"] =
+          "Bearer " + newAccessToken;
         originalRequest.headers["Authorization"] = "Bearer " + newAccessToken;
 
         // Retry the original request with the new token
         return api(originalRequest);
       } catch (error) {
         store.dispatch(setIsAuth(false));
-        alert("Session expired, Please login again")
+        alert("Session expired, Please login again");
       }
     }
 

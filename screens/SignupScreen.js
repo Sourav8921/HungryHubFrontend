@@ -8,9 +8,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { BASE_URL } from "../config";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { registerUser } from "../services/api/AuthService";
 
 export default function SignupScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -35,6 +34,8 @@ export default function SignupScreen({ navigation }) {
       errors.usernameError = "Username is required.";
     } else if (/\s+/g.test(username)) {
       errors.usernameError = "No whitespace characters";
+    } else if (username.length < 3) {
+      errors.usernameError = "Atleast 3 characters"
     }
 
     // Validate email field
@@ -67,27 +68,16 @@ export default function SignupScreen({ navigation }) {
     password2Error,
   } = errors;
 
-  const registerUser = async () => {
+  const handleSignup = async () => {
     if (isFormValid) {
       try {
-        const postData = {
-          username,
-          email,
-          password,
-        };
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const response = await axios.post(
-          `${BASE_URL}/api/users/register/`,
-          postData,
-          config
-        );
-        console.log("Response:", response.data);
-        navigation.navigate("Login");
+        const response = await registerUser(username, email, password)
+        if (response.status === 201) {
+          navigation.navigate("Login");
+        }
+        alert('Created account');
       } catch (error) {
+        alert('Failed to register, try again later')
         console.error("Error:", error);
       }
     } else {
@@ -102,12 +92,13 @@ export default function SignupScreen({ navigation }) {
         style={styles.container}
         contentContainerStyle={{
           paddingBottom: 50,
+          justifyContent: 'center',
         }}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Hungry Hub</Text>
+          <Text style={styles.title}>HungryHub</Text>
           <Text style={styles.subTitle}>
-            Please sign in to your existing account
+            Please fill in the details to create account
           </Text>
         </View>
 
@@ -188,7 +179,7 @@ export default function SignupScreen({ navigation }) {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => registerUser()}
+            onPress={() => handleSignup()}
           >
             <Text style={styles.btnText}>Sign up</Text>
           </TouchableOpacity>
@@ -222,12 +213,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 33,
+    fontSize: 26,
     fontWeight: "bold",
     textAlign: "center",
   },
   subTitle: {
-    fontSize: 17,
+    fontSize: 16,
     textAlign: "center",
     color: "grey",
   },
@@ -242,7 +233,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   inputText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "500",
   },
   errorTxt: {
@@ -250,11 +241,12 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    marginVertical: 20,
+    marginBottom: 20,
     backgroundColor: "#58AD53",
     height: 50,
     borderRadius: 10,
     padding: 10,
+    marginTop: 5,
   },
   btnText: {
     color: "white",

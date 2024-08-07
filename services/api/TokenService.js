@@ -1,6 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { BASE_URL } from "../../config";
+import * as SecureStore from 'expo-secure-store';
 
 const getCsrfToken = async () => {
   try {
@@ -39,7 +39,7 @@ const getClientSecret = async (csrfToken, subTotal) => {
 
 const refreshToken = async () => {
   try {
-    const refreshToken = await AsyncStorage.getItem("refreshToken");
+    const refreshToken = await SecureStore.getItemAsync("refreshToken");
     const response = await axios.post(`${BASE_URL}/api/token/refresh/`, {
       refresh: refreshToken,
     });
