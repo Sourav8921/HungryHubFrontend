@@ -78,6 +78,7 @@ export default function SignupScreen({ navigation }) {
         alert('Created account');
       } catch (error) {
         alert('Failed to register, try again later')
+        setErrors({usernameError: error.response.data.username})
         console.error("Error:", error);
       }
     } else {

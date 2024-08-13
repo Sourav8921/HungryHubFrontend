@@ -3,7 +3,6 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { themeColors } from '../theme'
 import { useDispatch, useSelector } from 'react-redux';
-import { resetOrderStatus } from '../redux/cart';
 
 export default function CartIcon() {
   const {cartList, subTotal} = useSelector((state) => state.cart);
@@ -15,7 +14,6 @@ export default function CartIcon() {
     <View className="flex-1 absolute bottom-5 w-full z-50">
         <TouchableOpacity 
             onPress={() => {
-              dispatch(resetOrderStatus())
               navigation.navigate('Cart')
             }}
             style={{backgroundColor: themeColors.bgColor(1)}}

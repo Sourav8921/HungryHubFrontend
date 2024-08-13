@@ -1,33 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { BASE_URL } from "../config";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
     cartList: [],
     cartCount: 0,
     subTotal: 0,
-    orderStatus: 'idle',
-    orderError: null,
 }
-
-// Async thunk for submitting order
-// export const submitOrder = createAsyncThunk(
-//     'cart/submitOrder',
-//     async (orderDetails, { rejectWithValue }) => {
-//         try {
-//             const accessToken = await AsyncStorage.getItem('accessToken');
-//             const response = await axios.post(`${BASE_URL}/api/restaurants/orders/`, orderDetails, {
-//                 headers: {
-//                     Authorization: `Bearer ${accessToken}`,
-//                 }
-//             });
-//             return response.data; 
-//         } catch (error) {
-//             return rejectWithValue(error.message);
-//         }
-//     }
-// );
 
 const cartSlice = createSlice({
     name: 'cart',
@@ -69,29 +46,10 @@ const cartSlice = createSlice({
         findSubTotal: (state) => {
             state.subTotal = state.cartList.reduce((total, currValue) => (total += currValue.count * parseInt(currValue.price)), 0);
         },
-        resetOrderStatus: (state) => {
-            state.orderStatus = null;
-            state.orderError = null;
-        },
         resetCartList: (state) => {
             state.cartList = [];
         }
     },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase(submitOrder.pending, (state) => {
-    //             state.orderStatus = 'loading';
-    //             state.orderError = null;
-    //         })
-    //         .addCase(submitOrder.fulfilled, (state, action) => {
-    //             state.orderStatus = 'succeeded';
-    //             state.cartList = []; // Clear the cart after successful order submission
-    //         })
-    //         .addCase(submitOrder.rejected, (state, action) => {
-    //             state.orderStatus = 'failed';
-    //             state.orderError = action.payload;
-    //         });
-    // }
 });
 
 export const { addToCart, decrement, increment, findSubTotal, resetOrderStatus, resetCartList } = cartSlice.actions

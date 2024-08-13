@@ -3,8 +3,6 @@ import {
   Text,
   TouchableOpacity,
   Alert,
-  TextInput,
-  StyleSheet,
   ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -19,6 +17,7 @@ import CustomButton from "../components/CustomButton";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { resetCartList } from "../redux/cart";
+import { themeColors } from "../theme";
 
 export default function PaymentScreen() {
   const navigation = useNavigation();
@@ -26,17 +25,12 @@ export default function PaymentScreen() {
   //Payment
   const [clientSecret, setClientSecret] = useState("");
   const { confirmPayment } = useStripe();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
 
   //order submission
   const dipatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const userId = user.id;
-  const { cartList, subTotal } = useSelector(
-    (state) => state.cart
-  );
+  const { cartList, subTotal } = useSelector((state) => state.cart);
   const restaurantId = cartList.length > 0 ? cartList[0].restaurant : null;
   const [loading, setLoading] = useState(false);
 
@@ -59,11 +53,6 @@ export default function PaymentScreen() {
     // Confirm the payment with the client secret
     const { error } = await confirmPayment(clientSecret, {
       paymentMethodType: "Card",
-      paymentMethodData: {
-        name: name,
-        email: email,
-        phone: phone,
-      },
     });
     if (error) {
       console.log("Payment confirmation error", error);
@@ -75,7 +64,7 @@ export default function PaymentScreen() {
   //order submission
   const handleOrderSubmit = async () => {
     if (restaurantId) {
-      setLoading(true)
+      setLoading(true);
       try {
         const orderDetails = {
           user: userId,
@@ -100,7 +89,7 @@ export default function PaymentScreen() {
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
   };
@@ -141,43 +130,28 @@ export default function PaymentScreen() {
         </View>
 
         {/* Card payment */}
-        <View style={styles.container}>
+        <View className="flex-1">
           <Text className="text-lg font-medium">Credit & Debit Cards</Text>
-          <View className="space-y-4 bg-white my-2 p-4 rounded-xl shadow-md">
-            <Text>Billing Details</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Name"
-              value={name}
-              onChangeText={setName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Phone"
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-            />
+          <View className="bg-white my-2 p-4 rounded-xl shadow-md">
+            <View className="flex-row justify-between border-b border-gray-300 pb-4 mb-4">
+              <Text className='text-lg'>HungryHub</Text>
+              <Text className="text-gray-500">Secure Payments</Text>
+            </View>
+            <Text style={{color: themeColors.text, marginBottom: 10}}>Order Payment</Text>
+            <Text>Total Amount:  ₹{subTotal}</Text>
             <CardField
               postalCodeEnabled={false}
               placeholders={{
-                number: "4242 4242 4242 4242",
+                number: "0000 0000 0000 0000",
               }}
               cardStyle={{
-                backgroundColor: "#FFFFFF",
+                backgroundColor: "white",
                 textColor: "#000000",
               }}
               style={{
                 width: "100%",
                 height: 50,
-                marginVertical: 20,
+                marginVertical: 15,
               }}
             />
             <CustomButton onPress={handlePayPress} title="Pay" />
@@ -186,17 +160,4 @@ export default function PaymentScreen() {
       </ScrollView>
     </SafeAreaView>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  input: {
-    height: 40,
-    borderColor: "#CCC",
-    borderWidth: 1,
-    paddingHorizontal: 8,
-    borderRadius: 15,
-  },
-});
+};
