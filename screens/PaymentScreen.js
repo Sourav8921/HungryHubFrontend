@@ -24,6 +24,7 @@ export default function PaymentScreen() {
 
   //Payment
   const [clientSecret, setClientSecret] = useState("");
+  const [paymentIntentId, setPaymentIntentId] = useState();
   const { confirmPayment } = useStripe();
 
   //order submission
@@ -42,6 +43,7 @@ export default function PaymentScreen() {
 
         const clientSecretData = await getClientSecret(csrfData, subTotal);
         setClientSecret(clientSecretData.clientSecret);
+        setPaymentIntentId(clientSecretData.paymentIntentId)
       } catch (error) {
         console.error("Error fetching tokens:", error);
       }
@@ -55,14 +57,14 @@ export default function PaymentScreen() {
       paymentMethodType: "Card",
     });
     if (error) {
-      console.log("Payment confirmation error", error);
+      alert(error.localizedMessage);
     } else {
-      handleOrderSubmit();
+      handleOrderSubmit('stripe', paymentIntentId);
     }
   };
 
   //order submission
-  const handleOrderSubmit = async () => {
+  const handleOrderSubmit = async (paymentMethod, paymentIntentId) => {
     if (restaurantId) {
       setLoading(true);
       try {
@@ -81,7 +83,7 @@ export default function PaymentScreen() {
           total_price: subTotal,
           status: "Pending",
         };
-        const response = await submitOrder(orderDetails);
+        const response = await submitOrder(orderDetails, paymentMethod, paymentIntentId);
         if (response.status === 200) {
           navigation.navigate("Success");
           dipatch(resetCartList());
@@ -117,7 +119,7 @@ export default function PaymentScreen() {
                   },
                   {
                     text: "Confirm",
-                    onPress: () => handleOrderSubmit(),
+                    onPress: () => handleOrderSubmit('cod'),
                   },
                 ],
                 { cancelable: true }

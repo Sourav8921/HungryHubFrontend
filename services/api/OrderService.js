@@ -32,9 +32,13 @@ const deleteOrder = async (orderId) => {
   }
 };
 
-const submitOrder = async (orderDetails) => {
+const submitOrder = async (orderDetails, paymentMethod, paymentIntentId = null) => {
     try {
-        const response = await api.post("/api/restaurants/orders/", orderDetails);
+        const response = await api.post("/api/restaurants/orders/", {
+          order_details: orderDetails,
+          payment_method: paymentMethod,
+          payment_intent_id: paymentIntentId
+        } );
         return response;
     } catch (error) {
         throw error;

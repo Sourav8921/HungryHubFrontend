@@ -32,6 +32,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (error) {
         store.dispatch(setIsAuth(false));
+        store.dispatch({ type: "USER_LOGOUT" });
         alert("Session expired, Please login again");
       }
     }

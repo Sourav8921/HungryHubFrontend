@@ -23,6 +23,7 @@ export default function HomeScreen({ navigation }) {
   const [categories, setCategories] = useState([]);
   const { deliveryAddress } = useSelector((state) => state.address);
   const { cartList } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
       const fetchRestaurants = async () => {
@@ -127,7 +128,7 @@ export default function HomeScreen({ navigation }) {
         >
           {/* categories */}
           <Text className="mt-6 text-lg font-medium">
-            Sourav, what's on your mind?
+            Hello {user?.username}, what's on your mind?
           </Text>
           <Categories categories={categories} />
 
