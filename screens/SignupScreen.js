@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { registerUser } from "../services/api/AuthService";
 
@@ -19,6 +19,11 @@ export default function SignupScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
+
+  const firstRef = useRef(null);
+  const secondRef = useRef(null);
+  const thirdRef = useRef(null);
+  const fourthRef = useRef(null);
 
   useEffect(() => {
     // Trigger form validation when name,
@@ -114,6 +119,14 @@ export default function SignupScreen({ navigation }) {
               autoCapitalize="none"
               autoCorrect={false}
               maxLength={15}
+              autoFocus={true}
+              blurOnSubmit={false}
+              ref={firstRef}
+              onSubmitEditing={(e) => {
+                const text = e.nativeEvent.text;
+                if(!text) return;
+                secondRef.current.focus();
+              }}
             />
             <Text style={styles.errorTxt}>{usernameError}</Text>
           </View>
@@ -128,6 +141,13 @@ export default function SignupScreen({ navigation }) {
               autoCorrect={false}
               keyboardType="email-address"
               maxLength={30}
+              blurOnSubmit={false}
+              ref={secondRef}
+              onSubmitEditing={(e) => {
+                const text = e.nativeEvent.text;
+                if(!text) return;
+                thirdRef.current.focus();
+              }}
             />
             <Text style={styles.errorTxt}>{emailError}</Text>
           </View>
@@ -141,6 +161,13 @@ export default function SignupScreen({ navigation }) {
               autoCapitalize="none"
               secureTextEntry={!showPassword}
               maxLength={25}
+              blurOnSubmit={false}
+              ref={thirdRef}
+              onSubmitEditing={(e) => {
+                const text = e.nativeEvent.text;
+                if(!text) return;
+                fourthRef.current.focus();
+              }}
             />
             <Text style={styles.errorTxt}>{passwordError}</Text>
             <TouchableOpacity
@@ -164,6 +191,7 @@ export default function SignupScreen({ navigation }) {
               autoCapitalize="none"
               secureTextEntry={!showPassword}
               maxLength={25}
+              ref={fourthRef}
             />
             <Text style={styles.errorTxt}>{password2Error}</Text>
             <TouchableOpacity

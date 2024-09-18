@@ -10,7 +10,7 @@ import {
   StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDispatch } from "react-redux";
 import { setIsAuth } from "../redux/auth";
@@ -26,6 +26,8 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const firstRef = useRef(null);
+  const secondRef = useRef(null);
 
   useEffect(() => {
     // Trigger form validation when name,
@@ -95,7 +97,15 @@ export default function LoginScreen({ navigation }) {
               placeholder="username"
               autoCapitalize="none"
               autoCorrect={false}
-              maxLength={10}
+              maxLength={16}
+              autoFocus={true}
+              blurOnSubmit={false}
+              ref={firstRef}
+              onSubmitEditing={(e) => {
+                const text = e.nativeEvent.text;
+                if(!text) return;
+                secondRef.current.focus();
+              }}
             />
             <Text style={styles.errorTxt}>{usernameError}</Text>
           </View>
@@ -110,6 +120,7 @@ export default function LoginScreen({ navigation }) {
               autoCapitalize="none"
               secureTextEntry={!showPassword}
               maxLength={20}
+              ref={secondRef}
             />
             <Text style={styles.errorTxt}>{passwordError}</Text>
             <TouchableOpacity

@@ -4,7 +4,7 @@ import { BASE_URL } from "../config";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Categories({ categories, onSearch }) {
+export default function Categories({ categories }) {
   const navigation = useNavigation();
   const fetchRestaurants = async (id) => {
     try {
@@ -26,14 +26,14 @@ export default function Categories({ categories, onSearch }) {
           paddingHorizontal: 15,
         }}
       >
-        {categories.map((item) => {
+        {categories?.map((item) => {
           return (
             <View
-              key={item.id}
+              key={item?.id}
               className="flex justify-center items-center mr-5"
             >
               <TouchableOpacity
-                onPress={() => fetchRestaurants(item.id)}
+                onPress={() => fetchRestaurants(item?.id)}
                 className="border rounded-full"
               >
                 <Image

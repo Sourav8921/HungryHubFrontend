@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackButton from "../components/BackButton";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -13,6 +13,11 @@ export default function EditProfileScreen() {
   const { user } = route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  const firstRef = useRef(null);
+  const secondRef = useRef(null);
+  const thirdRef = useRef(null);
+  const fourthRef = useRef(null);
 
   const [fname, setFname] = useState(user?.first_name);
   const [lname, setLname] = useState(user?.last_name);
@@ -86,6 +91,14 @@ export default function EditProfileScreen() {
             autoCapitalize="none"
             autoCorrect={false}
             maxLength={15}
+            autoFocus={true}
+            blurOnSubmit={false}
+            ref={firstRef}
+            onSubmitEditing={(e) => {
+              const text = e.nativeEvent.text;
+              if (!text) return;
+              secondRef.current.focus();
+            }}
           />
           {formErrors.firstName && (
             <Text style={styles.errorTxt}>{formErrors.firstName}</Text>
@@ -101,6 +114,13 @@ export default function EditProfileScreen() {
             autoCapitalize="none"
             autoCorrect={false}
             maxLength={15}
+            blurOnSubmit={false}
+            ref={secondRef}
+            onSubmitEditing={(e) => {
+              const text = e.nativeEvent.text;
+              if (!text) return;
+              thirdRef.current.focus();
+            }}
           />
           {formErrors.lastName && (
             <Text style={styles.errorTxt}>{formErrors.lastName}</Text>
@@ -117,6 +137,13 @@ export default function EditProfileScreen() {
             autoCorrect={false}
             keyboardType="email-address"
             maxLength={30}
+            blurOnSubmit={false}
+            ref={thirdRef}
+            onSubmitEditing={(e) => {
+              const text = e.nativeEvent.text;
+              if (!text) return;
+              fourthRef.current.focus();
+            }}
           />
           {formErrors.email && (
             <Text style={styles.errorTxt}>{formErrors.email}</Text>
@@ -130,6 +157,7 @@ export default function EditProfileScreen() {
             onChangeText={setPhone}
             placeholder="8921548685"
             keyboardType="number-pad"
+            ref={fourthRef}
           />
           {formErrors.phone && (
             <Text style={styles.errorTxt}>{formErrors.phone}</Text>

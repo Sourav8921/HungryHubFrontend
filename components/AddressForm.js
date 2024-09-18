@@ -7,7 +7,7 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { themeColors } from "../theme";
 import PropTypes from "prop-types";
@@ -16,6 +16,11 @@ export default function AddressForm({ onPress, address }) {
   const [label, setLabel] = useState("");
   const [showTextField, setShowTextField] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
+
+  const firstRef = useRef(null);
+  const secondRef = useRef(null);
+  const thirdRef = useRef(null);
+  const fourthRef = useRef(null);
 
   const handlePress = (buttonLabel) => {
     setLabel(buttonLabel);
@@ -43,6 +48,14 @@ export default function AddressForm({ onPress, address }) {
               placeholder="Street Address"
               value={streetAddress}
               onChangeText={setStreetAddress}
+              autoFocus={true}
+              blurOnSubmit={false}
+              ref={firstRef}
+              onSubmitEditing={(e) => {
+                const text = e.nativeEvent.text;
+                if (!text) return;
+                secondRef.current.focus();
+              }}
             />
           </View>
           <View className="flex-row justify-between space-x-2">
@@ -53,6 +66,13 @@ export default function AddressForm({ onPress, address }) {
                 placeholder="City"
                 value={city}
                 onChangeText={setCity}
+                blurOnSubmit={false}
+                ref={secondRef}
+                onSubmitEditing={(e) => {
+                  const text = e.nativeEvent.text;
+                  if (!text) return;
+                  thirdRef.current.focus();
+                }}
               />
             </View>
             <View className="flex-1">
@@ -62,6 +82,13 @@ export default function AddressForm({ onPress, address }) {
                 placeholder="State"
                 value={state}
                 onChangeText={setState}
+                blurOnSubmit={false}
+                ref={thirdRef}
+                onSubmitEditing={(e) => {
+                  const text = e.nativeEvent.text;
+                  if (!text) return;
+                  fourthRef.current.focus();
+                }}
               />
             </View>
           </View>
@@ -72,6 +99,7 @@ export default function AddressForm({ onPress, address }) {
               placeholder="Postal Code"
               value={postalCode}
               onChangeText={setPostalCode}
+              ref={fourthRef}
             />
           </View>
           <View className="space-y-2">
@@ -152,7 +180,7 @@ export default function AddressForm({ onPress, address }) {
             ) {
               onPress(userId, streetAddress, city, state, postalCode, label);
             } else {
-              alert('Please fill in all fields');
+              alert("Please fill in all fields");
             }
           }}
         >
