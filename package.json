@@ -16,7 +16,7 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@stripe/stripe-react-native": "^0.35.1",
     "axios": "^1.6.8",
-    "expo": "~50.0.17",
+    "expo": "~50.0.20",
     "expo-location": "~16.5.5",
     "expo-status-bar": "~1.11.1",
     "nativewind": "^2.0.11",

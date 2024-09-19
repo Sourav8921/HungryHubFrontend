@@ -16,7 +16,6 @@ import { useDispatch } from "react-redux";
 import { setIsAuth } from "../redux/auth";
 import { loginUser } from "../services/api/AuthService";
 
-
 const logoImg = require("../assets/images/logo_only.png");
 
 export default function LoginScreen({ navigation }) {
@@ -29,42 +28,79 @@ export default function LoginScreen({ navigation }) {
   const firstRef = useRef(null);
   const secondRef = useRef(null);
 
-  useEffect(() => {
-    // Trigger form validation when name,
-    // or password changes
-    validateForm();
-  }, [username, password]);
+  // useEffect(() => {
+  //   // Trigger form validation when name,
+  //   // or password changes
+  //   validateForm();
+  // }, [username, password]);
 
-  const validateForm = () => {
-    let errors = {};
-
+  const validateUsername = (username) => {
+    let error = "";
     if (!username) {
-      errors.usernameError = "Username is required.";
+      error = "Username is required.";
     } else if (/\s+/g.test(username)) {
-      errors.usernameError = "No whitespace characters";
-    }  else if (username.length < 3) {
-      errors.usernameError = "Atleast 3 characters"
+      error = "No whitespace characters";
+    } else if (username.length < 3) {
+      error = "Atleast 3 characters";
     }
-
-    if (!password) {
-      errors.passwordError = "Password is required.";
-    } else if (password.length < 6) {
-      errors.passwordError = "Password must be at least 6 characters.";
-    }
-
-    setErrors(errors);
+    setErrors((prevErrors) => ({ ...prevErrors, usernameError: error }));
     setIsFormValid(Object.keys(errors).length === 0);
   };
 
-  //destructuring the errors object
-  const { usernameError, passwordError } = errors;
+  const validatePassword = (password) => {
+    let error = '';
+    if (!password) {
+      error = "Password is required.";
+    } else if (password.length < 6) {
+      error = "Password must be at least 6 characters.";
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, passwordError: error }));
+    setIsFormValid(Object.keys(errors).length === 0);
+  }
+
+  
+  // const validateForm = () => {
+  //   let errors = {};
+
+  //   if (!username) {
+  //     errors.usernameError = "Username is required.";
+  //   } else if (/\s+/g.test(username)) {
+  //     errors.usernameError = "No whitespace characters";
+  //   } else if (username.length < 3) {
+  //     errors.usernameError = "Atleast 3 characters";
+  //   }
+
+  //   if (!password) {
+  //     errors.passwordError = "Password is required.";
+  //   } else if (password.length < 6) {
+  //     errors.passwordError = "Password must be at least 6 characters.";
+  //   }
+
+  //   setErrors(errors);
+  //   setIsFormValid(Object.keys(errors).length === 0);
+  // };
+
+  const checkForErrors = () => {
+    // Perform validation for both fields
+    validateUsername(username);
+    validatePassword(password);
+  
+    // Check if both errors are empty
+    if (!errors.usernameError && !errors.passwordError) {
+      setIsFormValid(true);
+      // Proceed to login or further action
+      handleLogin();
+    } else {
+      setIsFormValid(false);
+    }
+  };
 
   const handleLogin = async () => {
     if (isFormValid) {
       try {
         const response = await loginUser(username, password);
         if (response.status === 200) {
-          dispatch(setIsAuth(true))
+          dispatch(setIsAuth(true));
         }
       } catch (error) {
         console.error(error);
@@ -93,7 +129,10 @@ export default function LoginScreen({ navigation }) {
             <TextInput
               style={styles.inputField}
               value={username}
-              onChangeText={setUsername}
+              onChangeText={(value) => {
+                setUsername(value);
+                validateUsername(value)
+              }}
               placeholder="username"
               autoCapitalize="none"
               autoCorrect={false}
@@ -103,11 +142,11 @@ export default function LoginScreen({ navigation }) {
               ref={firstRef}
               onSubmitEditing={(e) => {
                 const text = e.nativeEvent.text;
-                if(!text) return;
+                if (!text) return;
                 secondRef.current.focus();
               }}
             />
-            <Text style={styles.errorTxt}>{usernameError}</Text>
+            {errors.usernameError && <Text style={styles.errorTxt}>{errors.usernameError}</Text>}
           </View>
 
           <View>
@@ -115,16 +154,19 @@ export default function LoginScreen({ navigation }) {
             <TextInput
               style={styles.inputField}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={(value) => {
+                setPassword(value);
+                validatePassword(value)
+              }}
               placeholder="********"
               autoCapitalize="none"
               secureTextEntry={!showPassword}
               maxLength={20}
               ref={secondRef}
             />
-            <Text style={styles.errorTxt}>{passwordError}</Text>
+            <Text style={styles.errorTxt}>{errors.passwordError}</Text>
             <TouchableOpacity
-              className="absolute right-4 bottom-9"
+              className="absolute p-2 right-2 bottom-7"
               onPress={() => setShowPassword(!showPassword)}
             >
               <Icon
@@ -134,10 +176,10 @@ export default function LoginScreen({ navigation }) {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
+        </View>
+          <TouchableOpacity style={styles.button} onPress={() => checkForErrors()}>
             <Text style={styles.btnText}>Log in</Text>
           </TouchableOpacity>
-        </View>
 
         <Pressable onPress={() => navigation.navigate("Signup")}>
           <Text>
@@ -191,7 +233,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    marginVertical: 20,
+    marginVertical: 15,
     backgroundColor: "#58AD53",
     height: 50,
     borderRadius: 10,

@@ -45,7 +45,8 @@ export default function OrderCard({ orders }) {
                                         text: 'Yes',
                                         onPress: () => {
                                             deleteOrder(item.id)
-                                            navigation.goBack()
+                                            alert('Order cancelled')
+                                            navigation.navigate('Home')
                                         }
                                     }
                                 ],
