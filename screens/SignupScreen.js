@@ -5,89 +5,90 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { registerUser } from "../services/api/AuthService";
 
 export default function SignupScreen({ navigation }) {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
 
   const firstRef = useRef(null);
   const secondRef = useRef(null);
   const thirdRef = useRef(null);
   const fourthRef = useRef(null);
 
-  useEffect(() => {
-    // Trigger form validation when name,
-    // email, or password changes
-    validateForm();
-  }, [username, email, password, password2]);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    password2: "",
+  });
 
-  const validateForm = () => {
-    let errors = {};
+  const handleChange = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-    // Validate name field
-    if (!username) {
+  const validateForm = (data) => {
+    const errors = {};
+
+    if (!data.username) {
       errors.usernameError = "Username is required.";
-    } else if (/\s+/g.test(username)) {
+    } else if (/\s+/g.test(data.username)) {
       errors.usernameError = "No whitespace characters";
-    } else if (username.length < 3) {
-      errors.usernameError = "Atleast 3 characters"
+    } else if (data.username.length < 3) {
+      errors.usernameError = "Atleast 3 characters";
     }
 
-    // Validate email field
-    if (!email) {
+    if (!data.email) {
       errors.emailError = "Email is required.";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
       errors.emailError = "Email is invalid.";
     }
 
-    // Validate password field
-    if (!password) {
+    if (!data.password) {
       errors.passwordError = "Password is required.";
-    } else if (password.length < 6) {
+    } else if (data.password.length < 6) {
       errors.passwordError = "Password must be at least 6 characters.";
+    } else if (/\s+/g.test(data.password)) {
+      errors.passwordError = "No whitespace characters";
     }
 
-    if (password !== password2) {
+    if (data.password !== data.password2) {
       errors.password2Error = "Password should be the same";
     }
 
-    // Set the errors and update form validity
-    setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
+    return errors;
   };
 
-  const {
-    usernameError,
-    emailError,
-    passwordError,
-    password2Error,
-  } = errors;
-
   const handleSignup = async () => {
-    if (isFormValid) {
+    const newErrors = validateForm(formData);
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await registerUser(username, email, password)
+        const response = await registerUser(
+          formData.username,
+          formData.email,
+          formData.password
+        );
         if (response.status === 201) {
           navigation.navigate("Login");
         }
-        alert('Created account');
+        alert("Created account");
       } catch (error) {
-        alert('Failed to register, try again later')
-        setErrors({usernameError: error.response.data.username})
-        console.error("Error:", error);
+        Alert.alert(
+          "Failed to register",
+          `${error.response.data.username || error.response.data.email}`
+        );
       }
     } else {
-      // Form is invalid, display error messages
       alert("Form has errors. Please correct them.");
     }
   };
@@ -98,7 +99,7 @@ export default function SignupScreen({ navigation }) {
         style={styles.container}
         contentContainerStyle={{
           paddingBottom: 50,
-          justifyContent: 'center',
+          justifyContent: "center",
         }}
       >
         <View style={styles.header}>
@@ -113,8 +114,8 @@ export default function SignupScreen({ navigation }) {
             <Text style={styles.inputText}>Username</Text>
             <TextInput
               style={styles.inputField}
-              value={username}
-              onChangeText={setUsername}
+              value={formData.username}
+              onChangeText={(value) => handleChange("username", value)}
               placeholder="username"
               autoCapitalize="none"
               autoCorrect={false}
@@ -124,18 +125,20 @@ export default function SignupScreen({ navigation }) {
               ref={firstRef}
               onSubmitEditing={(e) => {
                 const text = e.nativeEvent.text;
-                if(!text) return;
+                if (!text) return;
                 secondRef.current.focus();
               }}
             />
-            <Text style={styles.errorTxt}>{usernameError}</Text>
+            {errors.usernameError && (
+              <Text style={styles.errorTxt}>{errors.usernameError}</Text>
+            )}
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Email address</Text>
             <TextInput
               style={styles.inputField}
-              value={email}
-              onChangeText={setEmail}
+              value={formData.email}
+              onChangeText={(value) => handleChange("email", value)}
               placeholder="email@example.com"
               autoCapitalize="none"
               autoCorrect={false}
@@ -145,65 +148,77 @@ export default function SignupScreen({ navigation }) {
               ref={secondRef}
               onSubmitEditing={(e) => {
                 const text = e.nativeEvent.text;
-                if(!text) return;
+                if (!text) return;
                 thirdRef.current.focus();
               }}
             />
-            <Text style={styles.errorTxt}>{emailError}</Text>
+            {errors.emailError && (
+              <Text style={styles.errorTxt}>{errors.emailError}</Text>
+            )}
           </View>
+
           <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Password</Text>
-            <TextInput
-              style={styles.inputField}
-              value={password}
-              onChangeText={setPassword}
-              placeholder="********"
-              autoCapitalize="none"
-              secureTextEntry={!showPassword}
-              maxLength={25}
-              blurOnSubmit={false}
-              ref={thirdRef}
-              onSubmitEditing={(e) => {
-                const text = e.nativeEvent.text;
-                if(!text) return;
-                fourthRef.current.focus();
-              }}
-            />
-            <Text style={styles.errorTxt}>{passwordError}</Text>
-            <TouchableOpacity
-              className="absolute right-4 bottom-9"
-              onPress={() => setShowPassword(!showPassword)}
-            >
-              <Icon
-                name={showPassword ? "eye-off" : "eye"}
-                size={25}
-                color="#CCC"
+            <View>
+              <TextInput
+                style={styles.inputField}
+                value={formData.password}
+                onChangeText={(value) => handleChange("password", value)}
+                placeholder="********"
+                autoCapitalize="none"
+                secureTextEntry={!showPassword}
+                maxLength={25}
+                blurOnSubmit={false}
+                ref={thirdRef}
+                onSubmitEditing={(e) => {
+                  const text = e.nativeEvent.text;
+                  if (!text) return;
+                  fourthRef.current.focus();
+                }}
               />
-            </TouchableOpacity>
+              <TouchableOpacity
+                className="absolute p-2 right-2 bottom-2"
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Icon
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={25}
+                  color="#CCC"
+                />
+              </TouchableOpacity>
+            </View>
+            {errors.passwordError && (
+              <Text style={styles.errorTxt}>{errors.passwordError}</Text>
+            )}
           </View>
+
           <View style={styles.inputContainer}>
             <Text style={styles.inputText}>Re-type password</Text>
-            <TextInput
-              style={styles.inputField}
-              value={password2}
-              onChangeText={setPassword2}
-              placeholder="********"
-              autoCapitalize="none"
-              secureTextEntry={!showPassword}
-              maxLength={25}
-              ref={fourthRef}
-            />
-            <Text style={styles.errorTxt}>{password2Error}</Text>
-            <TouchableOpacity
-              className="absolute right-4 bottom-9"
-              onPress={() => setShowPassword(!showPassword)}
-            >
-              <Icon
-                name={showPassword ? "eye-off" : "eye"}
-                size={25}
-                color="#CCC"
+            <View>
+              <TextInput
+                style={styles.inputField}
+                value={formData.password2}
+                onChangeText={(value) => handleChange("password2", value)}
+                placeholder="********"
+                autoCapitalize="none"
+                secureTextEntry={!showPassword}
+                maxLength={25}
+                ref={fourthRef}
               />
-            </TouchableOpacity>
+              <TouchableOpacity
+                className="absolute p-2 right-2 bottom-2"
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Icon
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={25}
+                  color="#CCC"
+                />
+              </TouchableOpacity>
+            </View>
+            {errors.password2Error && (
+              <Text style={styles.errorTxt}>{errors.password2Error}</Text>
+            )}
           </View>
 
           <TouchableOpacity

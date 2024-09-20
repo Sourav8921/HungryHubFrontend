@@ -8,9 +8,10 @@ import {
   Pressable,
   ScrollView,
   StatusBar,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDispatch } from "react-redux";
 import { setIsAuth } from "../redux/auth";
@@ -20,91 +21,59 @@ const logoImg = require("../assets/images/logo_only.png");
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
+
   const firstRef = useRef(null);
   const secondRef = useRef(null);
 
-  // useEffect(() => {
-  //   // Trigger form validation when name,
-  //   // or password changes
-  //   validateForm();
-  // }, [username, password]);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  const validateUsername = (username) => {
-    let error = "";
-    if (!username) {
-      error = "Username is required.";
-    } else if (/\s+/g.test(username)) {
-      error = "No whitespace characters";
-    } else if (username.length < 3) {
-      error = "Atleast 3 characters";
-    }
-    setErrors((prevErrors) => ({ ...prevErrors, usernameError: error }));
-    setIsFormValid(Object.keys(errors).length === 0);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
-  const validatePassword = (password) => {
-    let error = '';
-    if (!password) {
-      error = "Password is required.";
-    } else if (password.length < 6) {
-      error = "Password must be at least 6 characters.";
+  const validateForm = (data) => {
+    const errors = {};
+
+    if (!data.username) {
+      errors.usernameError = "Username is required.";
+    } else if (/\s+/g.test(data.username)) {
+      errors.usernameError = "No whitespace characters";
+    } else if (data.username.length < 3) {
+      errors.usernameError = "Atleast 3 characters";
     }
-    setErrors((prevErrors) => ({ ...prevErrors, passwordError: error }));
-    setIsFormValid(Object.keys(errors).length === 0);
-  }
 
-  
-  // const validateForm = () => {
-  //   let errors = {};
-
-  //   if (!username) {
-  //     errors.usernameError = "Username is required.";
-  //   } else if (/\s+/g.test(username)) {
-  //     errors.usernameError = "No whitespace characters";
-  //   } else if (username.length < 3) {
-  //     errors.usernameError = "Atleast 3 characters";
-  //   }
-
-  //   if (!password) {
-  //     errors.passwordError = "Password is required.";
-  //   } else if (password.length < 6) {
-  //     errors.passwordError = "Password must be at least 6 characters.";
-  //   }
-
-  //   setErrors(errors);
-  //   setIsFormValid(Object.keys(errors).length === 0);
-  // };
-
-  const checkForErrors = () => {
-    // Perform validation for both fields
-    validateUsername(username);
-    validatePassword(password);
-  
-    // Check if both errors are empty
-    if (!errors.usernameError && !errors.passwordError) {
-      setIsFormValid(true);
-      // Proceed to login or further action
-      handleLogin();
-    } else {
-      setIsFormValid(false);
+    if (!data.password) {
+      errors.passwordError = "Password is required.";
+    } else if (data.password.length < 6) {
+      errors.passwordError = "Password must be at least 6 characters.";
+    } else if (/\s+/g.test(data.password)) {
+      errors.passwordError = "No whitespace characters";
     }
+
+    return errors;
   };
 
   const handleLogin = async () => {
-    if (isFormValid) {
+    const newErrors = validateForm(formData);
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await loginUser(username, password);
+        const response = await loginUser(formData.username, formData.password);
         if (response.status === 200) {
           dispatch(setIsAuth(true));
         }
       } catch (error) {
-        console.error(error);
-        alert("Failed to login");
+        Alert.alert("Failed to login", `${error.response.data.detail}`);
       }
     } else {
       alert("Form has errors. Please correct them.");
@@ -128,11 +97,8 @@ export default function LoginScreen({ navigation }) {
             <Text style={styles.inputText}>Username</Text>
             <TextInput
               style={styles.inputField}
-              value={username}
-              onChangeText={(value) => {
-                setUsername(value);
-                validateUsername(value)
-              }}
+              value={formData.username}
+              onChangeText={(value) => handleChange("username", value)}
               placeholder="username"
               autoCapitalize="none"
               autoCorrect={false}
@@ -146,40 +112,43 @@ export default function LoginScreen({ navigation }) {
                 secondRef.current.focus();
               }}
             />
-            {errors.usernameError && <Text style={styles.errorTxt}>{errors.usernameError}</Text>}
+            {errors.usernameError && (
+              <Text style={styles.errorTxt}>{errors.usernameError}</Text>
+            )}
           </View>
 
           <View>
             <Text style={styles.inputText}>Password</Text>
-            <TextInput
-              style={styles.inputField}
-              value={password}
-              onChangeText={(value) => {
-                setPassword(value);
-                validatePassword(value)
-              }}
-              placeholder="********"
-              autoCapitalize="none"
-              secureTextEntry={!showPassword}
-              maxLength={20}
-              ref={secondRef}
-            />
-            <Text style={styles.errorTxt}>{errors.passwordError}</Text>
-            <TouchableOpacity
-              className="absolute p-2 right-2 bottom-7"
-              onPress={() => setShowPassword(!showPassword)}
-            >
-              <Icon
-                name={showPassword ? "eye-off" : "eye"}
-                size={25}
-                color="#CCC"
+            <View>
+              <TextInput
+                style={styles.inputField}
+                value={formData.password}
+                onChangeText={(value) => handleChange("password", value)}
+                placeholder="********"
+                autoCapitalize="none"
+                secureTextEntry={!showPassword}
+                maxLength={20}
+                ref={secondRef}
               />
-            </TouchableOpacity>
+              <TouchableOpacity
+                className="absolute p-2 right-2 bottom-2"
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Icon
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={25}
+                  color="#CCC"
+                />
+              </TouchableOpacity>
+            </View>
+            {errors.passwordError && (
+              <Text style={styles.errorTxt}>{errors.passwordError}</Text>
+            )}
           </View>
         </View>
-          <TouchableOpacity style={styles.button} onPress={() => checkForErrors()}>
-            <Text style={styles.btnText}>Log in</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
+          <Text style={styles.btnText}>Log in</Text>
+        </TouchableOpacity>
 
         <Pressable onPress={() => navigation.navigate("Signup")}>
           <Text>
