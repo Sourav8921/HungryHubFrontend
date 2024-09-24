@@ -16,6 +16,7 @@ export default function AddressForm({ onPress, address }) {
   const [label, setLabel] = useState("");
   const [showTextField, setShowTextField] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const firstRef = useRef(null);
   const secondRef = useRef(null);
@@ -34,6 +35,60 @@ export default function AddressForm({ onPress, address }) {
   const [postalCode, setPostalCode] = useState(address?.postal_code);
   const { user } = useSelector((state) => state.user);
   const userId = user.id;
+
+  const validateForm = (streetAddress, city, state, postalCode, label) => {
+    const errors = {};
+
+    if (!streetAddress) {
+      errors.streetaddressError = "Street address is required.";
+    } else if (streetAddress.length < 3) {
+      errors.streetaddressError = "Length is too less";
+    }
+
+    if (!city) {
+      errors.cityError = "City name is required";
+    } else if (city.length < 3) {
+      errors.cityError = "Length is too less";
+    }
+
+    if (!state) {
+      errors.stateError = "State name is required";
+    } else if (state.length < 3) {
+      errors.stateError = "Length is too less";
+    }
+
+    if (!postalCode) {
+      errors.postalError = "Postal code is required";
+    } else if (postalCode.length < 3) {
+      errors.postalError = "Length is too less";
+    }
+
+    if (!label) {
+      errors.labelError = "Address label is required";
+    } else if (label.length < 4) {
+      errors.labelError = "Length is too less";
+    }
+
+    return errors;
+  };
+
+  const handleSubmit = () => {
+    const newErrors = validateForm(
+      streetAddress,
+      city,
+      state,
+      postalCode,
+      label
+    );
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      onPress(userId, streetAddress, city, state, postalCode, label);
+    } else {
+      alert("Form has errors. Please correct them.");
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -44,7 +99,7 @@ export default function AddressForm({ onPress, address }) {
           <View>
             <Text className="text-base">Street Address</Text>
             <TextInput
-              className="bg-gray-100 p-2 rounded-lg mt-2 h-12"
+              className="bg-gray-100 p-2 rounded-lg my-2 h-12"
               placeholder="Street Address"
               value={streetAddress}
               onChangeText={setStreetAddress}
@@ -57,12 +112,15 @@ export default function AddressForm({ onPress, address }) {
                 secondRef.current.focus();
               }}
             />
+            {errors.streetaddressError && (
+              <Text className="text-red-500">{errors.streetaddressError}</Text>
+            )}
           </View>
           <View className="flex-row justify-between space-x-2">
             <View className="flex-1">
               <Text className="text-base">City</Text>
               <TextInput
-                className="bg-gray-100 p-2 rounded-lg mt-2 h-12"
+                className="bg-gray-100 p-2 rounded-lg my-2 h-12"
                 placeholder="City"
                 value={city}
                 onChangeText={setCity}
@@ -74,11 +132,14 @@ export default function AddressForm({ onPress, address }) {
                   thirdRef.current.focus();
                 }}
               />
+              {errors.cityError && (
+                <Text className="text-red-500">{errors.cityError}</Text>
+              )}
             </View>
             <View className="flex-1">
               <Text className="text-base">State</Text>
               <TextInput
-                className="bg-gray-100 p-2 rounded-lg mt-2 h-12"
+                className="bg-gray-100 p-2 rounded-lg my-2 h-12"
                 placeholder="State"
                 value={state}
                 onChangeText={setState}
@@ -90,17 +151,24 @@ export default function AddressForm({ onPress, address }) {
                   fourthRef.current.focus();
                 }}
               />
+              {errors.stateError && (
+                <Text className="text-red-500">{errors.stateError}</Text>
+              )}
             </View>
           </View>
           <View>
             <Text className="text-base">Postal</Text>
             <TextInput
-              className="bg-gray-100 p-2 rounded-lg mt-2 h-12"
+              className="bg-gray-100 p-2 rounded-lg my-2 h-12"
               placeholder="Postal Code"
+              keyboardType="number-pad"
               value={postalCode}
               onChangeText={setPostalCode}
               ref={fourthRef}
             />
+            {errors.cityError && (
+              <Text className="text-red-500">{errors.cityError}</Text>
+            )}
           </View>
           <View className="space-y-2">
             <Text className="text-base">Save address as:</Text>
@@ -164,25 +232,15 @@ export default function AddressForm({ onPress, address }) {
                 onChangeText={setLabel}
               />
             )}
+            {errors.labelError && (
+              <Text className="text-red-500">{errors.labelError}</Text>
+            )}
           </View>
         </View>
         <TouchableOpacity
           style={{ backgroundColor: themeColors.bgColor(1) }}
           className="items-center p-4 rounded-full w-full"
-          onPress={() => {
-            if (
-              userId &&
-              streetAddress &&
-              city &&
-              state &&
-              postalCode &&
-              label
-            ) {
-              onPress(userId, streetAddress, city, state, postalCode, label);
-            } else {
-              alert("Please fill in all fields");
-            }
-          }}
+          onPress={() => handleSubmit()}
         >
           <Text className="text-white text-lg font-medium">SAVE</Text>
         </TouchableOpacity>

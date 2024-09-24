@@ -19,10 +19,20 @@ export default function EditProfileScreen() {
   const thirdRef = useRef(null);
   const fourthRef = useRef(null);
 
-  const [fname, setFname] = useState(user?.first_name);
-  const [lname, setLname] = useState(user?.last_name);
-  const [email, setEmail] = useState(user?.email);
-  const [phone, setPhone] = useState(user?.phone_number);
+  const [formData, setFormData] = useState({
+    fname: user?.first_name,
+    lname: user?.last_name,
+    email: user?.email,
+    phone: user?.phone_number
+  });
+
+  const handleChange = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   const [formErrors, setFormErrors] = useState({});
 
   const validateName = (name) => {
@@ -42,16 +52,16 @@ export default function EditProfileScreen() {
   const handleSubmit = async () => {
     const errors = {};
 
-    if (!validateName(fname)) {
+    if (!validateName(formData.fname)) {
       errors.firstName = "First name should be 2-50 characters long";
     }
-    if (!validateName(lname)) {
+    if (!validateName(formData.lname)) {
       errors.lastName = "Last name should be 2-50 characters long";
     }
-    if (!validateEmail(email)) {
+    if (!validateEmail(formData.email)) {
       errors.email = "Please enter a valid email address";
     }
-    if (!validatePhone(phone)) {
+    if (!validatePhone(formData.phone)) {
       errors.phone = "Please enter a valid phone number";
     }
 
@@ -62,10 +72,10 @@ export default function EditProfileScreen() {
 
     try {
       const response = await api.patch(`/api/users/profile/`, {
-        first_name: fname,
-        last_name: lname,
-        email,
-        phone_number: phone,
+        first_name: formData.fname,
+        last_name: formData.lname,
+        email: formData.email,
+        phone_number: formData.phone,
       });
       if (response.status === 200) {
         dispatch(fetchUser());
@@ -85,8 +95,8 @@ export default function EditProfileScreen() {
           <Text style={styles.inputText}>First name</Text>
           <TextInput
             style={styles.inputField}
-            value={fname}
-            onChangeText={setFname}
+            value={formData.fname}
+            onChangeText={(value) => handleChange("fname", value)}
             placeholder="First name"
             autoCapitalize="none"
             autoCorrect={false}
@@ -108,8 +118,8 @@ export default function EditProfileScreen() {
           <Text style={styles.inputText}>Last name</Text>
           <TextInput
             style={styles.inputField}
-            value={lname}
-            onChangeText={setLname}
+            value={formData.lname}
+            onChangeText={(value) => handleChange("lname", value)}
             placeholder="Last name"
             autoCapitalize="none"
             autoCorrect={false}
@@ -130,8 +140,8 @@ export default function EditProfileScreen() {
           <Text style={styles.inputText}>Email address</Text>
           <TextInput
             style={styles.inputField}
-            value={email}
-            onChangeText={setEmail}
+            value={formData.email}
+            onChangeText={(value) => handleChange("email", value)}
             placeholder="email@example.com"
             autoCapitalize="none"
             autoCorrect={false}
@@ -153,8 +163,8 @@ export default function EditProfileScreen() {
           <Text style={styles.inputText}>Phone Number</Text>
           <TextInput
             style={styles.inputField}
-            value={phone}
-            onChangeText={setPhone}
+            value={formData.phone}
+            onChangeText={(value) => handleChange("phone", value)}
             placeholder="8921548685"
             keyboardType="number-pad"
             ref={fourthRef}
