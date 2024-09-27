@@ -5,7 +5,7 @@ import { store } from "./redux/store";
 import * as SecureStore from "expo-secure-store";
 
 const api = axios.create({
-  baseURL: "http://192.168.155.232:8000", // Set your base URL here
+  baseURL: "http://52.66.197.217", // Set your base URL here
   headers: {
     "Content-Type": "application/json",
   },
