@@ -4,7 +4,6 @@ import * as Icon from "react-native-feather";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../components/BackButton";
-import { Ionicons } from "@expo/vector-icons";
 import { store } from "../redux/store";
 import { useDispatch } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -73,10 +72,10 @@ export default function ProfileScreen() {
             onPress={() => navigation.navigate("Orders")}
           >
             <View className="bg-gray-100 rounded-full p-3">
-              <Ionicons
-                name="fast-food-outline"
-                size={25}
-                color={themeColors.bgColor(1)}
+              <Icon.ShoppingBag 
+                width={25}
+                height={25}
+                stroke={themeColors.bgColor(1)}
               />
             </View>
             <Text className="text-base">Orders</Text>

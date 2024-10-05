@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
-import { AntDesign } from '@expo/vector-icons';
+import * as Icon from "react-native-feather";
 import { themeColors } from '../theme';
 import { deleteAddress } from '../services/api';
 import { useNavigation } from '@react-navigation/native';
@@ -48,7 +48,7 @@ export default function AddressCard({ address }) {
             <View className="flex-row mt-4 p-4 bg-green-50 rounded-lg">
                 <View>
                     <View className="bg-white rounded-full p-3">
-                        <AntDesign name="home" size={24} color={themeColors.bgColor(1)} />
+                        <Icon.Home width={24} height={24} stroke={themeColors.bgColor(1)}/>
                     </View>
                 </View>
                 <View className="ml-4 flex-1 space-y-1">
@@ -56,10 +56,10 @@ export default function AddressCard({ address }) {
                         <Text className="font-medium text-base">{address.address_label}</Text>
                         <View className="flex-row gap-4">
                             <TouchableOpacity onPress={() => navigation.navigate("UpdateAddress", { address })}>
-                                <AntDesign name="edit" size={20} color={themeColors.bgColor(1)} />
+                                <Icon.Edit width={20} height={20} stroke={themeColors.bgColor(1)}/>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={handleDeleteAddress}>
-                                <AntDesign name="delete" size={20} color={themeColors.bgColor(1)} />
+                                <Icon.Trash2 width={20} height={20} stroke={themeColors.bgColor(1)}/>
                             </TouchableOpacity>
                         </View>
                     </View>

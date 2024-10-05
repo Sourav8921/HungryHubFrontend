@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import BackButton from "../components/BackButton";
-import { FontAwesome } from "@expo/vector-icons";
+import * as Icon from "react-native-feather";
 import { useNavigation } from "@react-navigation/native";
 import { CardField, useStripe } from "@stripe/stripe-react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -126,7 +126,7 @@ export default function PaymentScreen() {
               )
             }
           >
-            <FontAwesome name="rupee" size={24} color="green" />
+            <Icon.Truck width={24} height={24} stroke={themeColors.bgColor(1)}/>
             <Text className="ml-4">Pay on delivery (Cash/UPI)</Text>
           </TouchableOpacity>
         </View>
