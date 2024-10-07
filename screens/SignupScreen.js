@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRef, useState } from "react";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import * as Icon from "react-native-feather";
 import { registerUser } from "../services/api/AuthService";
 
 export default function SignupScreen({ navigation }) {
@@ -177,14 +177,14 @@ export default function SignupScreen({ navigation }) {
                 }}
               />
               <TouchableOpacity
-                className="absolute p-2 right-2 bottom-2"
+                className="absolute p-2 right-2 bottom-3"
                 onPress={() => setShowPassword(!showPassword)}
               >
-                <Icon
-                  name={showPassword ? "eye-off" : "eye"}
-                  size={25}
-                  color="#CCC"
-                />
+                {showPassword ? (
+                  <Icon.EyeOff width={22} height={22} stroke="#CCC" />
+                ) : (
+                  <Icon.Eye width={22} height={22} stroke="#CCC" />
+                )}
               </TouchableOpacity>
             </View>
             {errors.passwordError && (
@@ -206,14 +206,14 @@ export default function SignupScreen({ navigation }) {
                 ref={fourthRef}
               />
               <TouchableOpacity
-                className="absolute p-2 right-2 bottom-2"
+                className="absolute p-2 right-2 bottom-3"
                 onPress={() => setShowPassword(!showPassword)}
               >
-                <Icon
-                  name={showPassword ? "eye-off" : "eye"}
-                  size={25}
-                  color="#CCC"
-                />
+                {showPassword ? (
+                  <Icon.EyeOff width={22} height={22} stroke="#CCC" />
+                ) : (
+                  <Icon.Eye width={22} height={22} stroke="#CCC" />
+                )}
               </TouchableOpacity>
             </View>
             {errors.password2Error && (
