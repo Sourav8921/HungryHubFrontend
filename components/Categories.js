@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
 import React from "react";
 import { BASE_URL } from "../config";
 import axios from "axios";
@@ -17,33 +24,22 @@ export default function Categories({ categories }) {
     }
   };
   return (
-    <View className="mt-4">
+    <View style={styles.container}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="overflow-visible"
-        contentContainerStyle={{
-          paddingHorizontal: 15,
-        }}
+        contentContainerStyle={styles.scrollViewContent}
       >
         {categories?.map((item) => {
           return (
-            <View
-              key={item?.id}
-              className="flex justify-center items-center mr-5"
-            >
+            <View key={item?.id} style={styles.categoryContainer}>
               <TouchableOpacity
                 onPress={() => fetchRestaurants(item?.id)}
-                className="border rounded-full"
+                style={styles.imageWrapper}
               >
-                <Image
-                  style={{ width: 70, height: 70, borderRadius: 50 }}
-                  source={{ uri: item?.image }}
-                />
+                <Image style={styles.image} source={{ uri: item?.image }} />
               </TouchableOpacity>
-              <Text className="font-medium pt-1 text-gray-600">
-                {item?.name}
-              </Text>
+              <Text style={styles.categoryName}>{item?.name}</Text>
             </View>
           );
         })}
@@ -51,3 +47,31 @@ export default function Categories({ categories }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 16,
+  },
+  scrollViewContent: {
+    paddingHorizontal: 15,
+  },
+  categoryContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 20,
+  },
+  imageWrapper: {
+    borderWidth: 1,
+    borderRadius: 50,
+  },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+  },
+  categoryName: {
+    fontWeight: "500", 
+    paddingTop: 4, 
+    color: "#4B5563", 
+  },
+});

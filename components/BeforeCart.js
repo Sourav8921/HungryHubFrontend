@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { themeColors } from "../theme";
 import { useDispatch } from "react-redux";
@@ -8,12 +8,26 @@ export default function BeforeCart({ item }) {
   const dispatch = useDispatch();
   return (
     <TouchableOpacity
-      className="p-1 border border-gray-400 rounded-lg items-center mt-2 w-28"
+      style={styles.button}
       onPress={() => dispatch(addToCart(item))}
     >
-      <Text style={{ color: themeColors.text }} className="font-bold text-lg">
-        ADD
-      </Text>
+      <Text style={[styles.text, { color: themeColors.text }]}>ADD</Text>
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    padding: 6,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 8,
+    width: 112,
+  },
+  text: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+});

@@ -1,4 +1,4 @@
-import { View, TextInput, TouchableOpacity } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Icon from "react-native-feather";
 import { useNavigation } from "@react-navigation/native";
@@ -16,11 +16,11 @@ export default function SearchBar({ onSearch }) {
     return unsubscribe;
   }, [navigation]);
   return (
-    <View className="flex-row ">
-      <View className="flex-row flex-1 p-3 rounded-full border border-gray-300">
+    <View style={styles.container}>
+      <View style={styles.content}>
         <TextInput
           placeholder="Search for food..."
-          className="ml-2 flex-1"
+          style={styles.text}
           value={query}
           onChangeText={setQuery}
           onSubmitEditing={() => onSearch(query)}
@@ -32,3 +32,21 @@ export default function SearchBar({ onSearch }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+  },
+  content: {
+    flex: 1,
+    padding: 12,
+    flexDirection: "row",
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+  },
+  text: {
+    flex: 1,
+    marginLeft: 8,
+  },
+});

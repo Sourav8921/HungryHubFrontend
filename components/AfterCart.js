@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { themeColors } from "../theme";
 import * as Icon from "react-native-feather";
@@ -9,9 +9,9 @@ export default function AfterCart({ cartCount, productID }) {
   const dispatch = useDispatch();
   return (
     <View>
-      <View className="border border-gray-400 rounded-lg  items-center mt-2 w-28 flex-row justify-around">
+      <View style={styles.counterContainer}>
         <TouchableOpacity
-          className="p-2"
+          style={styles.button}
           onPress={() => dispatch(decrement(productID))}
         >
           <Icon.Minus
@@ -22,10 +22,10 @@ export default function AfterCart({ cartCount, productID }) {
           />
         </TouchableOpacity>
 
-        <Text className="font-medium text-lg">{cartCount}</Text>
+        <Text style={styles.countText}>{cartCount}</Text>
 
         <TouchableOpacity
-          className="p-2"
+          style={styles.button}
           onPress={() => dispatch(increment(productID))}
         >
           <Icon.Plus
@@ -39,3 +39,23 @@ export default function AfterCart({ cartCount, productID }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  counterContainer: {
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 8,
+    width: 112,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  button: {
+    padding: 8, 
+  },
+  countText: {
+    fontWeight: "500",
+    fontSize: 18, 
+  },
+});

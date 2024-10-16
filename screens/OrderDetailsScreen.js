@@ -55,54 +55,50 @@ export default function OrderDetailsScreen({ route }) {
     return styles.inactiveCircle;
   };
   return (
-    <SafeAreaView className="flex-1 bg-white p-4">
+    <SafeAreaView style={styles.safeArea}>
       <BackButton value="Orders" />
-      <View className="mt-5 flex-1">
-        <View className="flex-row gap-4">
+      <View style={styles.mainContent}>
+        <View style={styles.orderHeader}>
           <Image
-            className="w-16 h-16 rounded-xl"
+            style={styles.image}
             source={{ uri: order?.restaurant?.image }}
           />
           <View>
-            <Text className="font-medium text-lg">
-              {order?.restaurant?.name}
-            </Text>
-            <Text className="text-gray-400 border-b border-gray-300">
+            <Text style={styles.restaurantName}>{order?.restaurant?.name}</Text>
+            <Text style={styles.orderDate}>
               Ordered at {new Date(order?.created_at).toLocaleString()}
             </Text>
           </View>
         </View>
 
-        <View className="mt-2">
-          <Text className="font-medium text-lg border-b border-gray-300 my-2 py-2">Your Order</Text>
-          {/* <View className="border-b border-gray-300 w-full my-2" /> */}
-          {order.items.map((item, index) => {
-            return (
-              <View key={index}>
-                <Text className="font-medium">{item.menu_item.name}</Text>
-                <View className="flex-row justify-between">
-                  <Text className="">
-                     {item.count} x {item.menu_item.price}
-                  </Text>
-                  <Text className="font-medium">
-                    ₹ {item.count * item.menu_item.price}
-                  </Text>
-                </View>
+        <View style={styles.orderSection}>
+          <Text style={styles.orderTitle}>Your Order</Text>
+          {order.items.map((item, index) => (
+            <View key={index}>
+              <Text style={styles.menuItemName}>{item.menu_item.name}</Text>
+              <View style={styles.itemDetails}>
+                <Text>
+                  {item.count} x {item.menu_item.price}
+                </Text>
+                <Text style={styles.itemPrice}>
+                  ₹ {item.count * item.menu_item.price}
+                </Text>
               </View>
-            );
-          })}
-          {/* <View className="border-b border-gray-300 w-full my-2" /> */}
-          <View className="flex-row justify-between border-y py-2 border-gray-300 my-2">
-            <Text className="font-medium text-lg">Grand total</Text>
-            <Text className="font-medium text-lg">₹ {order?.total_price}</Text>
+            </View>
+          ))}
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalLabel}>Grand total</Text>
+            <Text style={styles.totalLabel}>₹ {order?.total_price}</Text>
           </View>
         </View>
 
-        <View className="items-center mt-4">
-          <Text className="text-3xl font-black">
+        <View style={styles.deliveryTimeContainer}>
+          <Text style={styles.deliveryTimeText}>
             {order.restaurant.delivery_time} min
           </Text>
-          <Text className="text-gray-400">ESTIMATED DELIVERY TIME</Text>
+          <Text style={styles.estimatedDeliveryText}>
+            ESTIMATED DELIVERY TIME
+          </Text>
         </View>
 
         {/* Order Status Tracker */}
@@ -111,8 +107,6 @@ export default function OrderDetailsScreen({ route }) {
             <View key={index} style={styles.statusContainer}>
               <View style={styles.circleContainer}>
                 <View style={[styles.circle, getCircleStyle(status)]}></View>
-                {/* this conditional rendering is used to render a line between each status except
-                                the last one */}
                 {index < statuses.length - 1 && (
                   <View style={styles.line}></View>
                 )}
@@ -121,7 +115,7 @@ export default function OrderDetailsScreen({ route }) {
             </View>
           ))}
         </View>
-        <View className="absolute bottom-2 w-full">
+        <View style={styles.buttonContainer}>
           <CustomButton
             onPress={() => navigation.navigate("Home")}
             title="Go to Home"
@@ -131,8 +125,79 @@ export default function OrderDetailsScreen({ route }) {
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "white",
+    padding: 16,
+  },
+  mainContent: {
+    marginTop: 20,
+    flex: 1,
+  },
+  orderHeader: {
+    flexDirection: "row",
+    gap: 16,
+  },
+  image: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+  },
+  restaurantName: {
+    fontWeight: "500",
+    fontSize: 18,
+  },
+  orderDate: {
+    color: "#9CA3AF", 
+    borderBottomWidth: 1,
+    borderBottomColor: "#D1D5DB",
+  },
+  orderSection: {
+    marginTop: 8,
+  },
+  orderTitle: {
+    fontWeight: "500",
+    fontSize: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: "#D1D5DB",
+    marginVertical: 8,
+    paddingBottom: 8,
+  },
+  menuItemName: {
+    fontWeight: "500",
+  },
+  itemDetails: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  itemPrice: {
+    fontWeight: "500",
+  },
+  totalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: "#D1D5DB",
+    paddingVertical: 8,
+    marginVertical: 8,
+  },
+  totalLabel: {
+    fontWeight: "500",
+    fontSize: 18,
+  },
+  deliveryTimeContainer: {
+    alignItems: "center",
+    marginTop: 16,
+  },
+  deliveryTimeText: {
+    fontSize: 36,
+    fontWeight: "900",
+  },
+  estimatedDeliveryText: {
+    color: "#9CA3AF", 
+  },
   container: {
     padding: 40,
   },
@@ -167,5 +232,10 @@ const styles = StyleSheet.create({
     width: 2,
     height: 35,
     backgroundColor: "gray",
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 8,
+    width: "100%",
   },
 });

@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  StyleSheet,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import BackButton from "../components/BackButton";
@@ -43,7 +44,7 @@ export default function PaymentScreen() {
 
         const clientSecretData = await getClientSecret(csrfData, subTotal);
         setClientSecret(clientSecretData.clientSecret);
-        setPaymentIntentId(clientSecretData.paymentIntentId)
+        setPaymentIntentId(clientSecretData.paymentIntentId);
       } catch (error) {
         console.error("Error fetching tokens:", error);
       }
@@ -59,7 +60,7 @@ export default function PaymentScreen() {
     if (error) {
       alert(error.localizedMessage);
     } else {
-      handleOrderSubmit('stripe', paymentIntentId);
+      handleOrderSubmit("stripe", paymentIntentId);
     }
   };
 
@@ -83,7 +84,11 @@ export default function PaymentScreen() {
           total_price: subTotal,
           status: "Pending",
         };
-        const response = await submitOrder(orderDetails, paymentMethod, paymentIntentId);
+        const response = await submitOrder(
+          orderDetails,
+          paymentMethod,
+          paymentIntentId
+        );
         if (response.status === 200) {
           navigation.navigate("Success");
           dipatch(resetCartList());
@@ -101,14 +106,14 @@ export default function PaymentScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 p-4">
+    <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatusBar />
         <BackButton value="Payments" />
-        <View className="my-4">
-          <Text className="text-lg font-medium">Pay on Delivery</Text>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Pay on Delivery</Text>
           <TouchableOpacity
-            className="flex-row  bg-white my-2 p-4 rounded-xl shadow-md"
+            style={styles.codButton}
             onPress={() =>
               Alert.alert(
                 "Confirm Order",
@@ -119,28 +124,32 @@ export default function PaymentScreen() {
                   },
                   {
                     text: "Confirm",
-                    onPress: () => handleOrderSubmit('cod'),
+                    onPress: () => handleOrderSubmit("cod"),
                   },
                 ],
                 { cancelable: true }
               )
             }
           >
-            <Icon.Truck width={24} height={24} stroke={themeColors.bgColor(1)}/>
-            <Text className="ml-4">Pay on delivery (Cash/UPI)</Text>
+            <Icon.Truck
+              width={24}
+              height={24}
+              stroke={themeColors.bgColor(1)}
+            />
+            <Text style={styles.codText}>Pay on delivery (Cash/UPI)</Text>
           </TouchableOpacity>
         </View>
 
         {/* Card payment */}
-        <View className="flex-1">
-          <Text className="text-lg font-medium">Credit & Debit Cards</Text>
-          <View className="bg-white my-2 p-4 rounded-xl shadow-md">
-            <View className="flex-row justify-between border-b border-gray-300 pb-4 mb-4">
-              <Text className='text-lg'>HungryHub</Text>
-              <Text className="text-gray-500">Secure Payments</Text>
+        <View style={styles.flexContainer}>
+          <Text style={styles.sectionTitle}>Credit & Debit Cards</Text>
+          <View style={styles.cardContainer}>
+            <View style={styles.cardHeader}>
+              <Text style={styles.cardTitle}>HungryHub</Text>
+              <Text style={styles.cardSubtitle}>Secure Payments</Text>
             </View>
-            <Text style={{color: themeColors.text, marginBottom: 10}}>Order Payment</Text>
-            <Text>Total Amount:  ₹{subTotal}</Text>
+            <Text style={styles.orderPaymentText}>Order Payment</Text>
+            <Text>Total Amount: ₹{subTotal}</Text>
             <CardField
               postalCodeEnabled={false}
               placeholders={{
@@ -150,11 +159,7 @@ export default function PaymentScreen() {
                 backgroundColor: "white",
                 textColor: "#000000",
               }}
-              style={{
-                width: "100%",
-                height: 50,
-                marginVertical: 15,
-              }}
+              style={styles.cardField}
             />
             <CustomButton onPress={handlePayPress} title="Pay" />
           </View>
@@ -162,4 +167,73 @@ export default function PaymentScreen() {
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  section: {
+    marginVertical: 16,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "500",
+    marginBottom: 8,
+  },
+  codButton: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    padding: 16,
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    alignItems: "center",
+    marginVertical: 8,
+  },
+  codText: {
+    marginLeft: 16,
+    fontSize: 16,
+  },
+  flexContainer: {
+    flex: 1,
+  },
+  cardContainer: {
+    backgroundColor: "white",
+    padding: 16,
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    marginVertical: 8,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderBottomColor: "#D1D5DB",
+    paddingBottom: 16,
+    marginBottom: 16,
+  },
+  cardTitle: {
+    fontSize: 18,
+  },
+  cardSubtitle: {
+    color: "#6B7280",
+  },
+  orderPaymentText: {
+    marginBottom: 10,
+    color: themeColors.text,
+  },
+  cardField: {
+    width: "100%",
+    height: 50,
+    marginVertical: 15,
+  },
+});

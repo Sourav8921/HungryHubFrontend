@@ -1,4 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import * as Icon from "react-native-feather";
 import React, { useEffect, useState } from "react";
@@ -26,18 +32,18 @@ export default function HomeScreen({ navigation }) {
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
-      const fetchRestaurants = async () => {
-        setLoading(true);
-        try {
-          const data = await getRestaurants();
-          setRestaurants(data);
-        } catch (error) {
-          console.log("Error fetching restaurants data", error);
-        } finally {
-          setLoading(false);
-        }
+    const fetchRestaurants = async () => {
+      setLoading(true);
+      try {
+        const data = await getRestaurants();
+        setRestaurants(data);
+      } catch (error) {
+        console.log("Error fetching restaurants data", error);
+      } finally {
+        setLoading(false);
       }
-      fetchRestaurants();
+    };
+    fetchRestaurants();
   }, []);
 
   useEffect(() => {
@@ -68,29 +74,29 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView className="p-4 flex-1">
+    <SafeAreaView style={styles.container}>
       <StatusBar />
-      <View className="flex-1">
+      <View style={styles.main}>
         {cartList.length > 0 ? <CartIcon /> : null}
 
         {/* location */}
-        <View className="flex-row mb-3 justify-between items-center">
+        <View style={styles.locationContainer}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Address")}
-            className="flex-row items-center"
+            style={styles.locationButton}
           >
             <Icon.MapPin
-              width="30"
-              height="30"
+              width={30}
+              height={30}
               stroke={themeColors.bgColor(1)}
             />
             {Object.keys(deliveryAddress).length !== 0 ? (
-              <View className="ml-2">
-                <View className="flex-row font-bold items-center">
-                  <Text className="font-bold text-lg">
+              <View style={styles.addressContainer}>
+                <View style={styles.addressHeader}>
+                  <Text style={styles.addressLabel}>
                     {deliveryAddress.address_label}
                   </Text>
-                  <Icon.ChevronDown width="25" height="25" stroke="black" />
+                  <Icon.ChevronDown width={25} height={25} stroke="black" />
                 </View>
                 <Text>
                   {deliveryAddress.street_address}, {deliveryAddress.city},{" "}
@@ -98,7 +104,7 @@ export default function HomeScreen({ navigation }) {
                 </Text>
               </View>
             ) : (
-              <Text className="ml-2 font-medium text-base">
+              <Text style={styles.selectAddressText}>
                 Select delivery address
               </Text>
             )}
@@ -109,8 +115,8 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <Icon.User
-              width="30"
-              height="30"
+              width={30}
+              height={30}
               stroke={themeColors.bgColor(1)}
               fill={themeColors.bgColor(1)}
             />
@@ -122,18 +128,16 @@ export default function HomeScreen({ navigation }) {
         {/* main */}
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: 10,
-          }}
+          contentContainerStyle={styles.scrollViewContent}
         >
           {/* categories */}
-          <Text className="mt-6 text-lg font-medium">
+          <Text style={styles.greetingText}>
             Hello {user?.username}, what's on your mind?
           </Text>
           <Categories categories={categories} />
 
           {/* restaurants */}
-          <Text className="mt-3 text-lg font-medium">
+          <Text style={styles.restaurantHeaderText}>
             Restaurants to explore
           </Text>
           {restaurants.map((restaurant) => {
@@ -144,3 +148,52 @@ export default function HomeScreen({ navigation }) {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  main: {
+    flex: 1,
+  },
+  locationContainer: {
+    flexDirection: "row",
+    marginBottom: 12,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  locationButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  addressContainer: {
+    marginLeft: 8,
+  },
+  addressHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  addressLabel: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  selectAddressText: {
+    marginLeft: 8,
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  scrollViewContent: {
+    paddingBottom: 10,
+  },
+  greetingText: {
+    marginTop: 20,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  restaurantHeaderText: {
+    marginTop: 12,
+    fontSize: 18,
+    fontWeight: "500",
+  },
+});

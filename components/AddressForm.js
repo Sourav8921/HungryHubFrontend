@@ -3,9 +3,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
   ScrollView,
   Platform,
+  StyleSheet,
+  SafeAreaView,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -90,16 +91,13 @@ export default function AddressForm({ onPress, address }) {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1"
-    >
+    <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="my-6 space-y-4">
+        <View style={styles.formContainer}>
           <View>
-            <Text className="text-base">Street Address</Text>
+            <Text style={styles.label}>Street Address</Text>
             <TextInput
-              className="bg-gray-100 p-2 rounded-lg my-2 h-12"
+              style={styles.input}
               placeholder="Street Address"
               value={streetAddress}
               onChangeText={setStreetAddress}
@@ -113,14 +111,14 @@ export default function AddressForm({ onPress, address }) {
               }}
             />
             {errors.streetaddressError && (
-              <Text className="text-red-500">{errors.streetaddressError}</Text>
+              <Text style={styles.errorText}>{errors.streetaddressError}</Text>
             )}
           </View>
-          <View className="flex-row justify-between space-x-2">
-            <View className="flex-1">
-              <Text className="text-base">City</Text>
+          <View style={styles.row}>
+            <View style={styles.flexItem}>
+              <Text style={styles.label}>City</Text>
               <TextInput
-                className="bg-gray-100 p-2 rounded-lg my-2 h-12"
+                style={styles.input}
                 placeholder="City"
                 value={city}
                 onChangeText={setCity}
@@ -133,13 +131,13 @@ export default function AddressForm({ onPress, address }) {
                 }}
               />
               {errors.cityError && (
-                <Text className="text-red-500">{errors.cityError}</Text>
+                <Text style={styles.errorText}>{errors.cityError}</Text>
               )}
             </View>
-            <View className="flex-1">
-              <Text className="text-base">State</Text>
+            <View style={styles.flexItem}>
+              <Text style={styles.label}>State</Text>
               <TextInput
-                className="bg-gray-100 p-2 rounded-lg my-2 h-12"
+                style={styles.input}
                 placeholder="State"
                 value={state}
                 onChangeText={setState}
@@ -152,14 +150,14 @@ export default function AddressForm({ onPress, address }) {
                 }}
               />
               {errors.stateError && (
-                <Text className="text-red-500">{errors.stateError}</Text>
+                <Text style={styles.errorText}>{errors.stateError}</Text>
               )}
             </View>
           </View>
           <View>
-            <Text className="text-base">Postal</Text>
+            <Text style={styles.label}>Postal</Text>
             <TextInput
-              className="bg-gray-100 p-2 rounded-lg my-2 h-12"
+              style={styles.input}
               placeholder="Postal Code"
               keyboardType="number-pad"
               value={postalCode}
@@ -167,19 +165,21 @@ export default function AddressForm({ onPress, address }) {
               ref={fourthRef}
             />
             {errors.cityError && (
-              <Text className="text-red-500">{errors.cityError}</Text>
+              <Text style={styles.errorText}>{errors.cityError}</Text>
             )}
           </View>
-          <View className="space-y-2">
-            <Text className="text-base">Save address as:</Text>
-            <View className="flex-row space-x-2">
+          <View>
+            <Text style={styles.label}>Save address as:</Text>
+            <View style={styles.labelRow}>
               <TouchableOpacity
                 onPress={() => handlePress("Home")}
-                style={{
-                  borderColor:
-                    selectedButton === "Home" ? themeColors.text : "gray",
-                }}
-                className="bg-gray-100 border p-1 px-4 rounded-lg"
+                style={[
+                  styles.button,
+                  {
+                    borderColor:
+                      selectedButton === "Home" ? themeColors.text : "gray",
+                  },
+                ]}
               >
                 <Text
                   style={{
@@ -192,11 +192,13 @@ export default function AddressForm({ onPress, address }) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handlePress("Work")}
-                style={{
-                  borderColor:
-                    selectedButton === "Work" ? themeColors.text : "gray",
-                }}
-                className="bg-gray-100 border p-1 px-4 rounded-lg"
+                style={[
+                  styles.button,
+                  {
+                    borderColor:
+                      selectedButton === "Work" ? themeColors.text : "gray",
+                  },
+                ]}
               >
                 <Text
                   style={{
@@ -209,11 +211,13 @@ export default function AddressForm({ onPress, address }) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handlePress("")}
-                style={{
-                  borderColor:
-                    selectedButton === "" ? themeColors.text : "gray",
-                }}
-                className="bg-gray-100 border p-1 px-4 rounded-lg"
+                style={[
+                  styles.button,
+                  {
+                    borderColor:
+                      selectedButton === "" ? themeColors.text : "gray",
+                  },
+                ]}
               >
                 <Text
                   style={{
@@ -226,28 +230,82 @@ export default function AddressForm({ onPress, address }) {
             </View>
             {showTextField && (
               <TextInput
-                className="bg-gray-100 p-2 rounded-lg h-12"
+                style={styles.input}
                 placeholder="Name"
                 value={label}
                 onChangeText={setLabel}
               />
             )}
             {errors.labelError && (
-              <Text className="text-red-500">{errors.labelError}</Text>
+              <Text style={styles.errorText}>{errors.labelError}</Text>
             )}
           </View>
         </View>
         <TouchableOpacity
-          style={{ backgroundColor: themeColors.bgColor(1) }}
-          className="items-center p-4 rounded-full w-full"
+          style={styles.saveButton}
           onPress={() => handleSubmit()}
         >
-          <Text className="text-white text-lg font-medium">SAVE</Text>
+          <Text style={styles.saveButtonText}>SAVE</Text>
         </TouchableOpacity>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  formContainer: {
+    marginVertical: 24,
+    paddingHorizontal: 5,
+  },
+  label: {
+    fontSize: 16,
+  },
+  input: {
+    backgroundColor: "#F3F4F6",
+    padding: 8,
+    borderRadius: 8,
+    marginVertical: 8,
+    height: 48,
+  },
+  errorText: {
+    color: "#EF4444",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    columnGap: 10,
+  },
+  flexItem: {
+    flex: 1,
+  },
+  labelRow: {
+    flexDirection: "row",
+    columnGap: 10,
+    marginVertical: 8,
+  },
+  button: {
+    backgroundColor: "#F3F4F6",
+    borderWidth: 1,
+    padding: 4,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  saveButton: {
+    alignItems: "center",
+    padding: 16,
+    borderRadius: 24,
+    width: "100%",
+    backgroundColor: themeColors.bgColor(1),
+  },
+  saveButtonText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "500",
+  },
+});
 
 AddressForm.propTypes = {
   onPress: PropTypes.func.isRequired,

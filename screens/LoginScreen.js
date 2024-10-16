@@ -92,8 +92,8 @@ export default function LoginScreen({ navigation }) {
           </Text>
         </View>
 
-        <View className="space-y-2">
-          <View>
+        <View>
+          <View style={styles.unameCont}>
             <Text style={styles.inputText}>Username</Text>
             <TextInput
               style={styles.inputField}
@@ -131,7 +131,7 @@ export default function LoginScreen({ navigation }) {
                 ref={secondRef}
               />
               <TouchableOpacity
-                className="absolute p-2 right-2 bottom-3"
+                style={styles.eyeBtn}
                 onPress={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
@@ -151,7 +151,7 @@ export default function LoginScreen({ navigation }) {
         </TouchableOpacity>
 
         <Pressable onPress={() => navigation.navigate("Signup")}>
-          <Text>
+          <Text style={styles.signup}>
             Don't have an account? <Text style={styles.signupTxt}>Sign up</Text>
           </Text>
         </Pressable>
@@ -193,12 +193,21 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
   },
+  unameCont: {
+    marginBottom: 15,
+  },
   inputText: {
     fontSize: 18,
     fontWeight: "500",
   },
   errorTxt: {
     color: "red",
+  },
+  eyeBtn: {
+    position: "absolute",
+    padding: 8,
+    right: 8,
+    bottom: 10,
   },
   button: {
     alignItems: "center",
@@ -214,8 +223,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  signup: {
+    fontSize: 16,
+  },
   signupTxt: {
     textDecorationLine: "underline",
     color: "#58AD53",
+    fontSize: 16,
   },
 });

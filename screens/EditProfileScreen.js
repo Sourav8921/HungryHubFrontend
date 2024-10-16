@@ -88,9 +88,9 @@ export default function EditProfileScreen() {
     }
   };
   return (
-    <SafeAreaView className="p-4 flex-1 bg-gray-100">
+    <SafeAreaView style={styles.container}>
       <BackButton value={"Edit Profile"} />
-      <View className="my-4">
+      <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>First name</Text>
           <TextInput
@@ -165,7 +165,7 @@ export default function EditProfileScreen() {
             style={styles.inputField}
             value={formData.phone}
             onChangeText={(value) => handleChange("phone", value)}
-            placeholder="8921548685"
+            placeholder="XXXXXXXXXX"
             keyboardType="number-pad"
             ref={fourthRef}
           />
@@ -186,6 +186,14 @@ export default function EditProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 18,
+    backgroundColor: "#f3f4f6",
+  },
+  formContainer: {
+    marginVertical: 16,
+  },
   inputContainer: {
     marginVertical: 5,
   },

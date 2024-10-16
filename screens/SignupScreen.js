@@ -177,7 +177,7 @@ export default function SignupScreen({ navigation }) {
                 }}
               />
               <TouchableOpacity
-                className="absolute p-2 right-2 bottom-3"
+                style={styles.eyeBtn}
                 onPress={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
@@ -206,7 +206,7 @@ export default function SignupScreen({ navigation }) {
                 ref={fourthRef}
               />
               <TouchableOpacity
-                className="absolute p-2 right-2 bottom-3"
+                style={styles.eyeBtn}
                 onPress={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
@@ -230,9 +230,9 @@ export default function SignupScreen({ navigation }) {
         </View>
 
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text>
+          <Text style={styles.login}>
             Already have an account?{" "}
-            <Text style={styles.signupTxt}>Login up</Text>
+            <Text style={styles.loginTxt}>Login up</Text>
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -280,6 +280,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
   },
+  eyeBtn: {
+    position: "absolute",
+    padding: 8,
+    right: 8,
+    bottom: 10,
+  },
   errorTxt: {
     color: "red",
   },
@@ -298,8 +304,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  signupTxt: {
+  login: {
+    fontSize: 16,
+  },
+  loginTxt: {
     textDecorationLine: "underline",
     color: "#58AD53",
+    fontSize: 16,
   },
 });

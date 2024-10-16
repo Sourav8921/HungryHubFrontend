@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../components/BackButton";
@@ -35,11 +35,22 @@ export default function CreateAddress() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-4">
-      <View className="flex-1">
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
         <BackButton value={"Add address"} />
         <AddressForm onPress={createAddress} />
       </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    padding: 16,
+  },
+  content: {
+    flex: 1,
+  },
+});

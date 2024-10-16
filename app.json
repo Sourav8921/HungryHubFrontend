@@ -17,17 +17,22 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.sourav.hungryhub",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sourav_ramesh.HungryHub"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "323e328f-5104-4f9e-a68d-c9cb48e35103"
+      }
+    }
   }
 }

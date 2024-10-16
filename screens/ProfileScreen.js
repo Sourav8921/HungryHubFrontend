@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import * as Icon from "react-native-feather";
 import { themeColors } from "../theme";
@@ -8,7 +8,7 @@ import { store } from "../redux/store";
 import { useDispatch } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { setIsAuth } from "../redux/auth";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 
 export default function ProfileScreen() {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export default function ProfileScreen() {
     try {
       await SecureStore.deleteItemAsync("accessToken");
       await SecureStore.deleteItemAsync("refreshToken");
-      dispatch(setIsAuth(false))
+      dispatch(setIsAuth(false));
       store.dispatch({ type: "USER_LOGOUT" }); //dispatching action for clearing redux state
     } catch (error) {
       console.error(error);
@@ -25,22 +25,22 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100 p-4">
+    <SafeAreaView style={styles.container}>
       <BackButton value="Profile" />
-      <View className="mt-4 space-y-3">
-        <View className="bg-white p-4 rounded-xl space-y-6">
+      <View style={styles.content}>
+        <View style={styles.card}>
           <TouchableOpacity
             onPress={() => navigation.navigate("UserInfo")}
-            className="flex-row items-center justify-between"
+            style={styles.optionButton}
           >
-            <View className="bg-gray-100 rounded-full p-3">
+            <View style={styles.iconWrapper}>
               <Icon.User
                 width={25}
                 height={25}
                 stroke={themeColors.bgColor(1)}
               />
             </View>
-            <Text className="text-base">Personal info</Text>
+            <Text style={styles.optionText}>Personal info</Text>
             <Icon.ChevronRight
               width={30}
               height={30}
@@ -49,17 +49,17 @@ export default function ProfileScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="flex-row items-center justify-between"
+            style={styles.optionButton}
             onPress={() => navigation.navigate("Address")}
           >
-            <View className="bg-gray-100 rounded-full p-3">
+            <View style={styles.iconWrapper}>
               <Icon.Map
                 width={25}
                 height={25}
                 stroke={themeColors.bgColor(1)}
               />
             </View>
-            <Text className="text-base">Addresses</Text>
+            <Text style={styles.optionText}>Addresses</Text>
             <Icon.ChevronRight
               width={30}
               height={30}
@@ -68,17 +68,17 @@ export default function ProfileScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="flex-row items-center justify-between"
+            style={styles.optionButton}
             onPress={() => navigation.navigate("Orders")}
           >
-            <View className="bg-gray-100 rounded-full p-3">
-              <Icon.ShoppingBag 
+            <View style={styles.iconWrapper}>
+              <Icon.ShoppingBag
                 width={25}
                 height={25}
                 stroke={themeColors.bgColor(1)}
               />
             </View>
-            <Text className="text-base">Orders</Text>
+            <Text style={styles.optionText}>Orders</Text>
             <Icon.ChevronRight
               width={30}
               height={30}
@@ -86,21 +86,16 @@ export default function ProfileScreen() {
             />
           </TouchableOpacity>
         </View>
-        <View className="bg-white p-4 rounded-xl">
-          <TouchableOpacity
-            className="flex-row items-center justify-between"
-            onPress={() => {
-              handleLogout();
-            }}
-          >
-            <View className="bg-gray-100 rounded-full p-3">
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.optionButton} onPress={handleLogout}>
+            <View style={styles.iconWrapper}>
               <Icon.LogOut
                 width={25}
                 height={25}
                 stroke={themeColors.bgColor(1)}
               />
             </View>
-            <Text className="text-base">Log out</Text>
+            <Text style={styles.optionText}>Log out</Text>
             <Icon.ChevronRight
               width={30}
               height={30}
@@ -112,3 +107,37 @@ export default function ProfileScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F3F4F6",
+    padding: 16,
+  },
+  content: {
+    marginTop: 16,
+  },
+  card: {
+    backgroundColor: "white",
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16,
+    elevation: 4,
+  },
+  optionButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  iconWrapper: {
+    backgroundColor: "#F3F4F6",
+    borderRadius: 50,
+    padding: 8,
+  },
+  optionText: {
+    fontSize: 16,
+    flex: 1,
+    marginLeft: 16,
+  },
+});
