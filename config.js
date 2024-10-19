@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://52.66.197.217';
+export const BASE_URL = 'https://hungryhub-5ojr.onrender.com';
