@@ -16,7 +16,7 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@stripe/stripe-react-native": "0.37.2",
     "axios": "^1.6.8",
-    "expo": "^51.0.36",
+    "expo": "^51.0.38",
     "expo-secure-store": "~13.0.2",
     "expo-status-bar": "~1.12.1",
     "prop-types": "^15.8.1",

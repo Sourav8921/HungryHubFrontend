@@ -16,6 +16,7 @@ import * as Icon from "react-native-feather";
 import { useDispatch } from "react-redux";
 import { setIsAuth } from "../redux/auth";
 import { loginUser } from "../services/api/AuthService";
+import Loading from "../components/Loading";
 
 const logoImg = require("../assets/images/logo_only.png");
 
@@ -24,7 +25,7 @@ export default function LoginScreen({ navigation }) {
 
   const firstRef = useRef(null);
   const secondRef = useRef(null);
-
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -67,6 +68,7 @@ export default function LoginScreen({ navigation }) {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      setLoading(true);
       try {
         const response = await loginUser(formData.username, formData.password);
         if (response.status === 200) {
@@ -74,11 +76,17 @@ export default function LoginScreen({ navigation }) {
         }
       } catch (error) {
         Alert.alert("Failed to login", `${error.response.data.detail}`);
+      } finally {
+        setLoading(false);
       }
     } else {
       alert("Form has errors. Please correct them.");
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
