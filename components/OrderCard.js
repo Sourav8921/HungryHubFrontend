@@ -14,10 +14,11 @@ import { deleteOrder } from "../services/api";
 
 export default function OrderCard({ orders }) {
   const navigation = useNavigation();
+  const reversedOrders = orders.reverse();
 
   return (
     <FlatList
-      data={orders}
+      data={reversedOrders}
       keyExtractor={(item) => item.id.toString()}
       showsVerticalScrollIndicator={false}
       renderItem={({ item }) => (
