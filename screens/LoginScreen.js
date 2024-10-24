@@ -92,13 +92,13 @@ export default function LoginScreen({ navigation }) {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar />
       <ScrollView style={styles.container}>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <Image source={logoImg} style={styles.headerImg} alt="logo" />
           <Text style={styles.title}>Hungry Hub</Text>
           <Text style={styles.subTitle}>
             Please sign in to your existing account
           </Text>
-        </View>
+        </View> */}
 
         <View>
           <View style={styles.unameCont}>
