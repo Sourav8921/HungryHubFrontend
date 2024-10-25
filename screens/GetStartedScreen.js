@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    justifyContent: "space-around",
-    alignItems: "center",
   },
   headerContainer: {
     alignItems: "center",
+    justifyContent: 'center',
+    flex: 1,
   },
   logoImage: {
     height: 250,
@@ -63,13 +63,14 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     alignItems: "center",
+    marginBottom: 15,
   },
   button: {
     width: 300,
   },
   signup: {
     fontSize: 14,
-    marginTop: 15,
+    marginTop: 10,
   },
   signupTxt: {
     color: "#58AD53",

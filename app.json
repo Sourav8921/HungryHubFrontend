@@ -4,11 +4,11 @@
     "slug": "HungryHub",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/hungryhub_logo.png",
+    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/splash_screen.png",
-      "backgroundColor": "#294C25"
+      "image": "./assets/images/splash.png",
+      "backgroundColor": "#58AD53"
     },
     "assetBundlePatterns": [
       "**/*"
