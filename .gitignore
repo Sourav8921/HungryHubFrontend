@@ -35,6 +35,9 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+/android
+/ios
+
 # Additional entries for React Native projects
 # Android
 android/.gradle

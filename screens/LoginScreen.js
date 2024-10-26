@@ -2,11 +2,8 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   TextInput,
   TouchableOpacity,
-  Pressable,
-  ScrollView,
   StatusBar,
   Alert,
 } from "react-native";
@@ -17,8 +14,7 @@ import { useDispatch } from "react-redux";
 import { setIsAuth } from "../redux/auth";
 import { loginUser } from "../services/api/AuthService";
 import Loading from "../components/Loading";
-
-const logoImg = require("../assets/images/logo_only.png");
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -89,81 +85,86 @@ export default function LoginScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.container}>
+      <LinearGradient
+        // Background Linear Gradient
+        colors={["rgba(0,50,0,0.6)", "transparent"]}
+        style={styles.background}
+        start={[1, 0.5]}
+        end={[0, 0.5]}
+      />
       <StatusBar />
-      <ScrollView style={styles.container}>
-        {/* <View style={styles.header}>
-          <Image source={logoImg} style={styles.headerImg} alt="logo" />
-          <Text style={styles.title}>Hungry Hub</Text>
+      <View style={styles.headerSection}>
+        <Text style={styles.headerTitle}>Sign In</Text>
+      </View>
+      <View style={styles.content}>
+        <View>
+          <Text style={styles.title}>Welcome Back!</Text>
           <Text style={styles.subTitle}>
-            Please sign in to your existing account
+            To keep connected with us please login with your personal info
           </Text>
-        </View> */}
+        </View>
+        <View>
+          {/* <Text style={styles.inputText}>Username</Text> */}
+          <TextInput
+            style={styles.inputField}
+            value={formData.username}
+            onChangeText={(value) => handleChange("username", value)}
+            placeholder="Username"
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={16}
+            autoFocus={true}
+            blurOnSubmit={false}
+            ref={firstRef}
+            onSubmitEditing={(e) => {
+              const text = e.nativeEvent.text;
+              if (!text) return;
+              secondRef.current.focus();
+            }}
+          />
+          {errors.usernameError && (
+            <Text style={styles.errorTxt}>{errors.usernameError}</Text>
+          )}
+        </View>
 
         <View>
-          <View style={styles.unameCont}>
-            <Text style={styles.inputText}>Username</Text>
+          {/* <Text style={styles.inputText}>Password</Text> */}
+          <View>
             <TextInput
               style={styles.inputField}
-              value={formData.username}
-              onChangeText={(value) => handleChange("username", value)}
-              placeholder="username"
+              value={formData.password}
+              onChangeText={(value) => handleChange("password", value)}
+              placeholder="Password"
               autoCapitalize="none"
-              autoCorrect={false}
-              maxLength={16}
-              autoFocus={true}
-              blurOnSubmit={false}
-              ref={firstRef}
-              onSubmitEditing={(e) => {
-                const text = e.nativeEvent.text;
-                if (!text) return;
-                secondRef.current.focus();
-              }}
+              secureTextEntry={!showPassword}
+              maxLength={20}
+              ref={secondRef}
             />
-            {errors.usernameError && (
-              <Text style={styles.errorTxt}>{errors.usernameError}</Text>
-            )}
+            <TouchableOpacity
+              style={styles.eyeBtn}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <Icon.EyeOff width={22} height={22} stroke="#CCC" />
+              ) : (
+                <Icon.Eye width={22} height={22} stroke="#CCC" />
+              )}
+            </TouchableOpacity>
           </View>
-
-          <View>
-            <Text style={styles.inputText}>Password</Text>
-            <View>
-              <TextInput
-                style={styles.inputField}
-                value={formData.password}
-                onChangeText={(value) => handleChange("password", value)}
-                placeholder="********"
-                autoCapitalize="none"
-                secureTextEntry={!showPassword}
-                maxLength={20}
-                ref={secondRef}
-              />
-              <TouchableOpacity
-                style={styles.eyeBtn}
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <Icon.EyeOff width={22} height={22} stroke="#CCC" />
-                ) : (
-                  <Icon.Eye width={22} height={22} stroke="#CCC" />
-                )}
-              </TouchableOpacity>
-            </View>
-            {errors.passwordError && (
-              <Text style={styles.errorTxt}>{errors.passwordError}</Text>
-            )}
-          </View>
+          {errors.passwordError && (
+            <Text style={styles.errorTxt}>{errors.passwordError}</Text>
+          )}
         </View>
         <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
           <Text style={styles.btnText}>Log in</Text>
         </TouchableOpacity>
-
-        <Pressable onPress={() => navigation.navigate("Signup")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
           <Text style={styles.signup}>
             Don't have an account? <Text style={styles.signupTxt}>Sign up</Text>
           </Text>
-        </Pressable>
-      </ScrollView>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -171,38 +172,45 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: "#f2f3f4",
+    backgroundColor: "#58AD53",
   },
-  header: {
-    marginVertical: 36,
+  background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 300,
   },
-  headerImg: {
-    height: 100,
-    width: 100,
-    alignSelf: "center",
-    backgroundColor: "#294C25",
-    borderRadius: 50,
+  headerSection: {
+    flex: 1,
+    justifyContent: "center",
+    marginLeft: 30,
+  },
+  headerTitle: {
+    color: "white",
+    fontSize: 26,
+    fontWeight: "bold",
+  },
+  content: {
+    padding: 28,
+    borderTopStartRadius: 30,
+    borderTopRightRadius: 30,
+    backgroundColor: "#ffffff",
+    flex: 4,
+    gap: 20,
   },
   title: {
-    fontSize: 33,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontSize: 22,
+    fontWeight: "600",
   },
   subTitle: {
-    fontSize: 17,
-    textAlign: "center",
-    color: "grey",
+    color: "gray",
   },
   inputField: {
     height: 50,
     borderRadius: 10,
-    backgroundColor: "white",
+    backgroundColor: "#f2f3f4",
     padding: 10,
-    marginVertical: 5,
-  },
-  unameCont: {
-    marginBottom: 15,
   },
   inputText: {
     fontSize: 18,
@@ -215,11 +223,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     padding: 8,
     right: 8,
-    bottom: 10,
+    bottom: 6,
   },
   button: {
     alignItems: "center",
-    marginVertical: 15,
     backgroundColor: "#58AD53",
     height: 50,
     borderRadius: 10,
@@ -232,11 +239,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   signup: {
-    fontSize: 16,
+    fontSize: 14,
   },
   signupTxt: {
-    textDecorationLine: "underline",
     color: "#58AD53",
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: "600",
   },
 });

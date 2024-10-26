@@ -313,11 +313,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   login: {
-    fontSize: 16,
+    fontSize: 14,
   },
   loginTxt: {
-    textDecorationLine: "underline",
     color: "#58AD53",
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: "600",
   },
 });
