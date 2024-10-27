@@ -6,12 +6,16 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  StatusBar,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRef, useState } from "react";
 import * as Icon from "react-native-feather";
 import { registerUser } from "../services/api/AuthService";
 import Loading from "../components/Loading";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function SignupScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -102,29 +106,33 @@ export default function SignupScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={{
-          paddingBottom: 50,
-          justifyContent: "center",
-        }}
-      >
-        <View style={styles.header}>
-          <Text style={styles.title}>HungryHub</Text>
-          <Text style={styles.subTitle}>
-            Please fill in the details to create account
-          </Text>
+    <SafeAreaView style={styles.container}>
+      <LinearGradient
+        // Background Linear Gradient
+        colors={["rgba(0,50,0,0.6)", "transparent"]}
+        style={styles.background}
+        start={[1, 0.5]}
+        end={[0, 0.5]}
+      />
+      <StatusBar />
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.headerSection}>
+          <Text style={styles.headerTitle}>Sign Up</Text>
         </View>
-
-        <View style={styles.form}>
+        <View style={styles.content}>
+          <View>
+            <Text style={styles.title}>Create Account</Text>
+            <Text style={styles.subTitle}>
+              Please fill in the details to create account
+            </Text>
+          </View>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputText}>Username</Text>
+            {/* <Text style={styles.inputText}>Username</Text> */}
             <TextInput
               style={styles.inputField}
               value={formData.username}
               onChangeText={(value) => handleChange("username", value)}
-              placeholder="username"
+              placeholder="Username"
               autoCapitalize="none"
               autoCorrect={false}
               maxLength={15}
@@ -142,12 +150,12 @@ export default function SignupScreen({ navigation }) {
             )}
           </View>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputText}>Email address</Text>
+            {/* <Text style={styles.inputText}>Email address</Text> */}
             <TextInput
               style={styles.inputField}
               value={formData.email}
               onChangeText={(value) => handleChange("email", value)}
-              placeholder="email@example.com"
+              placeholder="Email"
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="email-address"
@@ -166,13 +174,13 @@ export default function SignupScreen({ navigation }) {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.inputText}>Password</Text>
+            {/* <Text style={styles.inputText}>Password</Text> */}
             <View>
               <TextInput
                 style={styles.inputField}
                 value={formData.password}
                 onChangeText={(value) => handleChange("password", value)}
-                placeholder="********"
+                placeholder="Password"
                 autoCapitalize="none"
                 secureTextEntry={!showPassword}
                 maxLength={25}
@@ -201,13 +209,13 @@ export default function SignupScreen({ navigation }) {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.inputText}>Re-type password</Text>
+            {/* <Text style={styles.inputText}>Re-type password</Text> */}
             <View>
               <TextInput
                 style={styles.inputField}
                 value={formData.password2}
                 onChangeText={(value) => handleChange("password2", value)}
-                placeholder="********"
+                placeholder="Re-password"
                 autoCapitalize="none"
                 secureTextEntry={!showPassword}
                 maxLength={25}
@@ -235,14 +243,13 @@ export default function SignupScreen({ navigation }) {
           >
             <Text style={styles.btnText}>Sign up</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.login}>
+              Already have an account?{" "}
+              <Text style={styles.loginTxt}>Sign in</Text>
+            </Text>
+          </TouchableOpacity>
         </View>
-
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.login}>
-            Already have an account?{" "}
-            <Text style={styles.loginTxt}>Login up</Text>
-          </Text>
-        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -251,38 +258,45 @@ export default function SignupScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: "#f2f3f4",
+    backgroundColor: "#58AD53",
   },
-  header: {
-    marginBottom: 10,
+  background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 300,
   },
-  headerImg: {
-    height: 100,
-    width: 100,
-    alignSelf: "center",
-    borderRadius: 20,
-    marginBottom: 20,
+  headerSection: {
+    flex: 3,
+    justifyContent: "center",
+    marginLeft: 30,
   },
-  title: {
+  headerTitle: {
+    color: "white",
     fontSize: 26,
     fontWeight: "bold",
-    textAlign: "center",
+  },
+  content: {
+    padding: 28,
+    borderTopStartRadius: 30,
+    borderTopRightRadius: 30,
+    backgroundColor: "#ffffff",
+    flex: 4,
+    gap: 20,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "600",
   },
   subTitle: {
-    fontSize: 16,
-    textAlign: "center",
-    color: "grey",
-  },
-  inputContainer: {
-    marginVertical: 5,
+    color: "gray",
   },
   inputField: {
     height: 50,
     borderRadius: 10,
-    backgroundColor: "white",
+    backgroundColor: "#f2f3f4",
     padding: 10,
-    marginVertical: 5,
   },
   inputText: {
     fontSize: 16,
@@ -292,19 +306,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     padding: 8,
     right: 8,
-    bottom: 10,
+    bottom: 7,
   },
   errorTxt: {
     color: "red",
   },
   button: {
     alignItems: "center",
-    marginBottom: 20,
     backgroundColor: "#58AD53",
     height: 50,
     borderRadius: 10,
     padding: 10,
-    marginTop: 5,
   },
   btnText: {
     color: "white",
