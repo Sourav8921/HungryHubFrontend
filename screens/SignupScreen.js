@@ -7,15 +7,12 @@ import {
   ScrollView,
   Alert,
   StatusBar,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRef, useState } from "react";
 import * as Icon from "react-native-feather";
 import { registerUser } from "../services/api/AuthService";
 import Loading from "../components/Loading";
-import { LinearGradient } from "expo-linear-gradient";
 
 export default function SignupScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -107,13 +104,6 @@ export default function SignupScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        // Background Linear Gradient
-        colors={["rgba(0,50,0,0.6)", "transparent"]}
-        style={styles.background}
-        start={[1, 0.5]}
-        end={[0, 0.5]}
-      />
       <StatusBar />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.headerSection}>
@@ -259,13 +249,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#58AD53",
-  },
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: 300,
   },
   headerSection: {
     flex: 3,

@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { setIsAuth } from "../redux/auth";
 import { loginUser } from "../services/api/AuthService";
 import Loading from "../components/Loading";
-import { LinearGradient } from "expo-linear-gradient";
+import { themeColors } from "../theme";
 
 export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -86,14 +86,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        // Background Linear Gradient
-        colors={["rgba(0,50,0,0.6)", "transparent"]}
-        style={styles.background}
-        start={[1, 0.5]}
-        end={[0, 0.5]}
-      />
-      <StatusBar />
+      <StatusBar backgroundColor={themeColors.bgColor(1)}/>
       <View style={styles.headerSection}>
         <Text style={styles.headerTitle}>Sign In</Text>
       </View>
@@ -172,14 +165,7 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#58AD53",
-  },
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: 300,
+    backgroundColor: themeColors.bgColor(1),
   },
   headerSection: {
     flex: 1,
