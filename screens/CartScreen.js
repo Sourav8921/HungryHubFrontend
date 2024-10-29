@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import CartItem from "../components/CartItem";
 import CustomButton from "../components/CustomButton";
+import { StatusBar } from "expo-status-bar";
 
 export default function CartScreen() {
   const navigation = useNavigation();
@@ -22,6 +23,7 @@ export default function CartScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="dark"/>
       {/* Back button */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f3f4f6",
   },
   header: {
-    marginTop: 8,
+    marginTop: 14,
     alignItems: "center",
   },
   backButton: {

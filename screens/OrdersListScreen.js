@@ -36,7 +36,9 @@ export default function OrdersListScreen() {
           </Text>
         </View>
       ) : (
-        <OrderCard orders={orders} />
+        <View style={styles.ordersContainer}>
+          <OrderCard orders={orders} />
+        </View>
       )}
       <CustomButton
         onPress={() => navigation.navigate("Home")}
@@ -66,4 +68,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "gray",
   },
+  ordersContainer: {
+    marginVertical: 10,
+    flex: 1,
+  }
 });

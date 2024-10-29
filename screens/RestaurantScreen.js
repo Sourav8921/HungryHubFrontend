@@ -17,9 +17,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { findSubTotal } from "../redux/cart";
 import { SafeAreaView } from "react-native-safe-area-context";
 import api from "../axiosConfig";
+import Loading from "../components/Loading";
 
 export default function RestaurantScreen({ route }) {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
 
   // dispatching findsubtotal function from cart slice when carlist changes
   const { cartList } = useSelector((state) => state.cart);
@@ -32,7 +34,7 @@ export default function RestaurantScreen({ route }) {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    // Function to fetch menu items when component mounts
+    setLoading(true);
     const fetchMenuItems = async () => {
       try {
         const response = await api.get(
@@ -41,16 +43,22 @@ export default function RestaurantScreen({ route }) {
         setMenuItems(response.data); // Assuming your response data is an array of menu items
       } catch (error) {
         console.error("Error fetching menu items:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMenuItems(); // Call the function to fetch menu items
   }, [restaurantId]); // Execute this effect whenever restaurantId changes
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {cartList.length > 0 ? <CartIcon /> : null}
-      <StatusBar hidden />
+      <StatusBar  />
       <ScrollView>
         <View>
           <Image source={{ uri: route.params.image }} style={styles.image} />
