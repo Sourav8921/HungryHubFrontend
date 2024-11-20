@@ -71,3 +71,5 @@ yarn.lock
 *.sublime-workspace
 coverage/
 build/
+
+%ProgramData%/
