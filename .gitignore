@@ -35,14 +35,27 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-/android
-/ios
-
 # Additional entries for React Native projects
 # Android
-android/.gradle
-android/app/build
-android/build
+# Gradle files
+/android/.gradle/
+/android/.idea/
+/android/build/
+/android/app/build/
+/android/local.properties
+
+# Log files
+/android/*.log
+
+# Keystore files (if any)
+/android/app/*.keystore
+
+# Crashlytics and Firebase
+/android/fabric.properties
+/android/crashlytics.properties
+
+# Misc
+/android/.externalNativeBuild/
 
 # iOS
 ios/Pods
