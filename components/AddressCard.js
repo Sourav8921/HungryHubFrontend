@@ -111,9 +111,11 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: "row",
-    gap: 16,
+    gap: 10,
   },
   addressText: {
     color: "#6B7280",
+    fontSize: 12,
+    fontWeight: "400",
   },
 });

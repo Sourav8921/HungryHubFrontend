@@ -39,14 +39,16 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 12,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
     flexDirection: "row",
     borderRadius: 50,
     borderWidth: 1,
     borderColor: "#D1D5DB",
+    alignItems: "center",
   },
   text: {
     flex: 1,
-    marginLeft: 8,
+    // marginLeft: 8,
   },
 });

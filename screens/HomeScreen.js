@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   restaurantHeaderText: {
-    marginTop: 12,
+    marginTop: 20,
     fontSize: 18,
     fontWeight: "500",
   },
