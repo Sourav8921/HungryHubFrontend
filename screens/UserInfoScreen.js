@@ -21,6 +21,15 @@ export default function UserInfoScreen() {
           <Text style={styles.editText}>EDIT</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.profile}>
+        <View style={styles.circle}>
+
+        </View>
+        <View >
+          <Text style={styles.name}>Sourav Ramesh</Text>
+          <Text style={styles.qoute}>Sourav Ramesh</Text>
+        </View>
+      </View>
       <View style={styles.infoCard}>
         <View style={styles.infoRow}>
           <View style={styles.iconWrapper}>
@@ -79,8 +88,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: themeColors.bgColor(1),
   },
+  profile: {
+    flexDirection: "row",
+    gap: 30,
+    alignItems: "center",
+    margin: 15,
+  },
+  circle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: themeColors.bgColor(0.3),
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#181C2E",
+    marginBottom: 5,
+  },
+  qoute: {
+    fontSize: 14,
+    color: "#A0A5BA",
+    fontWeight: "400",
+  },
   infoCard: {
-    backgroundColor: "#ECFDF5",
+    backgroundColor: "#F6F8FA",
     padding: 16,
     borderRadius: 16,
     marginTop: 16,
