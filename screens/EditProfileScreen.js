@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackButton from "../components/BackButton";
@@ -7,6 +7,8 @@ import CustomButton from "../components/CustomButton";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "../redux/user";
 import api from "../axiosConfig";
+import { themeColors } from "../theme";
+import Feather from "@expo/vector-icons/Feather";
 
 export default function EditProfileScreen() {
   const route = useRoute();
@@ -23,7 +25,7 @@ export default function EditProfileScreen() {
     fname: user?.first_name,
     lname: user?.last_name,
     email: user?.email,
-    phone: user?.phone_number
+    phone: user?.phone_number,
   });
 
   const handleChange = (name, value) => {
@@ -91,6 +93,13 @@ export default function EditProfileScreen() {
     <SafeAreaView style={styles.container}>
       <BackButton value={"Edit Profile"} />
       <View style={styles.formContainer}>
+        <View style={styles.profile}>
+          <View style={styles.circle}>
+            <TouchableOpacity style={styles.editIcon}>
+              <Feather name="edit-2" size={18} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputText}>First name</Text>
           <TextInput
@@ -190,6 +199,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 18,
     backgroundColor: "#f3f4f6",
+  },
+  profile: {
+    alignItems: "center",
+    marginVertical: 16,
+  },
+  circle: {
+    width: 130,
+    height: 130,
+    borderRadius: 65,
+    backgroundColor: themeColors.bgColor(0.3),
+  },
+  editIcon: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: "#58AD53",
+    borderRadius: 50,
+    padding: 10,
   },
   formContainer: {
     marginVertical: 16,

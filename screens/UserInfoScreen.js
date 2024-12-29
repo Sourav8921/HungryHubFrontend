@@ -26,8 +26,8 @@ export default function UserInfoScreen() {
 
         </View>
         <View >
-          <Text style={styles.name}>Sourav Ramesh</Text>
-          <Text style={styles.qoute}>Sourav Ramesh</Text>
+          <Text style={styles.name}>{user?.first_name} {user?.last_name}</Text>
+          <Text style={styles.qoute}>I love fastfood</Text>
         </View>
       </View>
       <View style={styles.infoCard}>
@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    padding: 16,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
   },
   header: {
     flexDirection: "row",
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 30,
     alignItems: "center",
-    margin: 15,
+    marginVertical: 25,
   },
   circle: {
     width: 100,
@@ -116,7 +117,6 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 16,
     marginTop: 16,
-    elevation: 2,
   },
   infoRow: {
     flexDirection: "row",
