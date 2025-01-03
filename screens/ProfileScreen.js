@@ -5,14 +5,17 @@ import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../components/BackButton";
 import { store } from "../redux/store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { setIsAuth } from "../redux/auth";
 import * as SecureStore from "expo-secure-store";
+import capitalize from "../utils/capitalize";
 
 export default function ProfileScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const { user } = useSelector((state) => state.user);
+
   const handleLogout = async () => {
     try {
       await SecureStore.deleteItemAsync("accessToken");
@@ -28,9 +31,18 @@ export default function ProfileScreen() {
     <SafeAreaView style={styles.container}>
       <BackButton value="Profile" />
       <View style={styles.content}>
+        <View style={styles.profile}>
+          <View style={styles.circle}></View>
+          <View>
+            <Text style={styles.name}>
+            {capitalize(user?.first_name)} {capitalize(user?.last_name)}
+            </Text>
+            <Text style={styles.qoute}>I love fastfood</Text>
+          </View>
+        </View>
         <View style={styles.card}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("UserInfo")}
+            onPress={() => navigation.navigate("UserInfo", {user})}
             style={styles.optionButton}
           >
             <View style={styles.iconWrapper}>
@@ -112,10 +124,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F3F4F6",
-    padding: 16,
+    padding: 24,
   },
   content: {
-    marginTop: 16,
+    // marginTop: 16,
+  },
+  profile: {
+    flexDirection: "row",
+    gap: 30,
+    alignItems: "center",
+    marginVertical: 25,
+  },
+  circle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: themeColors.bgColor(0.3),
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#181C2E",
+    marginBottom: 5,
+  },
+  qoute: {
+    fontSize: 14,
+    color: "#A0A5BA",
+    fontWeight: "400",
   },
   card: {
     backgroundColor: "white",

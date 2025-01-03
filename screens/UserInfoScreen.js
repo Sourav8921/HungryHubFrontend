@@ -5,10 +5,10 @@ import BackButton from "../components/BackButton";
 import { themeColors } from "../theme";
 import * as Icon from "react-native-feather";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import capitalize from "../utils/capitalize";
 
-export default function UserInfoScreen() {
-  const { user } = useSelector((state) => state.user);
+export default function UserInfoScreen({ route }) {
+  const { user } = route.params;
   const navigation = useNavigation();
 
   return (
@@ -22,11 +22,11 @@ export default function UserInfoScreen() {
         </TouchableOpacity>
       </View>
       <View style={styles.profile}>
-        <View style={styles.circle}>
-
-        </View>
-        <View >
-          <Text style={styles.name}>{user?.first_name} {user?.last_name}</Text>
+        <View style={styles.circle}></View>
+        <View>
+          <Text style={styles.name}>
+            {capitalize(user?.first_name)} {capitalize(user?.last_name)}
+          </Text>
           <Text style={styles.qoute}>I love fastfood</Text>
         </View>
       </View>
