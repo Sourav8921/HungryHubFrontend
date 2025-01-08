@@ -1,4 +1,11 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import React, { useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackButton from "../components/BackButton";
@@ -9,12 +16,14 @@ import { fetchUser } from "../redux/user";
 import api from "../axiosConfig";
 import { themeColors } from "../theme";
 import Feather from "@expo/vector-icons/Feather";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function EditProfileScreen() {
   const route = useRoute();
   const { user } = route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [image, setImage] = useState(null);
 
   const firstRef = useRef(null);
   const secondRef = useRef(null);
@@ -49,6 +58,22 @@ export default function EditProfileScreen() {
   const validatePhone = (phone) => {
     const re = /^[6-9]\d{9}$/;
     return re.test(phone);
+  };
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   };
 
   const handleSubmit = async () => {
@@ -95,7 +120,8 @@ export default function EditProfileScreen() {
       <View style={styles.formContainer}>
         <View style={styles.profile}>
           <View style={styles.circle}>
-            <TouchableOpacity style={styles.editIcon}>
+            {image && <Image source={{ uri: image }} style={styles.circle} />}
+            <TouchableOpacity style={styles.editIcon} onPress={pickImage}>
               <Feather name="edit-2" size={18} color="white" />
             </TouchableOpacity>
           </View>
@@ -209,6 +235,10 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 65,
     backgroundColor: themeColors.bgColor(0.3),
+  },
+  image: {
+    width: "100%",
+    height: "100%",
   },
   editIcon: {
     position: "absolute",
