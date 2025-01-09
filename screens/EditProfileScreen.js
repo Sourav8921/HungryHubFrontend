@@ -16,7 +16,7 @@ import { fetchUser } from "../redux/user";
 import api from "../axiosConfig";
 import { themeColors } from "../theme";
 import Feather from "@expo/vector-icons/Feather";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 
 export default function EditProfileScreen() {
   const route = useRoute();
@@ -35,6 +35,7 @@ export default function EditProfileScreen() {
     lname: user?.last_name,
     email: user?.email,
     phone: user?.phone_number,
+    image: "",
   });
 
   const handleChange = (name, value) => {
@@ -65,14 +66,15 @@ export default function EditProfileScreen() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 3],
       quality: 1,
     });
 
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      handleChange("image", result.assets[0].uri);
+      // setImage(result.assets[0].uri);
     }
   };
 
@@ -97,12 +99,22 @@ export default function EditProfileScreen() {
       return;
     }
 
+    const data = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      if (key === "image") {
+        data.append("image", {
+          uri: formData.image,
+          name: "photo.jpg",
+          type: "image/jpeg",
+        });
+      } else {
+        data.append(key, formData[key]);
+      }
+    });
     try {
       const response = await api.patch(`/api/users/profile/`, {
-        first_name: formData.fname,
-        last_name: formData.lname,
-        email: formData.email,
-        phone_number: formData.phone,
+        data,
       });
       if (response.status === 200) {
         dispatch(fetchUser());
@@ -120,7 +132,9 @@ export default function EditProfileScreen() {
       <View style={styles.formContainer}>
         <View style={styles.profile}>
           <View style={styles.circle}>
-            {image && <Image source={{ uri: image }} style={styles.circle} />}
+            {image && (
+              <Image source={{ uri: formData.image }} style={styles.circle} />
+            )}
             <TouchableOpacity style={styles.editIcon} onPress={pickImage}>
               <Feather name="edit-2" size={18} color="white" />
             </TouchableOpacity>
