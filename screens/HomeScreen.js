@@ -45,7 +45,8 @@ export default function HomeScreen({ navigation }) {
     };
     fetchRestaurants();
   }, []);
-
+  console.log(restaurants);
+  
   useEffect(() => {
     (async () => {
       try {

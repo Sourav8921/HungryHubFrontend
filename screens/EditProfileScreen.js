@@ -35,9 +35,10 @@ export default function EditProfileScreen() {
     lname: user?.last_name,
     email: user?.email,
     phone: user?.phone_number,
-    image: "",
+    image: user?.profile_pic,
   });
-
+  console.log(user);
+  
   const handleChange = (name, value) => {
     setFormData({
       ...formData,
@@ -77,7 +78,8 @@ export default function EditProfileScreen() {
       // setImage(result.assets[0].uri);
     }
   };
-
+  console.log(formData.image, "formData.image");
+  
   const handleSubmit = async () => {
     const errors = {};
 
@@ -132,8 +134,8 @@ export default function EditProfileScreen() {
       <View style={styles.formContainer}>
         <View style={styles.profile}>
           <View style={styles.circle}>
-            {image && (
-              <Image source={{ uri: formData.image }} style={styles.circle} />
+            {formData.image && (
+              <Image source={{ uri: formData?.image }} style={styles.circle} />
             )}
             <TouchableOpacity style={styles.editIcon} onPress={pickImage}>
               <Feather name="edit-2" size={18} color="white" />

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackButton from "../components/BackButton";
@@ -22,7 +22,9 @@ export default function UserInfoScreen({ route }) {
         </TouchableOpacity>
       </View>
       <View style={styles.profile}>
-        <View style={styles.circle}></View>
+        <View>
+          <Image source={user?.profile_pic} style={styles.circle} />
+        </View>
         <View>
           <Text style={styles.name}>
             {capitalize(user?.first_name)} {capitalize(user?.last_name)}

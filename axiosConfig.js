@@ -3,9 +3,10 @@ import { setIsAuth } from "./redux/auth";
 import { refreshToken } from "./services/api/TokenService";
 import { store } from "./redux/store";
 import * as SecureStore from "expo-secure-store";
+import { BASE_URL } from "./config";
 
 const api = axios.create({
-  baseURL: "https://hungryhub-5ojr.onrender.com", // Set your base URL here
+  baseURL: BASE_URL, // Set your base URL here
   headers: {
     "Content-Type": "application/json",
   },
