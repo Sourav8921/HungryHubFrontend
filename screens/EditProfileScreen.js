@@ -37,8 +37,7 @@ export default function EditProfileScreen() {
     phone: user?.phone_number,
     image: user?.profile_pic,
   });
-  console.log(user);
-  
+
   const handleChange = (name, value) => {
     setFormData({
       ...formData,
@@ -71,15 +70,12 @@ export default function EditProfileScreen() {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       handleChange("image", result.assets[0].uri);
-      // setImage(result.assets[0].uri);
+      setImage(result.assets[0]);
     }
   };
-  console.log(formData.image, "formData.image");
-  
+
   const handleSubmit = async () => {
     const errors = {};
 
@@ -106,26 +102,32 @@ export default function EditProfileScreen() {
     Object.keys(formData).forEach((key) => {
       if (key === "image") {
         data.append("image", {
-          uri: formData.image,
-          name: "photo.jpg",
-          type: "image/jpeg",
+          uri: image.uri,
+          type: image.type,
+          name: image.fileName,
         });
       } else {
         data.append(key, formData[key]);
       }
     });
     try {
-      const response = await api.patch(`/api/users/profile/`, {
-        data,
+      const response = await api.patch(`/api/users/profile/`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-      if (response.status === 200) {
-        dispatch(fetchUser());
-        setFormErrors({});
-        alert("Profile Updated Successfully");
-        navigation.goBack();
-      }
+      console.log(response);
+      
+      // if (response.status === 200) {
+      //   dispatch(fetchUser());
+      //   setFormErrors({});
+      //   alert("Profile Updated Successfully");
+      //   navigation.goBack();
+      // }
     } catch (error) {
       setFormErrors({ server: error.message });
+      console.log(error);
+      
     }
   };
   return (
